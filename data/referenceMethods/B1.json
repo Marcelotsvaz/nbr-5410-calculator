@@ -1,0 +1,42 @@
+[
+	{
+		"area": 0.5,
+		"current": 9
+	},
+	{
+		"area": 0.75,
+		"current": 11
+	},
+	{
+		"area": 1,
+		"current": 14
+	},
+	{
+		"area": 1.5,
+		"current": 17.5
+	},
+	{
+		"area": 2.5,
+		"current": 24
+	},
+	{
+		"area": 4,
+		"current": 32
+	},
+	{
+		"area": 6,
+		"current": 41
+	},
+	{
+		"area": 10,
+		"current": 57
+	},
+	{
+		"area": 16,
+		"current": 76
+	},
+	{
+		"area": 25,
+		"current": 101
+	}
+]
