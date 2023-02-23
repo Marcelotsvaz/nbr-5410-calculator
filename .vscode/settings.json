@@ -7,8 +7,41 @@
 
 
 {
+	"terminal.integrated.automationProfile.linux": {
+		"path": "/usr/bin/bash",
+		"env": {
+			"PYTHONPYCACHEPREFIX": "${workspaceFolder}/deployment/env/pycache"
+		}
+	},
+	
+	"terminal.integrated.profiles.linux": {
+		"bash": {
+			"path": "/usr/bin/bash",
+			"env": {
+				"PYTHONPYCACHEPREFIX": "${workspaceFolder}/deployment/env/pycache"
+			}
+		},
+		"fish": {
+			"path": "/usr/bin/fish",
+			"env": {
+				"PYTHONPYCACHEPREFIX": "${workspaceFolder}/deployment/env/pycache"
+			}
+		},
+	},
+	
 	"python.terminal.launchArgs": [
 		"-X",
-		"pycache_prefix=deployment/env/pycache",
-	]
+		"pycache_prefix=${workspaceFolder}/deployment/env/pycache",
+	],
+	
+	
+	// Unit testing.
+	"python.testing.unittestEnabled": true,
+	"python.testing.unittestArgs": [
+		"-v",
+		"-s",
+		"./src",
+		"-p",
+		"*Tests.py"
+	],
 }
