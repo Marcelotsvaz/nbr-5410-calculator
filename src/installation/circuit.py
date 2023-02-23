@@ -8,69 +8,8 @@
 
 import json
 
+from dataclasses import dataclass
 from typing_extensions import Self	# TODO: Remove on Python 3.11.
-
-
-
-class Circuit:
-	'''
-	Represents a single circuit in an electrical installation.
-	'''
-	
-	def __init__( self, **kwargs ) -> None:
-		# Identity.
-		self.name = kwargs['name']
-		self.description = kwargs.get( 'description' )
-		
-		# Installation.
-		self.voltage = kwargs['voltage']
-		self.phases = kwargs['phases']
-		self.grouping = kwargs['grouping']
-		self.length = kwargs['length']
-		self.referenceMethod = kwargs['referenceMethod']
-		self.temperature = kwargs['temperature']
-		
-		# Load.
-		self.power = kwargs['power']
-	
-	
-	@property
-	def current( self ):
-		'''
-		Apparent current.
-		'''
-		
-		return self.power / self.voltage
-	
-	
-	@property
-	def projectCurrent( self ):
-		'''
-		Apparent current corrected for temperature and grouping.
-		'''
-		
-		temperatureFactor = TemperatureCorrectionFactor.forTemperature( self.temperature )
-		groupingFactor = GroupingCorrectionFactor.forGrouping( self.grouping )
-		
-		return self.current / temperatureFactor / groupingFactor
-	
-	
-	@property
-	def wire( self ):
-		'''
-		
-		'''
-		
-		return self.referenceMethod.GetWire( self.projectCurrent )
-	
-	
-	@property
-	def breaker( self ):
-		'''
-		
-		'''
-		
-		return Breaker.GetBreaker( self.projectCurrent )
 
 
 
@@ -190,3 +129,63 @@ class Breaker:
 	
 	def __eq__( self, other: Self ) -> bool:
 		return self.current == other.current
+
+
+
+@dataclass
+class Circuit:
+	'''
+	Represents a single circuit in an electrical installation.
+	'''
+	
+	name: str
+	
+	power: float
+	voltage: int
+	phases: int
+	grouping: int
+	temperature: int
+	referenceMethod: ReferenceMethod
+	length: float
+	
+	description: str = None
+	
+	
+	@property
+	def current( self ):
+		'''
+		Apparent current.
+		'''
+		
+		return self.power / self.voltage
+	
+	
+	@property
+	def projectCurrent( self ):
+		'''
+		Apparent current corrected for temperature and grouping.
+		'''
+		
+		temperatureFactor = TemperatureCorrectionFactor.forTemperature( self.temperature )
+		groupingFactor = GroupingCorrectionFactor.forGrouping( self.grouping )
+		
+		return self.current / temperatureFactor / groupingFactor
+	
+	
+	@property
+	def wire( self ):
+		'''
+		Suitable wire for this circuit considering current capacity, voltage drop and short-circuit
+		current.
+		'''
+		
+		return self.referenceMethod.GetWire( self.projectCurrent )
+	
+	
+	@property
+	def breaker( self ):
+		'''
+		Suitable breaker for this circuit.
+		'''
+		
+		return Breaker.GetBreaker( self.projectCurrent )

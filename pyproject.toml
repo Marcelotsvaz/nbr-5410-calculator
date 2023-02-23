@@ -21,6 +21,7 @@
 		'missing-final-newline',
 		'missing-module-docstring',
 		'logging-fstring-interpolation',
+		'too-many-instance-attributes',
 		'unspecified-encoding',
 	]
 	
