@@ -8,6 +8,8 @@
 
 import json
 
+from typing_extensions import Self	# TODO: Remove on Python 3.11.
+
 
 
 class Circuit:
@@ -92,7 +94,7 @@ class ReferenceMethod:
 	def GetWire( self, current ):
 		for capacity in self.currentCapacities:
 			if capacity['current'] > current:
-				return Wire( capacity['area'], capacity['current'] )
+				return Wire( capacity['area'] )
 		
 		raise Exception( 'TODO: No wire.' )
 
@@ -155,13 +157,16 @@ class Wire:
 	
 	'''
 	
-	def __init__( self, area, current ) -> None:
+	def __init__( self, area ) -> None:
 		self.area = area
-		self.current = current
 	
 	
 	def __str__( self ) -> str:
 		return f'{self.area:.2f}mm² Wire'
+	
+	
+	def __eq__( self, other: Self ) -> bool:
+		return self.area == other.area
 
 
 
@@ -179,5 +184,9 @@ class Breaker:
 		self.current = current
 	
 	
-	def __str__( self) -> str:
+	def __str__( self ) -> str:
 		return f'{self.current:.1f}A Breaker'
+	
+	
+	def __eq__( self, other: Self ) -> bool:
+		return self.current == other.current
