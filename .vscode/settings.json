@@ -1,0 +1,14 @@
+// 
+// NBR 5410 Calculator
+// 
+// 
+// Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
+
+
+
+{
+	"python.terminal.launchArgs": [
+		"-X",
+		"pycache_prefix=deployment/env/pycache",
+	]
+}
