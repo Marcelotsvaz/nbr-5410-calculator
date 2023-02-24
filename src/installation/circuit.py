@@ -121,7 +121,7 @@ class TemperatureCorrectionFactor:
 	'''
 	
 	@classmethod
-	def forTemperature( cls, temperature ) -> float:
+	def forTemperature( cls, temperature: int ) -> float:
 		'''
 		Return the interpolated correction factor for a given temperature.
 		'''
@@ -153,7 +153,7 @@ class GroupingCorrectionFactor:
 	'''
 	
 	@classmethod
-	def forGrouping( cls, grouping ):
+	def forGrouping( cls, grouping: int ):
 		'''
 		Return the correction factor for a given circuit grouping.
 		'''
@@ -197,7 +197,7 @@ class Breaker:
 	'''
 	
 	@classmethod
-	def getBreaker( cls, current ):
+	def getBreaker( cls, current: float ):
 		'''
 		Return a suitable circuit breaker for a given current.
 		'''
@@ -205,7 +205,7 @@ class Breaker:
 		return Breaker( current )
 	
 	
-	def __init__( self, current ) -> None:
+	def __init__( self, current: float ) -> None:
 		self.current = current
 	
 	
@@ -237,7 +237,7 @@ class Circuit:
 	wireType: WireType
 	length: float
 	
-	description: str = None
+	description: str | None = None
 	
 	
 	@property
@@ -263,14 +263,14 @@ class Circuit:
 	
 	
 	@property
-	def wire( self ):
+	def wire( self ) -> Wire:
 		'''
 		Suitable wire for this circuit considering current capacity, voltage drop and short-circuit
 		current.
 		'''
 		
 		wireSections = self.wireType.getWireCapacities()
-		wireByCriteria = {}
+		wireByCriteria: dict[str, Wire] = {}
 		
 		
 		# Minimum wire section.
@@ -278,6 +278,8 @@ class Circuit:
 			minimumSection = 2.5
 		elif self.loadType == LoadType.LIGHTING:
 			minimumSection = 1.5
+		else:
+			raise ProjectError( 'Invalid load  type.' )
 		
 		for section in wireSections.wireSections:
 			if section >= minimumSection:

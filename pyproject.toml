@@ -6,10 +6,16 @@
 
 
 
+[tool.pyright]
+typeCheckingMode = 'strict'
+ignore = [ 'src/UiMainWindow.py' ]	# Generated file.
+
+
+
 [tool.pylint]
 	[tool.pylint.main]
 	init-hook = 'import sys; sys.path.append( "deployment/env/lib/python3.10/site-packages" )'
-	
+	ignore = 'UiMainWindow.py'	# Generated file.
 	
 	[tool.pylint.format]
 	indent-string = '	'
