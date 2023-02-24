@@ -6,13 +6,16 @@ Python types
 
 
 
+Electrical:
+	Buried cables
+	Grouping wire layout
+	Bare wire
+	Minimum cable size
+	Voltage drop
+	Overload
+	Short circuit
 
 
 
-Buried cables
-Grouping wire layout
-Bare wire
-Minimum cable size
-Voltage drop
-Overload
-Short circuit
+Python 3.11:
+	Use StrEnum

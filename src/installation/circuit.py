@@ -41,8 +41,8 @@ class WireMaterial( Enum ):
 	See NBR 5410 6.2.3.7.
 	'''
 	
-	COPPER = auto()
-	ALUMINIUM = auto()
+	COPPER = 'copper'
+	ALUMINIUM = 'aluminium'
 
 
 
@@ -53,9 +53,9 @@ class WireInsulation( Enum ):
 	See NBR 5410 6.2.3.2.
 	'''
 	
-	PVC = auto()
-	EPR = auto()
-	XLPE = auto()
+	PVC = 'pvc'
+	EPR = 'epr'
+	XLPE = 'xlpe'
 
 
 
@@ -66,13 +66,11 @@ class WireConfiguration( Enum ):
 	See NBR 5410 tables 36~39.
 	'''
 	
-	TWO = auto()
-	THREE = auto()
-	TWO_JUXTAPOSED = auto()
-	THREE_TREFOIL = auto()
-	THREE_JUXTAPOSED = auto()
-	HORIZONTAL = auto()
-	VERTICAL = auto()
+	TWO = 'two'
+	THREE = 'three'
+	THREE_JUXTAPOSED = 'threeJuxtaposed'
+	THREE_HORIZONTAL = 'threeHorizontal'
+	THREE_VERTICAL = 'threeVertical'
 
 
 
@@ -98,15 +96,12 @@ class WireType:
 		See NBR 5410 tables 36~39.
 		'''
 		
-		material = self.material.name.lower()
-		insulation = self.insulation.name.lower()
-		
-		with open( f'data/wireTypes/{material}-{insulation}.json5' ) as file:
+		with open( f'data/wireTypes/{self.material.value}-{self.insulation.value}.json5' ) as file:
 			jsonData = decode_io( file )
 			
 			return OrderedDict( zip(
 				jsonData['wireSections'],
-				jsonData['referenceMethods'][method.name][configuration.name.lower()+'Wires']
+				jsonData['referenceMethods'][method.name][configuration.value]
 			) )
 
 
