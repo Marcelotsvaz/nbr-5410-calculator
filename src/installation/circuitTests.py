@@ -18,6 +18,7 @@ from .circuit import (
 	Circuit,
 	Wire,
 	Breaker,
+	ProjectError,
 )
 
 
@@ -125,10 +126,10 @@ class CircuitTests( TestCase ):
 	
 	def testTemperatureCorrectionAboveMaximum( self ) -> None:
 		'''
-		Temperatures above maximum for the given insulation type should raise an exeception.
+		Temperatures above maximum for the given insulation type should raise an exception.
 		'''
 		
 		self.circuit.temperature = 70
 		
-		with self.assertRaises( Exception ):
+		with self.assertRaises( ProjectError ):
 			_ = self.circuit.correctedCurrent

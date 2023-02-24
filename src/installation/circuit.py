@@ -141,7 +141,7 @@ class TemperatureCorrectionFactor:
 					( nextFactor['temperature'] - factor['temperature'] )
 				)
 		
-		raise Exception( 'TODO: Temperature outside range.' )
+		raise ProjectError( 'TODO: Temperature outside range.' )
 
 
 
@@ -284,7 +284,7 @@ class Circuit:
 				wireByCriteria['minimumSection'] = Wire( self.wireType, section )
 				break
 		else:
-			raise Exception( 'TODO: No wire.' )
+			raise ProjectError( 'Available wires are not thick enough.' )
 		
 		
 		# Currente capacity.
@@ -295,7 +295,7 @@ class Circuit:
 				wireByCriteria['currentCapacity'] = Wire( self.wireType, wireSections.wireSections[index] )
 				break
 		else:
-			raise Exception( 'TODO: No wire.' )
+			raise ProjectError( 'Available wires are not thick enough.' )
 		
 		
 		# Select wire with largest section.
@@ -309,3 +309,10 @@ class Circuit:
 		'''
 		
 		return Breaker.getBreaker( self.current )
+
+
+
+class ProjectError( Exception ):
+	'''
+	Base class for all project design errors.
+	'''
