@@ -59,12 +59,12 @@ class CircuitTests( TestCase ):
 		self.assertEqual( self.circuit.current, 50.0 )
 	
 	
-	def testProjectCurrent( self ) -> None:
+	def testCorrectedCurrent( self ) -> None:
 		'''
-		Test `projectCurrent` property.
+		Test `correctedCurrent` property.
 		'''
 		
-		self.assertEqual( self.circuit.projectCurrent, 50.0 )
+		self.assertEqual( self.circuit.correctedCurrent, 50.0 )
 	
 	
 	def testWire( self ) -> None:
@@ -100,7 +100,7 @@ class CircuitTests( TestCase ):
 		
 		self.circuit.temperature = 55
 		
-		self.assertAlmostEqual( self.circuit.projectCurrent, 81.967213, 6 )
+		self.assertAlmostEqual( self.circuit.correctedCurrent, 81.967213, 6 )
 	
 	
 	def testTemperatureCorrectionInterpolation( self ) -> None:
@@ -110,7 +110,7 @@ class CircuitTests( TestCase ):
 		
 		self.circuit.temperature = 58
 		
-		self.assertAlmostEqual( self.circuit.projectCurrent, 91.911765, 6 )
+		self.assertAlmostEqual( self.circuit.correctedCurrent, 91.911765, 6 )
 	
 	
 	def testTemperatureCorrectionBelowMinimum( self ) -> None:
@@ -120,7 +120,7 @@ class CircuitTests( TestCase ):
 		
 		self.circuit.temperature = -10
 		
-		self.assertAlmostEqual( self.circuit.projectCurrent, 40.983607, 6 )
+		self.assertAlmostEqual( self.circuit.correctedCurrent, 40.983607, 6 )
 	
 	
 	def testTemperatureCorrectionAboveMaximum( self ) -> None:
@@ -131,4 +131,4 @@ class CircuitTests( TestCase ):
 		self.circuit.temperature = 70
 		
 		with self.assertRaises( Exception ):
-			_ = self.circuit.projectCurrent
+			_ = self.circuit.correctedCurrent

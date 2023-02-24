@@ -57,4 +57,4 @@ circuits = [
 
 
 for circuit in circuits:
-	print( f'{circuit.name}: Current: {circuit.current:.2f}A Project Current: {circuit.projectCurrent:.2f}A {circuit.wire} {circuit.breaker}' )
+	print( f'{circuit.name}: Current: {circuit.current:.2f}A Corrected Current: {circuit.correctedCurrent:.2f}A {circuit.wire} {circuit.breaker}' )

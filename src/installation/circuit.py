@@ -243,16 +243,17 @@ class Circuit:
 	@property
 	def current( self ):
 		'''
-		Apparent current.
+		Project current.
 		'''
 		
 		return self.power / self.voltage
 	
 	
 	@property
-	def projectCurrent( self ):
+	def correctedCurrent( self ):
 		'''
-		Apparent current corrected for temperature and grouping.
+		Project current corrected for temperature and grouping.
+		Used only for calculating wire section by current capacity.
 		'''
 		
 		temperatureFactor = TemperatureCorrectionFactor.forTemperature( self.temperature )
@@ -290,7 +291,7 @@ class Circuit:
 		for index, capacity in enumerate(
 			wireSections.referenceMethods[self.referenceMethod.name][self.wireConfiguration.value]
 		):
-			if capacity >= self.projectCurrent:
+			if capacity >= self.correctedCurrent:
 				wireByCriteria['currentCapacity'] = Wire( self.wireType, wireSections.wireSections[index] )
 				break
 		else:
@@ -307,4 +308,4 @@ class Circuit:
 		Suitable breaker for this circuit.
 		'''
 		
-		return Breaker.getBreaker( self.projectCurrent )
+		return Breaker.getBreaker( self.current )
