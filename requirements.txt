@@ -7,4 +7,12 @@
 
 
 pyjson5==1.6.2
+PySide6==6.4.2
 typing_extensions==4.5.0
+
+
+
+## The following requirements were added by pip freeze:
+PySide6-Addons==6.4.2
+PySide6-Essentials==6.4.2
+shiboken6==6.4.2

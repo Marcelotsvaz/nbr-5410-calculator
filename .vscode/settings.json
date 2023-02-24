@@ -33,6 +33,7 @@
 		"-X",
 		"pycache_prefix=${workspaceFolder}/deployment/env/pycache",
 	],
+	"python.analysis.typeCheckingMode": "strict",
 	
 	
 	// Unit testing.
