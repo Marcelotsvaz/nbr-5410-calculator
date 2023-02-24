@@ -86,6 +86,10 @@ class WireType:
 	insulation: WireInsulation
 	
 	
+	def __str__(self) -> str:
+		return f'{self.insulation.name} {self.material.name} wire'
+	
+	
 	def getWireCapacities( self, method: ReferenceMethod, configuration: WireConfiguration ):
 		'''
 		Get the current capacity for all sizes of this wire type for a given reference method and
@@ -163,21 +167,18 @@ class GroupingCorrectionFactor:
 
 
 
+@dataclass
 class Wire:
 	'''
 	WireType of a specific size.
 	'''
 	
-	def __init__( self, area ) -> None:
-		self.area = area
+	type: WireType
+	area: float
 	
 	
 	def __str__( self ) -> str:
-		return f'{self.area:.2f}mm² Wire'
-	
-	
-	def __eq__( self, other: Self ) -> bool:
-		return self.area == other.area
+		return f'{self.type}, {self.area:.2f}mm²'
 
 
 
@@ -261,7 +262,7 @@ class Circuit:
 		
 		for area, current in capacities.items():
 			if current >= self.projectCurrent:
-				return Wire( area )
+				return Wire( self.wireType, area )
 		
 		raise Exception( 'TODO: No wire.' )
 	

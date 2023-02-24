@@ -24,7 +24,7 @@ class CircuitTests( TestCase ):
 		Base fixture for all `Circuit` tests.
 		'''
 		
-		wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
+		self.wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
 		
 		self.circuit = Circuit(
 			name				= 'circuit',
@@ -34,7 +34,7 @@ class CircuitTests( TestCase ):
 			length				= 10.0,
 			referenceMethod		= ReferenceMethod.B1,
 			wireConfiguration	= WireConfiguration.TWO,
-			wireType			= wireType,
+			wireType			= self.wireType,
 			temperature			= 30,
 			power				= 5000.0,
 		)
@@ -63,7 +63,7 @@ class CircuitTests( TestCase ):
 		Test if proper wire size is returned for the specified reference method.
 		'''
 		
-		self.assertEqual( self.circuit.wire, Wire( 10.0 ) )
+		self.assertEqual( self.circuit.wire, Wire( self.wireType, 10.0 ) )
 	
 	
 	def testBreaker( self ) -> None:
