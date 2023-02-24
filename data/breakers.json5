@@ -1,15 +1,14 @@
+// 
+// NBR 5410 Calculator
+// 
+// 
+// Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
+
+
+
 [
 	{
-		"curve": "C",
-		"values": [
-			10,
-			16,
-			20,
-			25,
-			32,
-			40,
-			50,
-			63
-		]
+		curve: "C",
+		values: [ 10, 16, 20, 25, 32, 40, 50, 63 ],
 	}
 ]

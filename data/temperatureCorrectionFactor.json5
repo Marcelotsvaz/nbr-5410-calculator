@@ -1,46 +1,54 @@
+// 
+// NBR 5410 Calculator
+// 
+// 
+// Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
+
+
+
 [
 	{
-		"temperature": 10,
-		"value": 1.22
+		temperature: 10,
+		value: 1.22,
 	},
 	{
-		"temperature": 15,
-		"value": 1.17
+		temperature: 15,
+		value: 1.17,
 	},
 	{
-		"temperature": 20,
-		"value": 1.12
+		temperature: 20,
+		value: 1.12,
 	},
 	{
-		"temperature": 25,
-		"value": 1.06
+		temperature: 25,
+		value: 1.06,
 	},
 	{
-		"temperature": 30,
-		"value": 1.00
+		temperature: 30,
+		value: 1.00,
 	},
 	{
-		"temperature": 35,
-		"value": 0.94
+		temperature: 35,
+		value: 0.94,
 	},
 	{
-		"temperature": 40,
-		"value": 0.87
+		temperature: 40,
+		value: 0.87,
 	},
 	{
-		"temperature": 45,
-		"value": 0.79
+		temperature: 45,
+		value: 0.79,
 	},
 	{
-		"temperature": 50,
-		"value": 0.71
+		temperature: 50,
+		value: 0.71,
 	},
 	{
-		"temperature": 55,
-		"value": 0.61
+		temperature: 55,
+		value: 0.61,
 	},
 	{
-		"temperature": 60,
-		"value": 0.50
+		temperature: 60,
+		value: 0.50,
 	}
 ]
