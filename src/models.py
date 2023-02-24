@@ -6,6 +6,8 @@
 
 
 
+from typing import NamedTuple
+
 from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, QPersistentModelIndex
 
 from installation.circuit import Circuit
@@ -14,6 +16,16 @@ from installation.circuit import Circuit
 
 # Type aliases.
 ModelIndex = QModelIndex | QPersistentModelIndex
+
+
+
+class Field( NamedTuple ):
+	'''
+	Field mapping for models.
+	'''
+	
+	name: str
+	editable: bool
 
 
 
@@ -31,17 +43,19 @@ class CircuitModel( QAbstractTableModel ):
 		
 		self.circuits = circuits
 		self.fields = [
-			'name',
-			'power',
-			'loadType',
-			'voltage',
-			'phases',
-			'grouping',
-			'temperature',
-			'referenceMethod',
-			'wireConfiguration',
-			'wireType',
-			'length',
+			Field( 'name', True ),
+			Field( 'power', True ),
+			Field( 'loadType', True ),
+			Field( 'voltage', True ),
+			Field( 'phases', True ),
+			Field( 'grouping', True ),
+			Field( 'temperature', True ),
+			Field( 'referenceMethod', True ),
+			Field( 'wireConfiguration', True ),
+			Field( 'wireType', True ),
+			Field( 'length', True ),
+			Field( 'wire', False ),
+			Field( 'breaker', False ),
 		]
 	
 	
@@ -74,7 +88,7 @@ class CircuitModel( QAbstractTableModel ):
 			return None
 		
 		if orientation == Qt.Orientation.Horizontal:
-			return self.fields[section]
+			return self.fields[section].name
 		
 		return f'{section}'
 	
@@ -84,10 +98,47 @@ class CircuitModel( QAbstractTableModel ):
 		Return data for cells in table.
 		'''
 		
-		if role == Qt.DisplayRole:
+		if ( role == Qt.DisplayRole or role == Qt.EditRole ) and index.isValid():
 			circuit = self.circuits[index.row()]
-			field = self.fields[index.column()]
+			field = self.fields[index.column()].name
 			
 			return str( getattr( circuit, field ) )
 		
 		return None
+	
+	
+	def flags( self, index: ModelIndex ) -> Qt.ItemFlag:
+		'''
+		Return flags for cells in table.
+		'''
+		
+		flags = super().flags( index )
+		
+		if not index.isValid():
+			return flags
+		
+		if self.fields[index.column()].editable:
+			return flags | Qt.ItemFlag.ItemIsEditable
+		
+		return flags
+	
+	
+	def setData( self, index: ModelIndex, value: float, role: int = 0 ) -> bool:
+		'''
+		Update value in model.
+		'''
+		
+		if role == Qt.EditRole and index.isValid():
+			circuit = self.circuits[index.row()]
+			field = self.fields[index.column()].name
+			fieldType = type( getattr( circuit, field ) )
+			
+			try:
+				setattr( circuit, field, fieldType( value ) )
+				self.dataChanged.emit( index, index )
+			except ValueError:
+				return False
+			
+			return True
+		
+		return False

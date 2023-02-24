@@ -1,6 +1,8 @@
 Add arguments with units to docstrings
 Use integer keys in json
 Rename cable?
+Interpreter env var on pyproject
+__pycache__
 
 
 
