@@ -17,7 +17,9 @@ from pyjson5 import decode_io
 
 class ReferenceMethod( Enum ):
 	'''
+	Reference wire installation methods used to determine wire current capacity.
 	
+	See NBR 5410 6.2.5.1.2.
 	'''
 	
 	A1 = auto()
@@ -34,7 +36,9 @@ class ReferenceMethod( Enum ):
 
 class WireMaterial( Enum ):
 	'''
+	Wire conductor material.
 	
+	See NBR 5410 6.2.3.7.
 	'''
 	
 	COPPER = auto()
@@ -44,7 +48,9 @@ class WireMaterial( Enum ):
 
 class WireInsulation( Enum ):
 	'''
+	Wire insulation material.
 	
+	See NBR 5410 6.2.3.2.
 	'''
 	
 	PVC = auto()
@@ -55,7 +61,9 @@ class WireInsulation( Enum ):
 
 class WireConfiguration( Enum ):
 	'''
+	Number and layout of loaded wires for a specific reference method.
 	
+	See NBR 5410 tables 36~39.
 	'''
 	
 	TWO = auto()
@@ -71,7 +79,7 @@ class WireConfiguration( Enum ):
 @dataclass
 class WireType:
 	'''
-	
+	Represent all available sizes of an actual wire type used in a circuit.
 	'''
 	
 	material: WireMaterial
@@ -80,7 +88,10 @@ class WireType:
 	
 	def getWireCapacities( self, method: ReferenceMethod, configuration: WireConfiguration ):
 		'''
+		Get the current capacity for all sizes of this wire type for a given reference method and
+		wire configuration.
 		
+		See NBR 5410 tables 36~39.
 		'''
 		
 		material = self.material.name.lower()
@@ -98,7 +109,9 @@ class WireType:
 
 class TemperatureCorrectionFactor:
 	'''
+	Temperature correction factors for wire current capacity.
 	
+	See NBR 5410 6.2.5.3.
 	'''
 	
 	@classmethod
@@ -128,13 +141,15 @@ class TemperatureCorrectionFactor:
 
 class GroupingCorrectionFactor:
 	'''
+	Grouping correction factors for wire current capacity.
 	
+	See NBR 5410 6.2.5.5.
 	'''
 	
 	@classmethod
 	def forGrouping( cls, grouping ):
 		'''
-		Return the correction factor for a given grouping.
+		Return the correction factor for a given circuit grouping.
 		'''
 		
 		with open( 'data/groupingCorrectionFactor.json5' ) as file:
@@ -150,7 +165,7 @@ class GroupingCorrectionFactor:
 
 class Wire:
 	'''
-	
+	WireType of a specific size.
 	'''
 	
 	def __init__( self, area ) -> None:
@@ -168,11 +183,15 @@ class Wire:
 
 class Breaker:
 	'''
-	
+	Circuit breaker of a specific capacity.
 	'''
 	
 	@classmethod
 	def getBreaker( cls, current ):
+		'''
+		Return a suitable circuit breaker for a given current.
+		'''
+		
 		return Breaker( current )
 	
 	

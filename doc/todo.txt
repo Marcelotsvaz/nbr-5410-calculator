@@ -1,3 +1,18 @@
 Proper exceptions
 Add arguments with units to docstrings
 Use integer keys in json
+Rename cable?
+Python types
+
+
+
+
+
+
+Buried cables
+Grouping wire layout
+Bare wire
+Minimum cable size
+Voltage drop
+Overload
+Short circuit
