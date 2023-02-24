@@ -6,4 +6,5 @@
 
 
 
+pyjson5==1.6.2
 typing_extensions==4.5.0

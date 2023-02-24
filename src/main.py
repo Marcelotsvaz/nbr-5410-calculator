@@ -6,30 +6,37 @@
 
 
 
-from installation.circuit import Circuit, ReferenceMethod
+from installation.circuit import (
+	WireMaterial, WireInsulation, WireType, ReferenceMethod, WireConfiguration, Circuit
+)
 
 
 
+wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
 circuits = [
 	Circuit(
-		name			= 'Chuveiro',
-		voltage			= 220,
-		phases			= 2,
-		grouping		= 1,
-		length			= 10,
-		referenceMethod	= ReferenceMethod( 'B1' ),
-		temperature		= 35,
-		power			= 8000,
+		name				= 'Chuveiro',
+		voltage				= 220,
+		phases				= 2,
+		grouping			= 1,
+		length				= 10,
+		referenceMethod		= ReferenceMethod.B1,
+		wireConfiguration	= WireConfiguration.TWO,
+		wireType			= wireType,
+		temperature			= 35,
+		power				= 8000,
 	),
 	Circuit(
-		name			= 'Torneira Elétrica Cozinha',
-		voltage			= 220,
-		phases			= 2,
-		grouping		= 1,
-		length			= 15,
-		referenceMethod	= ReferenceMethod( 'B1' ),
-		temperature		= 35,
-		power			= 6000,
+		name				= 'Torneira Elétrica Cozinha',
+		voltage				= 220,
+		phases				= 2,
+		grouping			= 1,
+		length				= 15,
+		referenceMethod		= ReferenceMethod.B1,
+		wireConfiguration	= WireConfiguration.TWO,
+		wireType			= wireType,
+		temperature			= 35,
+		power				= 6000,
 	),
 ]
 

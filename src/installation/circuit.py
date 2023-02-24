@@ -6,36 +6,93 @@
 
 
 
-import json
-
+from enum import Enum, auto
 from dataclasses import dataclass
+from collections import OrderedDict
 from typing_extensions import Self	# TODO: Remove on Python 3.11.
 
-
-
-# class InstallMethod:
-# 	'''
-	
-# 	'''
+from pyjson5 import decode_io
 
 
 
-class ReferenceMethod:
+class ReferenceMethod( Enum ):
 	'''
 	
 	'''
 	
-	def __init__( self, code ) -> None:
-		with open( f'data/referenceMethods/{code}.json' ) as file:
-			self.currentCapacities = json.load( file )
+	A1 = auto()
+	A2 = auto()
+	B1 = auto()
+	B2 = auto()
+	C = auto()
+	D = auto()
+	E = auto()
+	F = auto()
+	G = auto()
+
+
+
+class WireMaterial( Enum ):
+	'''
+	
+	'''
+	
+	COPPER = auto()
+	ALUMINIUM = auto()
+
+
+
+class WireInsulation( Enum ):
+	'''
+	
+	'''
+	
+	PVC = auto()
+	EPR = auto()
+	XLPE = auto()
+
+
+
+class WireConfiguration( Enum ):
+	'''
+	
+	'''
+	
+	TWO = auto()
+	THREE = auto()
+	TWO_JUXTAPOSED = auto()
+	THREE_TREFOIL = auto()
+	THREE_JUXTAPOSED = auto()
+	HORIZONTAL = auto()
+	VERTICAL = auto()
+
+
+
+@dataclass
+class WireType:
+	'''
+	
+	'''
+	
+	material: WireMaterial
+	insulation: WireInsulation
 	
 	
-	def GetWire( self, current ):
-		for capacity in self.currentCapacities:
-			if capacity['current'] > current:
-				return Wire( capacity['area'] )
+	def getWireCapacities( self, method: ReferenceMethod, configuration: WireConfiguration ):
+		'''
 		
-		raise Exception( 'TODO: No wire.' )
+		'''
+		
+		material = self.material.name.lower()
+		insulation = self.insulation.name.lower()
+		
+		with open( f'data/wireTypes/{material}-{insulation}.json5' ) as file:
+			jsonData = decode_io( file )
+			
+			return OrderedDict( zip(
+				jsonData['wireSections'],
+				jsonData['referenceMethods'][method.name][configuration.name.lower()+'Wires']
+			) )
 
 
 
@@ -50,8 +107,8 @@ class TemperatureCorrectionFactor:
 		Return the interpolated correction factor for a given temperature.
 		'''
 		
-		with open( 'data/temperatureCorrectionFactor.json' ) as file:
-			factors = json.load( file )
+		with open( 'data/temperatureCorrectionFactor.json5' ) as file:
+			factors = decode_io( file )
 		
 		if temperature <= factors[0]['temperature']:
 			return factors[0]['value']
@@ -80,8 +137,8 @@ class GroupingCorrectionFactor:
 		Return the correction factor for a given grouping.
 		'''
 		
-		with open( 'data/groupingCorrectionFactor.json' ) as file:
-			factors = json.load( file )
+		with open( 'data/groupingCorrectionFactor.json5' ) as file:
+			factors = decode_io( file )
 		
 		last = max( factors.keys() )
 		if grouping > int( last ):
@@ -115,7 +172,7 @@ class Breaker:
 	'''
 	
 	@classmethod
-	def GetBreaker( cls, current ):
+	def getBreaker( cls, current ):
 		return Breaker( current )
 	
 	
@@ -146,6 +203,8 @@ class Circuit:
 	grouping: int
 	temperature: int
 	referenceMethod: ReferenceMethod
+	wireConfiguration: WireConfiguration
+	wireType: WireType
 	length: float
 	
 	description: str = None
@@ -179,7 +238,13 @@ class Circuit:
 		current.
 		'''
 		
-		return self.referenceMethod.GetWire( self.projectCurrent )
+		capacities = self.wireType.getWireCapacities( self.referenceMethod, self.wireConfiguration )
+		
+		for area, current in capacities.items():
+			if current >= self.projectCurrent:
+				return Wire( area )
+		
+		raise Exception( 'TODO: No wire.' )
 	
 	
 	@property
@@ -188,4 +253,4 @@ class Circuit:
 		Suitable breaker for this circuit.
 		'''
 		
-		return Breaker.GetBreaker( self.projectCurrent )
+		return Breaker.getBreaker( self.projectCurrent )

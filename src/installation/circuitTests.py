@@ -8,7 +8,9 @@
 
 from unittest import TestCase
 
-from .circuit import Circuit, ReferenceMethod, Wire, Breaker
+from .circuit import (
+	WireMaterial, WireInsulation, WireType, ReferenceMethod, WireConfiguration, Circuit, Wire, Breaker
+)
 
 
 
@@ -22,15 +24,19 @@ class CircuitTests( TestCase ):
 		Base fixture for all `Circuit` tests.
 		'''
 		
+		wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
+		
 		self.circuit = Circuit(
-			name			= 'circuit',
-			voltage			= 100,
-			phases			= 1,
-			grouping		= 1,
-			length			= 10.0,
-			referenceMethod	= ReferenceMethod( 'B1' ),
-			temperature		= 30,
-			power			= 5000.0,
+			name				= 'circuit',
+			voltage				= 100,
+			phases				= 1,
+			grouping			= 1,
+			length				= 10.0,
+			referenceMethod		= ReferenceMethod.B1,
+			wireConfiguration	= WireConfiguration.TWO,
+			wireType			= wireType,
+			temperature			= 30,
+			power				= 5000.0,
 		)
 		
 		return super().setUp()
