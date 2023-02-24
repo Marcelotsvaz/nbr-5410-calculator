@@ -7,13 +7,13 @@ Python types
 
 
 Electrical:
-	Buried cables
-	Grouping wire layout
-	Bare wire
-	Minimum cable size
 	Voltage drop
 	Overload
 	Short circuit
+	Conduit
+	Buried cables
+	Grouping wire layout
+	Bare wire
 
 
 

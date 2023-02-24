@@ -9,7 +9,15 @@
 from unittest import TestCase
 
 from .circuit import (
-	WireMaterial, WireInsulation, WireType, ReferenceMethod, WireConfiguration, Circuit, Wire, Breaker
+	LoadType,
+	WireMaterial,
+	WireInsulation,
+	WireType,
+	ReferenceMethod,
+	WireConfiguration,
+	Circuit,
+	Wire,
+	Breaker,
 )
 
 
@@ -28,6 +36,7 @@ class CircuitTests( TestCase ):
 		
 		self.circuit = Circuit(
 			name				= 'circuit',
+			loadType			= LoadType.POWER,
 			voltage				= 100,
 			phases				= 1,
 			grouping			= 1,
@@ -60,10 +69,20 @@ class CircuitTests( TestCase ):
 	
 	def testWire( self ) -> None:
 		'''
-		Test if proper wire size is returned for the specified reference method.
+		Test if proper wire section is returned for the specified reference method.
 		'''
 		
 		self.assertEqual( self.circuit.wire, Wire( self.wireType, 10.0 ) )
+	
+	
+	def testMinimumWireSection( self ) -> None:
+		'''
+		Test if minimum wire section is respected.
+		'''
+		
+		self.circuit.power = 1000
+		
+		self.assertEqual( self.circuit.wire, Wire( self.wireType, 2.5 ) )
 	
 	
 	def testBreaker( self ) -> None:

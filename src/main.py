@@ -7,7 +7,7 @@
 
 
 from installation.circuit import (
-	WireMaterial, WireInsulation, WireType, ReferenceMethod, WireConfiguration, Circuit
+	LoadType, WireMaterial, WireInsulation, WireType, ReferenceMethod, WireConfiguration, Circuit
 )
 
 
@@ -16,6 +16,7 @@ wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
 circuits = [
 	Circuit(
 		name				= 'Chuveiro',
+		loadType			= LoadType.POWER,
 		voltage				= 220,
 		phases				= 2,
 		grouping			= 1,
@@ -27,7 +28,8 @@ circuits = [
 		power				= 8000,
 	),
 	Circuit(
-		name				= 'Torneira Elétrica Cozinha',
+		name				= 'Torneira Elétrica',
+		loadType			= LoadType.POWER,
 		voltage				= 220,
 		phases				= 2,
 		grouping			= 1,
@@ -37,6 +39,19 @@ circuits = [
 		wireType			= wireType,
 		temperature			= 35,
 		power				= 6000,
+	),
+	Circuit(
+		name				= 'Iluminação',
+		loadType			= LoadType.LIGHTING,
+		voltage				= 220,
+		phases				= 2,
+		grouping			= 1,
+		length				= 15,
+		referenceMethod		= ReferenceMethod.B1,
+		wireConfiguration	= WireConfiguration.TWO,
+		wireType			= wireType,
+		temperature			= 35,
+		power				= 500,
 	),
 ]
 

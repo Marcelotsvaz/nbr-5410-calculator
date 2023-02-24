@@ -8,10 +8,22 @@
 
 from enum import Enum, auto
 from dataclasses import dataclass
-from collections import OrderedDict
+from types import SimpleNamespace
 from typing_extensions import Self	# TODO: Remove on Python 3.11.
 
 from pyjson5 import decode_io
+
+
+
+class LoadType( Enum ):
+	'''
+	Load type to determine minimum wire section.
+	
+	See NBR 5410 6.2.6.1.1.
+	'''
+	
+	LIGHTING = 'lighting'
+	POWER = 'power'
 
 
 
@@ -84,25 +96,20 @@ class WireType:
 	insulation: WireInsulation
 	
 	
-	def __str__(self) -> str:
+	def __str__( self ) -> str:
 		return f'{self.insulation.name} {self.material.name} wire'
 	
 	
-	def getWireCapacities( self, method: ReferenceMethod, configuration: WireConfiguration ):
+	def getWireCapacities( self ):
 		'''
-		Get the current capacity for all sizes of this wire type for a given reference method and
-		wire configuration.
+		Get the current capacity for all sizes of this wire type for all reference methods and
+		wire configurations.
 		
 		See NBR 5410 tables 36~39.
 		'''
 		
 		with open( f'data/wireTypes/{self.material.value}-{self.insulation.value}.json5' ) as file:
-			jsonData = decode_io( file )
-			
-			return OrderedDict( zip(
-				jsonData['wireSections'],
-				jsonData['referenceMethods'][method.name][configuration.value]
-			) )
+			return SimpleNamespace( **decode_io( file ) )
 
 
 
@@ -174,6 +181,13 @@ class Wire:
 	
 	def __str__( self ) -> str:
 		return f'{self.type}, {self.area:.2f}mm²'
+	
+	
+	def __gt__( self, other: Self ) -> bool:
+		if self.type != other.type:
+			return NotImplemented
+		
+		return self.area > other.area
 
 
 
@@ -213,6 +227,7 @@ class Circuit:
 	name: str
 	
 	power: float
+	loadType: LoadType
 	voltage: int
 	phases: int
 	grouping: int
@@ -253,13 +268,37 @@ class Circuit:
 		current.
 		'''
 		
-		capacities = self.wireType.getWireCapacities( self.referenceMethod, self.wireConfiguration )
+		wireSections = self.wireType.getWireCapacities()
+		wireByCriteria = {}
 		
-		for area, current in capacities.items():
-			if current >= self.projectCurrent:
-				return Wire( self.wireType, area )
 		
-		raise Exception( 'TODO: No wire.' )
+		# Minimum wire section.
+		if self.loadType == LoadType.POWER:
+			minimumSection = 2.5
+		elif self.loadType == LoadType.LIGHTING:
+			minimumSection = 1.5
+		
+		for section in wireSections.wireSections:
+			if section >= minimumSection:
+				wireByCriteria['minimumSection'] = Wire( self.wireType, section )
+				break
+		else:
+			raise Exception( 'TODO: No wire.' )
+		
+		
+		# Currente capacity.
+		for index, capacity in enumerate(
+			wireSections.referenceMethods[self.referenceMethod.name][self.wireConfiguration.value]
+		):
+			if capacity >= self.projectCurrent:
+				wireByCriteria['currentCapacity'] = Wire( self.wireType, wireSections.wireSections[index] )
+				break
+		else:
+			raise Exception( 'TODO: No wire.' )
+		
+		
+		# Select wire with largest section.
+		return max( wireByCriteria.values() )
 	
 	
 	@property
