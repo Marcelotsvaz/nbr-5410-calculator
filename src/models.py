@@ -117,7 +117,7 @@ class CircuitModel( QAbstractTableModel ):
 		if orientation == Qt.Orientation.Horizontal:
 			return self.fields[section].name
 		
-		return f'{section}'
+		return f'{section + 1}'
 	
 	
 	def data( self, index: ModelIndex, role: int = 0 ) -> str | None:

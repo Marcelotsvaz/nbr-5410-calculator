@@ -30,7 +30,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		super().__init__()
 		self.setupUi( self )
 		self.model = CircuitModel( [] )
-		self.tableView.setModel( self.model )
+		self.circuitsTableView.setModel( self.model )
 	
 	
 	@Slot()

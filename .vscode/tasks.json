@@ -1,0 +1,26 @@
+// 
+// NBR 5410 Calculator
+// 
+// 
+// Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
+
+
+
+{
+	"version": "2.0.0",
+	
+	
+	"tasks": [
+		{
+			"label": "Compile UI",
+			"type": "shell",
+			"command": "deployment/env/bin/pyside6-uic src/ui/mainWindow.ui -o src/UiMainWindow.py",
+			"icon": {
+				"id": "combine",
+				"color": "terminal.ansiGreen",
+			},
+			"presentation": { "close": true },
+			"problemMatcher": [],
+		}
+	]
+}
