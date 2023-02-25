@@ -1,0 +1,60 @@
+// 
+// NBR 5410 Calculator
+// 
+// 
+// Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
+
+
+
+{
+	circuits: [
+		{
+			name: 'Chuveiro',
+			loadType: 'power',
+			voltage: 220,
+			phases: 2,
+			grouping: 1,
+			length: 10,
+			referenceMethod: 'B1',
+			wireConfiguration: 'two',
+			wireType: {
+				material: 'copper',
+				insulation: 'pvc',
+			},
+			temperature: 35,
+			power: 8000,
+		},
+		{
+			name: 'Torneira Elétrica',
+			loadType: 'power',
+			voltage: 220,
+			phases: 2,
+			grouping: 1,
+			length: 10,
+			referenceMethod: 'B1',
+			wireConfiguration: 'two',
+			wireType: {
+				material: 'copper',
+				insulation: 'pvc',
+			},
+			temperature: 35,
+			power: 6000,
+		},
+		{
+			name: 'Iluminação Sala',
+			loadType: 'lighting',
+			voltage: 220,
+			phases: 2,
+			grouping: 2,
+			length: 15,
+			referenceMethod: 'B1',
+			wireConfiguration: 'two',
+			wireType: {
+				material: 'copper',
+				insulation: 'pvc',
+			},
+			temperature: 35,
+			power: 100,
+		},
+	]
+}

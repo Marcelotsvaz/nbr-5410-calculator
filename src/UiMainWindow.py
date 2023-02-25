@@ -16,7 +16,8 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QApplication, QGridLayout, QHeaderView, QMainWindow,
-    QSizePolicy, QStatusBar, QTableView, QWidget)
+    QPushButton, QSizePolicy, QStatusBar, QTableView,
+    QWidget)
 
 class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
@@ -27,11 +28,21 @@ class Ui_mainWindow(object):
         self.centralWidget.setObjectName(u"centralWidget")
         self.gridLayout = QGridLayout(self.centralWidget)
         self.gridLayout.setObjectName(u"gridLayout")
+        self.saveButtion = QPushButton(self.centralWidget)
+        self.saveButtion.setObjectName(u"saveButtion")
+
+        self.gridLayout.addWidget(self.saveButtion, 2, 3, 1, 1)
+
+        self.loadButton = QPushButton(self.centralWidget)
+        self.loadButton.setObjectName(u"loadButton")
+
+        self.gridLayout.addWidget(self.loadButton, 2, 2, 1, 1)
+
         self.tableView = QTableView(self.centralWidget)
         self.tableView.setObjectName(u"tableView")
         self.tableView.setAlternatingRowColors(True)
 
-        self.gridLayout.addWidget(self.tableView, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.tableView, 1, 2, 1, 2)
 
         mainWindow.setCentralWidget(self.centralWidget)
         self.statusbar = QStatusBar(mainWindow)
@@ -39,11 +50,15 @@ class Ui_mainWindow(object):
         mainWindow.setStatusBar(self.statusbar)
 
         self.retranslateUi(mainWindow)
+        self.saveButtion.clicked.connect(mainWindow.saveProject)
+        self.loadButton.clicked.connect(mainWindow.loadProject)
 
         QMetaObject.connectSlotsByName(mainWindow)
     # setupUi
 
     def retranslateUi(self, mainWindow):
         mainWindow.setWindowTitle(QCoreApplication.translate("mainWindow", u"NBR 5410 Calculator", None))
+        self.saveButtion.setText(QCoreApplication.translate("mainWindow", u"Save", None))
+        self.loadButton.setText(QCoreApplication.translate("mainWindow", u"Load", None))
     # retranslateUi
 

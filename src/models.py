@@ -41,7 +41,6 @@ class CircuitModel( QAbstractTableModel ):
 		
 		super().__init__()
 		
-		self.circuits = circuits
 		self.fields = [
 			Field( 'name', True ),
 			Field( 'power', True ),
@@ -57,6 +56,18 @@ class CircuitModel( QAbstractTableModel ):
 			Field( 'wire', False ),
 			Field( 'breaker', False ),
 		]
+		
+		self.setDatasource( circuits )
+	
+	
+	def setDatasource( self, circuits: list[Circuit] ):
+		'''
+		Update model's datasource.
+		'''
+		
+		self.beginResetModel()
+		self.circuits = circuits
+		self.endResetModel()
 	
 	
 	def rowCount( self, parent: ModelIndex = QModelIndex() ) -> int:
@@ -77,6 +88,22 @@ class CircuitModel( QAbstractTableModel ):
 		_ = parent	# Unused.
 		
 		return len( self.fields )
+	
+	
+	def flags( self, index: ModelIndex ) -> Qt.ItemFlag:
+		'''
+		Return flags for cells in table.
+		'''
+		
+		flags = super().flags( index )
+		
+		if not index.isValid():
+			return flags
+		
+		if self.fields[index.column()].editable:
+			return flags | Qt.ItemFlag.ItemIsEditable
+		
+		return flags
 	
 	
 	def headerData( self, section: int, orientation: Qt.Orientation, role: int = 0 ) -> str | None:
@@ -105,22 +132,6 @@ class CircuitModel( QAbstractTableModel ):
 			return str( getattr( circuit, field ) )
 		
 		return None
-	
-	
-	def flags( self, index: ModelIndex ) -> Qt.ItemFlag:
-		'''
-		Return flags for cells in table.
-		'''
-		
-		flags = super().flags( index )
-		
-		if not index.isValid():
-			return flags
-		
-		if self.fields[index.column()].editable:
-			return flags | Qt.ItemFlag.ItemIsEditable
-		
-		return flags
 	
 	
 	def setData( self, index: ModelIndex, value: float, role: int = 0 ) -> bool:
