@@ -10,7 +10,15 @@ from typing import NamedTuple
 
 from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, QPersistentModelIndex
 
-from installation.circuit import Circuit
+from installation.circuit import (
+	LoadType,
+	WireMaterial,
+	WireInsulation,
+	WireType,
+	ReferenceMethod,
+	WireConfiguration,
+	Circuit,
+)
 
 
 
@@ -146,10 +154,55 @@ class CircuitModel( QAbstractTableModel ):
 			
 			try:
 				setattr( circuit, field, fieldType( value ) )
-				self.dataChanged.emit( index, index )
+				self.dataChanged.emit( index, index, role )
 			except ValueError:
 				return False
 			
 			return True
 		
 		return False
+	
+	
+	def insertRows( self, row: int, count: int, parent: ModelIndex = QModelIndex() ) -> bool:
+		'''
+		Create a new Circuits.
+		'''
+		
+		self.beginInsertRows( parent, row, row + count - 1 )
+		
+		wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
+		circuit = Circuit(
+			name				= 'New Circuit',
+			loadType			= LoadType.POWER,
+			voltage				= 127,
+			phases				= 1,
+			grouping			= 1,
+			length				= 10.0,
+			referenceMethod		= ReferenceMethod.B1,
+			wireConfiguration	= WireConfiguration.TWO,
+			wireType			= wireType,
+			temperature			= 30,
+			power				= 1000.0,
+		)
+		
+		for index in range( row, row + count ):
+			self.circuits.insert( index, circuit )
+		
+		self.endInsertRows()
+		
+		return True
+	
+	
+	def removeRows( self, row: int, count: int, parent: ModelIndex = QModelIndex() ) -> bool:
+		'''
+		Delete existing Circuits.
+		'''
+		
+		self.beginRemoveRows( parent, row, row + count - 1 )
+		
+		for _ in range( count ):
+			self.circuits.pop( row )
+		
+		self.endRemoveRows()
+		
+		return True

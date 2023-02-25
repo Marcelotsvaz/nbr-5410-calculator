@@ -17,9 +17,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QGridLayout, QHeaderView,
-    QMainWindow, QMenu, QMenuBar, QSizePolicy,
-    QStatusBar, QTabWidget, QTableView, QVBoxLayout,
-    QWidget)
+    QMainWindow, QMenu, QMenuBar, QPushButton,
+    QSizePolicy, QSpacerItem, QStatusBar, QTabWidget,
+    QTableView, QWidget)
 
 class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
@@ -61,8 +61,19 @@ class Ui_mainWindow(object):
         self.tabWidget.addTab(self.panelTab, "")
         self.circuitsTab = QWidget()
         self.circuitsTab.setObjectName(u"circuitsTab")
-        self.verticalLayout_2 = QVBoxLayout(self.circuitsTab)
-        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
+        self.gridLayout_2 = QGridLayout(self.circuitsTab)
+        self.gridLayout_2.setObjectName(u"gridLayout_2")
+        self.newCircuitButton = QPushButton(self.circuitsTab)
+        self.newCircuitButton.setObjectName(u"newCircuitButton")
+        icon6 = QIcon(QIcon.fromTheme(u"window-new"))
+        self.newCircuitButton.setIcon(icon6)
+
+        self.gridLayout_2.addWidget(self.newCircuitButton, 0, 1, 1, 1)
+
+        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.gridLayout_2.addItem(self.horizontalSpacer, 0, 0, 1, 1)
+
         self.circuitsTableView = QTableView(self.circuitsTab)
         self.circuitsTableView.setObjectName(u"circuitsTableView")
         self.circuitsTableView.setAlternatingRowColors(True)
@@ -72,7 +83,7 @@ class Ui_mainWindow(object):
         self.circuitsTableView.horizontalHeader().setProperty("showSortIndicator", True)
         self.circuitsTableView.horizontalHeader().setStretchLastSection(True)
 
-        self.verticalLayout_2.addWidget(self.circuitsTableView)
+        self.gridLayout_2.addWidget(self.circuitsTableView, 1, 0, 1, 2)
 
         self.tabWidget.addTab(self.circuitsTab, "")
         self.tab = QWidget()
@@ -109,6 +120,7 @@ class Ui_mainWindow(object):
         self.actionSave.triggered.connect(mainWindow.saveProject)
         self.actionOpen.triggered.connect(mainWindow.loadProject)
         self.actionSaveAs.triggered.connect(mainWindow.saveProject)
+        self.newCircuitButton.clicked.connect(mainWindow.addRow)
 
         self.tabWidget.setCurrentIndex(1)
 
@@ -140,6 +152,7 @@ class Ui_mainWindow(object):
 #endif // QT_CONFIG(shortcut)
         self.actionAbout.setText(QCoreApplication.translate("mainWindow", u"About", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.panelTab), QCoreApplication.translate("mainWindow", u"Panel", None))
+        self.newCircuitButton.setText("")
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.circuitsTab), QCoreApplication.translate("mainWindow", u"Circuits", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("mainWindow", u"Conduits", None))
         self.menuFile.setTitle(QCoreApplication.translate("mainWindow", u"File", None))
