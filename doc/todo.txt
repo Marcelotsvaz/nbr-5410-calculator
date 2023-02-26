@@ -2,8 +2,8 @@ Add arguments with units to docstrings
 Use integer keys in json
 Interpreter env var on pyproject
 __pycache__
-Fail QDialog
 Qt python properties
+Translate
 
 
 

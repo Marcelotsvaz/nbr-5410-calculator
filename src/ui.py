@@ -7,7 +7,7 @@
 
 
 from PySide6.QtCore import Slot
-from PySide6.QtWidgets import QMainWindow, QFileDialog
+from PySide6.QtWidgets import QMainWindow, QFileDialog, QMessageBox
 from jsons import loads, dumps	# pyright: ignore [reportUnknownVariableType]
 
 from UiMainWindow import Ui_mainWindow as UiMainWindow
@@ -55,12 +55,22 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Load a project from a file in JSON format.
 		'''
 		
-		# pylint: disable-next = line-too-long
-		fileName: str = QFileDialog().getOpenFileName( self, filter = '*.json' )[0]	# pyright: ignore [ reportUnknownMemberType ]
-		with open( fileName ) as file:
-			project = loads( file.read(), Project )
+		fileName: str = QFileDialog().getOpenFileName(	# pyright: ignore [ reportUnknownMemberType ]
+			self,
+			filter = 'Project files (*.json)',
+			caption = 'Open Project',
+		)[0]
 		
-		self.setProject( project )
+		if not fileName:
+			return
+		
+		try:
+			with open( fileName ) as file:
+				project = loads( file.read(), Project )
+			
+			self.setProject( project )
+		except FileNotFoundError as error:
+			QMessageBox.critical( self, 'Error', f'{error}' )
 	
 	
 	@Slot()
@@ -69,11 +79,21 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Save project to a file in JSON format.
 		'''
 		
-		# pylint: disable-next = line-too-long
-		fileName: str = QFileDialog().getSaveFileName( self, filter = '*.json' )[0]	# pyright: ignore [ reportUnknownMemberType ]
-		with open( fileName, 'w' ) as file:
-			jsonOptions: dict[str, object] = {
-				'indent': '\t',
-				'sort_keys': True,
-			}
-			file.write( dumps( self.project, strip_properties = True, jdkwargs = jsonOptions ) )
+		fileName: str = QFileDialog().getSaveFileName(	# pyright: ignore [ reportUnknownMemberType ]
+			self,
+			filter = 'Project files (*.json)',
+			caption = 'Save Project As',
+		)[0]
+		
+		if not fileName:
+			return
+		
+		try:
+			with open( fileName, 'w' ) as file:
+				jsonOptions: dict[str, object] = {
+					'indent': '\t',
+					'sort_keys': True,
+				}
+				file.write( dumps( self.project, strip_properties = True, jdkwargs = jsonOptions ) )
+		except PermissionError as error:
+			QMessageBox.critical( self, 'Error', str( error ) )
