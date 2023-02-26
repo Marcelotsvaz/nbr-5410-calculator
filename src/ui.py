@@ -8,7 +8,7 @@
 
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QMainWindow, QFileDialog
-from pyjson5 import decode_io, encode
+from jsons import loads, dumps	# pyright: ignore [reportUnknownVariableType]
 
 from UiMainWindow import Ui_mainWindow as UiMainWindow
 from installation.project import Project
@@ -55,10 +55,10 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Load a project from a file in JSON format.
 		'''
 		
-		# pylint: disable-next=line-too-long
-		fileName: str = QFileDialog().getOpenFileName( self, filter = '*.json5' )[0]	# pyright: ignore [reportUnknownMemberType]
+		# pylint: disable-next = line-too-long
+		fileName: str = QFileDialog().getOpenFileName( self, filter = '*.json' )[0]	# pyright: ignore [ reportUnknownMemberType ]
 		with open( fileName ) as file:
-			project = Project.fromJson( decode_io( file ) )
+			project = loads( file.read(), Project )
 		
 		self.setProject( project )
 	
@@ -69,8 +69,11 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Save project to a file in JSON format.
 		'''
 		
-		# pylint: disable-next=line-too-long
-		fileName: str = QFileDialog().getSaveFileName( self, filter = '*.json5' )[0]	# pyright: ignore [reportUnknownMemberType]
+		# pylint: disable-next = line-too-long
+		fileName: str = QFileDialog().getSaveFileName( self, filter = '*.json' )[0]	# pyright: ignore [ reportUnknownMemberType ]
 		with open( fileName, 'w' ) as file:
-			json: str = encode( self.project.toJson() )	# pyright: ignore [reportGeneralTypeIssues]
-			file.write( json )
+			jsonOptions: dict[str, object] = {
+				'indent': '\t',
+				'sort_keys': True,
+			}
+			file.write( dumps( self.project, strip_properties = True, jdkwargs = jsonOptions ) )

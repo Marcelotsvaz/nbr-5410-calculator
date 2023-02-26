@@ -3,7 +3,6 @@ Use integer keys in json
 Interpreter env var on pyproject
 __pycache__
 Fail QDialog
-Serialize name
 Qt python properties
 
 

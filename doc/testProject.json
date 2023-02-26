@@ -1,0 +1,209 @@
+{
+	"circuits": [
+		{
+			"description": null,
+			"grouping": 1,
+			"length": 10.0,
+			"loadType": "POWER",
+			"name": "Chuveiro",
+			"phases": 2,
+			"power": 8000.0,
+			"referenceMethod": "B1",
+			"temperature": 35,
+			"voltage": 220,
+			"wireConfiguration": "TWO",
+			"wireType": {
+				"insulation": "PVC",
+				"material": "COPPER"
+			}
+		},
+		{
+			"description": null,
+			"grouping": 1,
+			"length": 10.0,
+			"loadType": "POWER",
+			"name": "Torneira El\u00e9trica Cozinha",
+			"phases": 2,
+			"power": 6000.0,
+			"referenceMethod": "B1",
+			"temperature": 35,
+			"voltage": 220,
+			"wireConfiguration": "TWO",
+			"wireType": {
+				"insulation": "PVC",
+				"material": "COPPER"
+			}
+		},
+		{
+			"description": null,
+			"grouping": 2,
+			"length": 15.0,
+			"loadType": "LIGHTING",
+			"name": "Torneira El\u00e9trica Area de Servi\u00e7o",
+			"phases": 2,
+			"power": 6000.0,
+			"referenceMethod": "B1",
+			"temperature": 35,
+			"voltage": 220,
+			"wireConfiguration": "TWO",
+			"wireType": {
+				"insulation": "PVC",
+				"material": "COPPER"
+			}
+		},
+		{
+			"description": null,
+			"grouping": 2,
+			"length": 15.0,
+			"loadType": "LIGHTING",
+			"name": "Lavadora/Secadora de Roupas",
+			"phases": 2,
+			"power": 3000.0,
+			"referenceMethod": "B1",
+			"temperature": 35,
+			"voltage": 220,
+			"wireConfiguration": "TWO",
+			"wireType": {
+				"insulation": "PVC",
+				"material": "COPPER"
+			}
+		},
+		{
+			"description": null,
+			"grouping": 2,
+			"length": 15.0,
+			"loadType": "LIGHTING",
+			"name": "Microondas/Forno El\u00e9trico",
+			"phases": 2,
+			"power": 3000.0,
+			"referenceMethod": "B1",
+			"temperature": 35,
+			"voltage": 220,
+			"wireConfiguration": "TWO",
+			"wireType": {
+				"insulation": "PVC",
+				"material": "COPPER"
+			}
+		},
+		{
+			"description": null,
+			"grouping": 2,
+			"length": 15.0,
+			"loadType": "LIGHTING",
+			"name": "Lava-Lou\u00e7as",
+			"phases": 2,
+			"power": 1500.0,
+			"referenceMethod": "B1",
+			"temperature": 35,
+			"voltage": 220,
+			"wireConfiguration": "TWO",
+			"wireType": {
+				"insulation": "PVC",
+				"material": "COPPER"
+			}
+		},
+		{
+			"description": null,
+			"grouping": 2,
+			"length": 15.0,
+			"loadType": "LIGHTING",
+			"name": "Ar Condicionado 1",
+			"phases": 2,
+			"power": 1000.0,
+			"referenceMethod": "B1",
+			"temperature": 35,
+			"voltage": 220,
+			"wireConfiguration": "TWO",
+			"wireType": {
+				"insulation": "PVC",
+				"material": "COPPER"
+			}
+		},
+		{
+			"description": null,
+			"grouping": 2,
+			"length": 15.0,
+			"loadType": "LIGHTING",
+			"name": "Ar Condicionado 2",
+			"phases": 2,
+			"power": 1000.0,
+			"referenceMethod": "B1",
+			"temperature": 35,
+			"voltage": 220,
+			"wireConfiguration": "TWO",
+			"wireType": {
+				"insulation": "PVC",
+				"material": "COPPER"
+			}
+		},
+		{
+			"description": null,
+			"grouping": 2,
+			"length": 15.0,
+			"loadType": "LIGHTING",
+			"name": "Tomadas Cozinha / Area de Servi\u00e7o",
+			"phases": 2,
+			"power": 1500.0,
+			"referenceMethod": "B1",
+			"temperature": 35,
+			"voltage": 220,
+			"wireConfiguration": "TWO",
+			"wireType": {
+				"insulation": "PVC",
+				"material": "COPPER"
+			}
+		},
+		{
+			"description": null,
+			"grouping": 2,
+			"length": 15.0,
+			"loadType": "LIGHTING",
+			"name": "Ilumina\u00e7\u00e3o Cozinha / Area de Servi\u00e7o / Exterior",
+			"phases": 2,
+			"power": 500.0,
+			"referenceMethod": "B1",
+			"temperature": 35,
+			"voltage": 220,
+			"wireConfiguration": "TWO",
+			"wireType": {
+				"insulation": "PVC",
+				"material": "COPPER"
+			}
+		},
+		{
+			"description": null,
+			"grouping": 2,
+			"length": 15.0,
+			"loadType": "LIGHTING",
+			"name": "Ilumina\u00e7\u00e3o / Tomadas Quarto / Banheiro",
+			"phases": 2,
+			"power": 500.0,
+			"referenceMethod": "B1",
+			"temperature": 35,
+			"voltage": 220,
+			"wireConfiguration": "TWO",
+			"wireType": {
+				"insulation": "PVC",
+				"material": "COPPER"
+			}
+		},
+		{
+			"description": null,
+			"grouping": 2,
+			"length": 15.0,
+			"loadType": "LIGHTING",
+			"name": "Ilumina\u00e7\u00e3o / Tomadas Sala / Quartos",
+			"phases": 2,
+			"power": 500.0,
+			"referenceMethod": "B1",
+			"temperature": 35,
+			"voltage": 220,
+			"wireConfiguration": "TWO",
+			"wireType": {
+				"insulation": "PVC",
+				"material": "COPPER"
+			}
+		}
+	],
+	"name": "Test Project"
+}

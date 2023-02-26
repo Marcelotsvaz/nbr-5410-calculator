@@ -9,7 +9,6 @@
 from enum import Enum, auto
 from dataclasses import dataclass
 from types import SimpleNamespace
-from typing import Any
 from typing_extensions import Self	# TODO: Remove on Python 3.11.
 
 from pyjson5 import decode_io
@@ -239,46 +238,6 @@ class Circuit:
 	length: float
 	
 	description: str | None = None
-	
-	
-	@classmethod
-	def fromJson( cls, json: dict[str, Any] ) -> Self:
-		'''
-		Deserialize from JSON.
-		'''
-		
-		# values['loadType'] = values['loadType']
-		# values['referenceMethod'] = values['referenceMethod']
-		# values['wireConfiguration'] = values['wireConfiguration']
-		
-		json['loadType'] = LoadType.POWER
-		json['referenceMethod'] = ReferenceMethod.B1
-		json['wireConfiguration'] = WireConfiguration.TWO
-		json['wireType'] = WireType( WireMaterial.COPPER, WireInsulation.PVC )
-		
-		return Circuit( **json )
-	
-	
-	def toJson( self ) -> dict[str, Any]:
-		'''
-		Serialize into JSON.
-		'''
-		
-		json = {
-			'name': self.name,
-			# 'loadType': self.loadType,
-			'voltage': self.voltage,
-			'phases': self.phases,
-			'grouping': self.grouping,
-			'length': self.length,
-			# 'referenceMethod': self.referenceMethod,
-			# 'wireConfiguration': self.wireConfiguration,
-			# 'wireType': self.wireType,
-			'temperature': self.temperature,
-			'power': self.power,
-		}
-		
-		return json
 	
 	
 	@property
