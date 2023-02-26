@@ -97,3 +97,12 @@ class MainWindow( QMainWindow, UiMainWindow ):
 				file.write( dumps( self.project, strip_properties = True, jdkwargs = jsonOptions ) )
 		except PermissionError as error:
 			QMessageBox.critical( self, 'Error', str( error ) )
+	
+	
+	@Slot()
+	def showAbout( self ) -> None:
+		'''
+		Show about dialog.
+		'''
+		
+		QMessageBox.about( self, 'About NBR 5410 Calculator', 'Version 0.1.0' )

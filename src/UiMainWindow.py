@@ -124,6 +124,7 @@ class Ui_mainWindow(object):
         self.actionSaveAs.triggered.connect(mainWindow.saveProject)
         self.newCircuitButton.clicked.connect(self.circuitsTableView.newCircuit)
         self.actionNew.triggered.connect(mainWindow.newProject)
+        self.actionAbout.triggered.connect(mainWindow.showAbout)
 
         self.tabWidget.setCurrentIndex(1)
 
