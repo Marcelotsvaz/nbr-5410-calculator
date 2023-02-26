@@ -26,7 +26,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		'''
 		
 		super().__init__()
-		self.setupUi( self )
+		self.setupUi( self )	# pyright: ignore [reportUnknownMemberType]
 		
 		self.setProject( Project( 'New project', [] ) )
 	
@@ -37,7 +37,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		'''
 		
 		self.project = project
-		self.circuitsTableView.model().setDatasource( project.circuits )
+		self.circuitsTableView.setDatasource( project.circuits )
 	
 	
 	@Slot()
@@ -55,7 +55,8 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Load a project from a file in JSON format.
 		'''
 		
-		fileName = QFileDialog().getOpenFileName( self, filter = '*.json5' )[0]
+		# pylint: disable-next=line-too-long
+		fileName: str = QFileDialog().getOpenFileName( self, filter = '*.json5' )[0]	# pyright: ignore [reportUnknownMemberType]
 		with open( fileName ) as file:
 			project = Project.fromJson( decode_io( file ) )
 		
@@ -68,6 +69,8 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Save project to a file in JSON format.
 		'''
 		
-		fileName = QFileDialog().getSaveFileName( self, filter = '*.json5' )[0]
+		# pylint: disable-next=line-too-long
+		fileName: str = QFileDialog().getSaveFileName( self, filter = '*.json5' )[0]	# pyright: ignore [reportUnknownMemberType]
 		with open( fileName, 'w' ) as file:
-			file.write( encode( self.project.toJson() ) )
+			json: str = encode( self.project.toJson() )	# pyright: ignore [reportGeneralTypeIssues]
+			file.write( json )

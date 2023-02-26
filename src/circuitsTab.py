@@ -66,17 +66,7 @@ class CircuitModel( QAbstractTableModel ):
 			Field( 'breaker', False ),
 		]
 		
-		self.setDatasource( circuits )
-	
-	
-	def setDatasource( self, circuits: list[Circuit] ) -> None:
-		'''
-		Update model's datasource.
-		'''
-		
-		self.beginResetModel()
 		self.circuits = circuits
-		self.endResetModel()
 	
 	
 	def rowCount( self, parent: ModelIndex = QModelIndex() ) -> int:
@@ -120,7 +110,7 @@ class CircuitModel( QAbstractTableModel ):
 		Return data for table headers.
 		'''
 		
-		if role != Qt.DisplayRole:
+		if role != Qt.ItemDataRole.DisplayRole:
 			return None
 		
 		if orientation == Qt.Orientation.Horizontal:
@@ -134,7 +124,7 @@ class CircuitModel( QAbstractTableModel ):
 		Return data for table cells.
 		'''
 		
-		if ( role == Qt.DisplayRole or role == Qt.EditRole ) and index.isValid():
+		if role in { Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.EditRole } and index.isValid():
 			circuit = self.circuits[index.row()]
 			field = self.fields[index.column()].name
 			
@@ -148,14 +138,15 @@ class CircuitModel( QAbstractTableModel ):
 		Update values in model.
 		'''
 		
-		if role == Qt.EditRole and index.isValid():
+		if role == Qt.ItemDataRole.EditRole and index.isValid():
 			circuit = self.circuits[index.row()]
 			field = self.fields[index.column()].name
 			fieldType = type( getattr( circuit, field ) )
 			
 			try:
 				setattr( circuit, field, fieldType( value ) )
-				self.dataChanged.emit( index, index, role )
+				# pylint: disable-next=line-too-long
+				self.dataChanged.emit( index, index, role )	# pyright: ignore [reportGeneralTypeIssues, reportUnknownMemberType]
 			except ValueError:
 				return False
 			
@@ -217,11 +208,19 @@ class CircuitsTableView( QTableView ):
 	
 	def __init__( self, parent: QWidget | None ) -> None:
 		'''
-		Initialize `CircuitsTableView` with an empty `CircuitModel`.
+		Initialize with empty `CircuitModel`.
 		'''
 		
 		super().__init__( parent )
-		self.setModel( CircuitModel( [] ) )
+		self.setDatasource( [] )
+	
+	
+	def setDatasource( self, circuits: list[Circuit] ) -> None:
+		'''
+		Create new `CircuitModel` from `circuits` and assign it to this view. 
+		'''
+		
+		self.setModel( CircuitModel( circuits ) )
 	
 	
 	@Slot()

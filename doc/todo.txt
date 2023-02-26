@@ -4,7 +4,6 @@ Interpreter env var on pyproject
 __pycache__
 Fail QDialog
 Serialize name
-Overwrite model()
 Qt python properties
 
 
