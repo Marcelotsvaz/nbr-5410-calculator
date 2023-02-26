@@ -19,7 +19,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
 from PySide6.QtWidgets import (QAbstractItemView, QApplication, QGridLayout, QHeaderView,
     QMainWindow, QMenu, QMenuBar, QPushButton,
     QSizePolicy, QSpacerItem, QStatusBar, QTabWidget,
-    QTableView, QWidget)
+    QWidget)
+
+from circuitsTab import CircuitsTableView
 
 class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
@@ -74,7 +76,7 @@ class Ui_mainWindow(object):
 
         self.gridLayout_2.addItem(self.horizontalSpacer, 0, 0, 1, 1)
 
-        self.circuitsTableView = QTableView(self.circuitsTab)
+        self.circuitsTableView = CircuitsTableView(self.circuitsTab)
         self.circuitsTableView.setObjectName(u"circuitsTableView")
         self.circuitsTableView.setAlternatingRowColors(True)
         self.circuitsTableView.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -120,7 +122,8 @@ class Ui_mainWindow(object):
         self.actionSave.triggered.connect(mainWindow.saveProject)
         self.actionOpen.triggered.connect(mainWindow.loadProject)
         self.actionSaveAs.triggered.connect(mainWindow.saveProject)
-        self.newCircuitButton.clicked.connect(mainWindow.addRow)
+        self.newCircuitButton.clicked.connect(self.circuitsTableView.newCircuit)
+        self.actionNew.triggered.connect(mainWindow.newProject)
 
         self.tabWidget.setCurrentIndex(1)
 
@@ -152,7 +155,7 @@ class Ui_mainWindow(object):
 #endif // QT_CONFIG(shortcut)
         self.actionAbout.setText(QCoreApplication.translate("mainWindow", u"About", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.panelTab), QCoreApplication.translate("mainWindow", u"Panel", None))
-        self.newCircuitButton.setText("")
+        self.newCircuitButton.setText(QCoreApplication.translate("mainWindow", u"New circuit", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.circuitsTab), QCoreApplication.translate("mainWindow", u"Circuits", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("mainWindow", u"Conduits", None))
         self.menuFile.setTitle(QCoreApplication.translate("mainWindow", u"File", None))

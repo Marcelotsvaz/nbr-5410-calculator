@@ -8,7 +8,8 @@
 
 from typing import NamedTuple
 
-from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, QPersistentModelIndex
+from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, QPersistentModelIndex, Slot
+from PySide6.QtWidgets import QWidget, QTableView
 
 from installation.circuit import (
 	LoadType,
@@ -68,7 +69,7 @@ class CircuitModel( QAbstractTableModel ):
 		self.setDatasource( circuits )
 	
 	
-	def setDatasource( self, circuits: list[Circuit] ):
+	def setDatasource( self, circuits: list[Circuit] ) -> None:
 		'''
 		Update model's datasource.
 		'''
@@ -116,7 +117,7 @@ class CircuitModel( QAbstractTableModel ):
 	
 	def headerData( self, section: int, orientation: Qt.Orientation, role: int = 0 ) -> str | None:
 		'''
-		Return table headers.
+		Return data for table headers.
 		'''
 		
 		if role != Qt.DisplayRole:
@@ -130,7 +131,7 @@ class CircuitModel( QAbstractTableModel ):
 	
 	def data( self, index: ModelIndex, role: int = 0 ) -> str | None:
 		'''
-		Return data for cells in table.
+		Return data for table cells.
 		'''
 		
 		if ( role == Qt.DisplayRole or role == Qt.EditRole ) and index.isValid():
@@ -144,7 +145,7 @@ class CircuitModel( QAbstractTableModel ):
 	
 	def setData( self, index: ModelIndex, value: float, role: int = 0 ) -> bool:
 		'''
-		Update value in model.
+		Update values in model.
 		'''
 		
 		if role == Qt.EditRole and index.isValid():
@@ -165,7 +166,7 @@ class CircuitModel( QAbstractTableModel ):
 	
 	def insertRows( self, row: int, count: int, parent: ModelIndex = QModelIndex() ) -> bool:
 		'''
-		Create a new Circuits.
+		Create new `Circuit`s.
 		'''
 		
 		self.beginInsertRows( parent, row, row + count - 1 )
@@ -195,7 +196,7 @@ class CircuitModel( QAbstractTableModel ):
 	
 	def removeRows( self, row: int, count: int, parent: ModelIndex = QModelIndex() ) -> bool:
 		'''
-		Delete existing Circuits.
+		Delete existing `Circuit`s.
 		'''
 		
 		self.beginRemoveRows( parent, row, row + count - 1 )
@@ -206,3 +207,28 @@ class CircuitModel( QAbstractTableModel ):
 		self.endRemoveRows()
 		
 		return True
+
+
+
+class CircuitsTableView( QTableView ):
+	'''
+	`QTableView` for `CircuitModel`.
+	'''
+	
+	def __init__( self, parent: QWidget | None ) -> None:
+		'''
+		Initialize `CircuitsTableView` with an empty `CircuitModel`.
+		'''
+		
+		super().__init__( parent )
+		self.setModel( CircuitModel( [] ) )
+	
+	
+	@Slot()
+	def newCircuit( self ) -> None:
+		'''
+		Insert new `Circuit` at end of table.
+		'''
+		
+		circuitCount = self.model().rowCount()
+		self.model().insertRow( circuitCount )

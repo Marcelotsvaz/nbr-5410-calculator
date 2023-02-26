@@ -1,8 +1,11 @@
 Add arguments with units to docstrings
 Use integer keys in json
-Rename cable?
 Interpreter env var on pyproject
 __pycache__
+Fail QDialog
+Serialize name
+Overwrite model()
+Qt python properties
 
 
 
@@ -14,6 +17,7 @@ Electrical:
 	Buried cables
 	Grouping wire layout
 	Bare wire
+	Rename cable?
 
 
 

@@ -6,14 +6,12 @@
 
 
 
-from PySide6.QtWidgets import QMainWindow, QFileDialog
 from PySide6.QtCore import Slot
+from PySide6.QtWidgets import QMainWindow, QFileDialog
 from pyjson5 import decode_io, encode
 
 from UiMainWindow import Ui_mainWindow as UiMainWindow
-
-from models import CircuitModel
-from installation.circuit import Circuit
+from installation.project import Project
 
 
 
@@ -29,8 +27,26 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		
 		super().__init__()
 		self.setupUi( self )
-		self.model = CircuitModel( [] )
-		self.circuitsTableView.setModel( self.model )
+		
+		self.setProject( Project( 'New project', [] ) )
+	
+	
+	def setProject( self, project: Project ):
+		'''
+		Set the current project, cascading changes to all models and views.
+		'''
+		
+		self.project = project
+		self.circuitsTableView.model().setDatasource( project.circuits )
+	
+	
+	@Slot()
+	def newProject( self ) -> None:
+		'''
+		Create a new empty project.
+		'''
+		
+		self.setProject( Project( 'New project', [] ) )
 	
 	
 	@Slot()
@@ -39,14 +55,11 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Load a project from a file in JSON format.
 		'''
 		
-		circuits: list[Circuit] = []
-		
 		fileName = QFileDialog().getOpenFileName( self, filter = '*.json5' )[0]
 		with open( fileName ) as file:
-			for circuit in decode_io( file )['circuits']:
-				circuits.append( Circuit.fromJson( circuit ) )
+			project = Project.fromJson( decode_io( file ) )
 		
-		self.model.setDatasource( circuits )
+		self.setProject( project )
 	
 	
 	@Slot()
@@ -55,10 +68,6 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Save project to a file in JSON format.
 		'''
 		
-		circuitsJson = {
-			'circuits': [ circuit.toJson() for circuit in self.model.circuits ]
-		}
-		
 		fileName = QFileDialog().getSaveFileName( self, filter = '*.json5' )[0]
 		with open( fileName, 'w' ) as file:
-			file.write( encode( circuitsJson ) )
+			file.write( encode( self.project.toJson() ) )
