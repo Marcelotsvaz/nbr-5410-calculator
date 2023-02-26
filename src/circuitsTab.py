@@ -7,6 +7,7 @@
 
 
 from typing import NamedTuple
+from operator import attrgetter
 
 from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, QPersistentModelIndex, Slot
 from PySide6.QtWidgets import QWidget, QTableView
@@ -62,8 +63,8 @@ class CircuitModel( QAbstractTableModel ):
 			Field( 'wireConfiguration', True ),
 			Field( 'wireType', True ),
 			Field( 'length', True ),
-			Field( 'wire', False ),
-			Field( 'breaker', False ),
+			Field( 'wire.area', False ),
+			Field( 'breaker.current', False ),
 		]
 		
 		self.circuits = circuits
@@ -126,9 +127,10 @@ class CircuitModel( QAbstractTableModel ):
 		
 		if role in { Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.EditRole } and index.isValid():
 			circuit = self.circuits[index.row()]
-			field = self.fields[index.column()].name
+			fieldName = self.fields[index.column()].name
+			getter = attrgetter( fieldName )
 			
-			return str( getattr( circuit, field ) )
+			return str( getter( circuit ) )
 		
 		return None
 	
