@@ -8,6 +8,8 @@
 
 from unittest import TestCase
 
+from jsons import load, dump	# pyright: ignore [reportUnknownVariableType]
+
 from .circuit import (
 	LoadType,
 	WireMaterial,
@@ -23,34 +25,37 @@ from .circuit import (
 
 
 
-class CircuitTests( TestCase ):
+class BaseCircuitTests( TestCase ):
 	'''
-	Tests for `Circuit` class.
+	Base class for all `Circuit` tests.
 	'''
 	
 	def setUp( self ) -> None:
 		'''
-		Base fixture for all `Circuit` tests.
+		Setup for all tests.
 		'''
 		
 		self.wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
-		
 		self.circuit = Circuit(
-			name				= 'circuit',
-			loadType			= LoadType.POWER,
-			voltage				= 100,
-			phases				= 1,
 			grouping			= 1,
 			length				= 10.0,
+			loadType			= LoadType.POWER,
+			name				= 'Test Circuit',
+			phases				= 1,
+			power				= 5000.0,
 			referenceMethod		= ReferenceMethod.B1,
+			temperature			= 30,
+			voltage				= 100,
 			wireConfiguration	= WireConfiguration.TWO,
 			wireType			= self.wireType,
-			temperature			= 30,
-			power				= 5000.0,
 		)
-		
-		return super().setUp()
-	
+
+
+
+class CircuitBasicTests( BaseCircuitTests ):
+	'''
+	Basic tests for `Circuit` class.
+	'''
 	
 	def testCurrent( self ) -> None:
 		'''
@@ -133,3 +138,53 @@ class CircuitTests( TestCase ):
 		
 		with self.assertRaises( ProjectError ):
 			_ = self.circuit.correctedCurrent
+
+
+
+class CircuitSerializationTests( BaseCircuitTests ):
+	'''
+	Tests for `Circuit` serialization with jsons.
+	'''
+	
+	def setUp( self ) -> None:
+		'''
+		Setup for all tests.
+		'''
+		
+		super().setUp()
+		
+		self.circuitJsonDict = {
+			'description': None,
+			'grouping': 1,
+			'length': 10.0,
+			'loadType': 'POWER',
+			'name': 'Test Circuit',
+			'phases': 1,
+			'power': 5000.0,
+			'referenceMethod': 'B1',
+			'temperature': 30,
+			'voltage': 100,
+			'wireConfiguration': 'TWO',
+			'wireType': {
+				'insulation': 'PVC',
+				'material': 'COPPER'
+			},
+		}
+	
+	
+	def testSerializeCircuit( self ) -> None:
+		'''
+		Test serialization with jsons.dump.
+		'''
+		
+		circuitJsonDict = dump( self.circuit, strip_properties = True )
+		self.assertEqual( circuitJsonDict, self.circuitJsonDict )
+	
+	
+	def testDeserializeCircuit( self ) -> None:
+		'''
+		Test deserialization with jsons.load.
+		'''
+		
+		circuit = load( self.circuitJsonDict, Circuit )
+		self.assertEqual( circuit, self.circuit )
