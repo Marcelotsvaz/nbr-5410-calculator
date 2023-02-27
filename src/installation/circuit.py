@@ -178,7 +178,7 @@ class Wire:
 	
 	type: WireType
 	section: float
-	capacity: float
+	uncorrectedCapacity: float
 	correctionFactor: float = 1.0
 	
 	
@@ -194,22 +194,26 @@ class Wire:
 	
 	
 	@property
-	def correctedCapacity( self ) -> float:
+	def capacity( self ) -> float:
 		'''
 		Current capacity corrected for temperature and grouping.
 		'''
 		
-		return self.capacity * self.correctionFactor
+		return self.uncorrectedCapacity * self.correctionFactor
 
 
 
+@dataclass
 class Breaker:
 	'''
 	Circuit breaker of a specific capacity.
 	'''
 	
+	current: int
+	
+	
 	@classmethod
-	def getBreaker( cls, current: float ) -> Self:
+	def getBreaker( cls, current: int ) -> Self:
 		'''
 		Return a suitable circuit breaker for a given current.
 		'''
@@ -217,16 +221,8 @@ class Breaker:
 		return Breaker( current )
 	
 	
-	def __init__( self, current: float ) -> None:
-		self.current = current
-	
-	
 	def __str__( self ) -> str:
-		return f'{self.current:.1f}A Breaker'
-	
-	
-	def __eq__( self, other: Self ) -> bool:
-		return self.current == other.current
+		return f'{self.current}A Breaker'
 
 
 

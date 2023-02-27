@@ -159,8 +159,8 @@ class CircuitWireTests( BaseCircuitTests ):
 		Wire capacity given reference method and wire configuration.
 		'''
 		
+		self.assertEqual( self.circuit.wire.uncorrectedCapacity, 57.0 )
 		self.assertEqual( self.circuit.wire.capacity, 57.0 )
-		self.assertEqual( self.circuit.wire.correctedCapacity, 57.0 )
 	
 	
 	def testCorrectedCapacity( self ) -> None:
@@ -170,8 +170,8 @@ class CircuitWireTests( BaseCircuitTests ):
 		
 		self.circuit.grouping = 2
 		self.circuit.temperature = 40
-		self.assertEqual( self.circuit.wire.capacity, 76.0 )
-		self.assertAlmostEqual( self.circuit.wire.correctedCapacity, 52.896000, 6 )
+		self.assertEqual( self.circuit.wire.uncorrectedCapacity, 76.0 )
+		self.assertAlmostEqual( self.circuit.wire.capacity, 52.896000, 6 )
 
 
 
@@ -185,7 +185,7 @@ class CircuitBreakerTests( BaseCircuitTests ):
 		Test if proper breaker is returned for the circuit.
 		'''
 		
-		self.assertEqual( self.circuit.breaker.current, 50.0 )
+		self.assertEqual( self.circuit.breaker.current, 50 )
 	
 	
 	def testCorrectedBreaker( self ) -> None:
@@ -195,7 +195,7 @@ class CircuitBreakerTests( BaseCircuitTests ):
 		
 		self.circuit.grouping = 2
 		self.circuit.temperature = 40
-		self.assertEqual( self.circuit.breaker.current, 50.0 )
+		self.assertEqual( self.circuit.breaker.current, 50 )
 	
 	
 	def testBreakerWhenWireSectionByBreaker( self ) -> None:
@@ -204,7 +204,7 @@ class CircuitBreakerTests( BaseCircuitTests ):
 		'''
 		
 		self.circuit.power = 5500
-		self.assertEqual( self.circuit.breaker.current, 63.0 )
+		self.assertEqual( self.circuit.breaker.current, 63 )
 
 
 

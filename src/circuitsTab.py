@@ -36,6 +36,8 @@ class Field( NamedTuple ):
 	
 	name: str
 	editable: bool
+	format: str = ''
+	suffix: str = ''
 
 
 
@@ -53,18 +55,20 @@ class CircuitModel( QAbstractTableModel ):
 		
 		self.fields = [
 			Field( 'name', True ),
-			Field( 'power', True ),
-			Field( 'loadType', True ),
-			Field( 'voltage', True ),
+			Field( 'power', True, format = ',', suffix = ' VA' ),
+			Field( 'loadType.value', True ),
+			Field( 'voltage', True, format = ',', suffix = ' V' ),
 			Field( 'phases', True ),
 			Field( 'grouping', True ),
-			Field( 'temperature', True ),
-			Field( 'referenceMethod', True ),
-			Field( 'wireConfiguration', True ),
+			Field( 'temperature', True, suffix = '°C' ),
+			Field( 'referenceMethod.name', True ),
+			Field( 'wireConfiguration.value', True ),
 			Field( 'wireType', True ),
-			Field( 'length', True ),
-			Field( 'wire.section', False ),
-			Field( 'breaker.current', False ),
+			Field( 'length', True, format = ',', suffix = ' m' ),
+			Field( 'current', False, format = ',.1f', suffix = ' A' ),
+			Field( 'wire.capacity', False, format = ',.1f', suffix = ' A' ),
+			Field( 'wire.section', False, format = ',', suffix = ' mm²' ),
+			Field( 'breaker.current', False, suffix = ' A' ),
 		]
 		
 		self.circuits = circuits
@@ -127,10 +131,14 @@ class CircuitModel( QAbstractTableModel ):
 		
 		if role in { Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.EditRole } and index.isValid():
 			circuit = self.circuits[index.row()]
-			fieldName = self.fields[index.column()].name
-			getter = attrgetter( fieldName )
+			fieldGetter = attrgetter( self.fields[index.column()].name )
+			fieldFormat = self.fields[index.column()].format
+			fieldSuffix = self.fields[index.column()].suffix
 			
-			return str( getter( circuit ) )
+			if role == Qt.ItemDataRole.EditRole:
+				return str( fieldGetter( circuit ) )
+			
+			return f'{fieldGetter( circuit ):{fieldFormat}}{fieldSuffix}'
 		
 		return None
 	
