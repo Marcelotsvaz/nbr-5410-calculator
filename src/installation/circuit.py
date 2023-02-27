@@ -8,7 +8,6 @@
 
 from enum import Enum, auto
 from dataclasses import dataclass
-from types import SimpleNamespace
 from typing_extensions import Self	# TODO: Remove on Python 3.11.
 
 from pyjson5 import decode_io
@@ -97,19 +96,30 @@ class WireType:
 	
 	
 	def __str__( self ) -> str:
-		return f'{self.insulation.name} {self.material.name} wire'
+		return f'{self.insulation.value}-insulated {self.material.value} wire'
 	
 	
-	def getWireCapacities( self ) -> SimpleNamespace:
+	def getWires(
+		self,
+		referenceMethod: ReferenceMethod,
+		wireConfiguration: WireConfiguration,
+		correctionFactor: float,
+	) -> list['Wire']:
 		'''
-		Get the current capacity for all sizes of this wire type for all reference methods and
-		wire configurations.
+		Get all wire sizes for a given reference method and wire configuration.
 		
 		See NBR 5410 tables 36~39.
 		'''
 		
 		with open( f'data/wireTypes/{self.material.value}-{self.insulation.value}.json5' ) as file:
-			return SimpleNamespace( **decode_io( file ) )
+			jsonData = decode_io( file )
+			sections = jsonData['wireSections']
+			capacities = jsonData['referenceMethods'][referenceMethod.name][wireConfiguration.value]
+		
+		return [
+			Wire( self, section, capacity, correctionFactor )
+			for section, capacity in zip( sections, capacities )
+		]
 
 
 
@@ -210,19 +220,30 @@ class Breaker:
 	'''
 	
 	current: int
+	curve: str
 	
 	
 	@classmethod
-	def getBreaker( cls, current: int ) -> Self:
+	def getBreakers( cls, curve: str ) -> list[Self]:
 		'''
-		Return a suitable circuit breaker for a given current.
+		Return breakers by curve.
 		'''
 		
-		return Breaker( current )
+		with open( 'data/breakers.json5' ) as file:
+			breakers = decode_io( file )
+		
+		return [ Breaker( current, curve ) for current in breakers[curve] ]
 	
 	
 	def __str__( self ) -> str:
-		return f'{self.current}A Breaker'
+		return f'{self.curve}{self.current} Breaker'
+	
+	
+	def __gt__( self, other: Self ) -> bool:
+		if self.curve != other.curve:
+			return NotImplemented
+		
+		return self.current > other.current
 
 
 
@@ -303,49 +324,55 @@ class Circuit:
 		Calculate wire and breaker for this circuit.
 		'''
 		
-		allCapacities = self.wireType.getWireCapacities()
-		wireSections = allCapacities.wireSections
-		wireCapacities = allCapacities.referenceMethods[self.referenceMethod.name][self.wireConfiguration.value]
 		wireByCriteria: dict[str, Wire] = {}
+		allWires = self.wireType.getWires(
+			self.referenceMethod,
+			self.wireConfiguration,
+			self.correctionFactor,
+		)
 		
 		
-		# Minimum wire section.
-		if self.loadType == LoadType.POWER:
-			minimumSection = 2.5
-		elif self.loadType == LoadType.LIGHTING:
+		# Breaker
+		breaker = min( filter(
+			lambda breaker: breaker.current >= self.current,
+			Breaker.getBreakers( 'C' ),
+		) )
+		if not breaker:
+			raise ProjectError( 'No suitable breaker found.' )
+		
+		
+		# Wire section by minimum section.
+		if self.loadType == LoadType.LIGHTING:
 			minimumSection = 1.5
 		else:
-			raise ProjectError( 'Invalid load type.' )
+			minimumSection = 2.5
 		
-		for index, section in enumerate( wireSections ):
-			if section >= minimumSection:
-				wireByCriteria['minimumSection'] = Wire(
-					self.wireType,
-					section,
-					wireCapacities[index],
-					self.correctionFactor,
-				)
-				break
-		else:
-			raise ProjectError( 'Available wires are not thick enough.' )
+		wireByCriteria['minimumSection'] = min( filter(
+			lambda wire: wire.section >= minimumSection,
+			allWires,
+		) )
 		
 		
-		# Current capacity.
-		for index, capacity in enumerate( wireCapacities ):
-			if capacity >= self.correctedCurrent:
-				wireByCriteria['currentCapacity'] = Wire(
-					self.wireType,
-					wireSections[index],
-					capacity,
-					self.correctionFactor,
-				)
-				break
-		else:
-			raise ProjectError( 'Available wires are not thick enough.' )
+		# Wire section by current capacity.
+		wireByCriteria['currentCapacity'] = min( filter(
+			lambda wire: wire.capacity >= self.current,
+			allWires,
+		) )
+		
+		
+		# Wire section by breaker.
+		wireByCriteria['breaker'] = min( filter(
+			lambda wire: wire.capacity >= breaker.current,
+			allWires,
+		) )
 		
 		
 		# Select wire with largest section.
-		return max( wireByCriteria.values() ), Breaker.getBreaker( self.current )
+		wire = max( wireByCriteria.values() )
+		if not wire:
+			raise ProjectError( 'No suitable wire found.' )
+		
+		return wire, breaker
 
 
 

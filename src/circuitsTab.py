@@ -66,9 +66,9 @@ class CircuitModel( QAbstractTableModel ):
 			Field( 'wireType', True ),
 			Field( 'length', True, format = ',', suffix = ' m' ),
 			Field( 'current', False, format = ',.1f', suffix = ' A' ),
+			Field( 'breaker.current', False, suffix = ' A' ),
 			Field( 'wire.capacity', False, format = ',.1f', suffix = ' A' ),
 			Field( 'wire.section', False, format = ',', suffix = ' mm²' ),
-			Field( 'breaker.current', False, suffix = ' A' ),
 		]
 		
 		self.circuits = circuits
