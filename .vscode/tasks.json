@@ -21,6 +21,26 @@
 			},
 			"presentation": { "close": true },
 			"problemMatcher": [],
-		}
+		},
+		{
+			"label": "Update Translations",
+			"type": "shell",
+			"command": "deployment/env/bin/pyside6-lupdate $(find src -regextype posix-extended -regex '.*\\.(py|ui)$') -ts share/translations/app_{en_US,pt_BR}.ts",
+			"icon": {
+				"id": "symbol-type-parameter",
+				"color": "terminal.ansiGreen",
+			},
+			"problemMatcher": [],
+		},
+		{
+			"label": "Compile Translations",
+			"type": "shell",
+			"command": "deployment/env/bin/pyside6-lrelease share/translations/app_{en_US,pt_BR}.ts",
+			"icon": {
+				"id": "symbol-type-parameter",
+				"color": "terminal.ansiGreen",
+			},
+			"problemMatcher": [],
+		},
 	]
 }
