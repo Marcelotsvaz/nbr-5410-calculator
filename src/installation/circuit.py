@@ -100,7 +100,7 @@ class WireType:
 		return f'{self.insulation.name} {self.material.name} wire'
 	
 	
-	def getWireCapacities( self ):
+	def getWireCapacities( self ) -> SimpleNamespace:
 		'''
 		Get the current capacity for all sizes of this wire type for all reference methods and
 		wire configurations.
@@ -153,7 +153,7 @@ class GroupingCorrectionFactor:
 	'''
 	
 	@classmethod
-	def forGrouping( cls, grouping: int ):
+	def forGrouping( cls, grouping: int ) -> float:
 		'''
 		Return the correction factor for a given circuit grouping.
 		'''
@@ -194,7 +194,7 @@ class Wire:
 	
 	
 	@property
-	def correctedCapacity( self ):
+	def correctedCapacity( self ) -> float:
 		'''
 		Current capacity corrected for temperature and grouping.
 		'''
@@ -209,7 +209,7 @@ class Breaker:
 	'''
 	
 	@classmethod
-	def getBreaker( cls, current: float ):
+	def getBreaker( cls, current: float ) -> Self:
 		'''
 		Return a suitable circuit breaker for a given current.
 		'''
@@ -238,7 +238,7 @@ class Circuit:
 	
 	name: str
 	
-	power: float
+	power: int
 	loadType: LoadType
 	voltage: int
 	phases: int
@@ -253,7 +253,7 @@ class Circuit:
 	
 	
 	@property
-	def current( self ):
+	def current( self ) -> float:
 		'''
 		Project current.
 		'''
@@ -262,7 +262,7 @@ class Circuit:
 	
 	
 	@property
-	def correctedCurrent( self ):
+	def correctedCurrent( self ) -> float:
 		'''
 		Project current corrected for temperature and grouping.
 		Used only for calculating wire section by current capacity.
@@ -272,7 +272,7 @@ class Circuit:
 	
 	
 	@property
-	def correctionFactor( self ):
+	def correctionFactor( self ) -> float:
 		'''
 		Correction factor for temperature and grouping.
 		'''

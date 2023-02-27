@@ -176,7 +176,7 @@ class CircuitModel( QAbstractTableModel ):
 			wireConfiguration	= WireConfiguration.TWO,
 			wireType			= wireType,
 			temperature			= 30,
-			power				= 1000.0,
+			power				= 1000,
 		)
 		
 		for index in range( row, row + count ):

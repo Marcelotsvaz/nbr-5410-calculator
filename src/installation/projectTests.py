@@ -51,7 +51,7 @@ class ProjectTests( TestCase ):
 			wireConfiguration	= WireConfiguration.TWO,
 			wireType			= wireType,
 			temperature			= 30,
-			power				= 5000.0,
+			power				= 5000,
 		)
 		
 		Project( 'Test Project', [ circuit ] )
