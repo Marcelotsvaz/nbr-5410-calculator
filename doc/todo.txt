@@ -4,6 +4,9 @@ Interpreter env var on pyproject
 __pycache__
 Qt python properties
 Translate
+Refactor tests docstrings
+Data float
+Test section reason
 
 
 

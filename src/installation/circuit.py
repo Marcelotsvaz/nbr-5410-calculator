@@ -172,22 +172,34 @@ class GroupingCorrectionFactor:
 @dataclass
 class Wire:
 	'''
-	WireType of a specific size.
+	WireType of a specific size with capacity already calculated based on reference method,
+	configuration, temperature and grouping.
 	'''
 	
 	type: WireType
-	area: float
+	section: float
+	capacity: float
+	correctionFactor: float = 1.0
 	
 	
 	def __str__( self ) -> str:
-		return f'{self.type}, {self.area:.2f}mm²'
+		return f'{self.type}, {self.section:.2f}mm²'
 	
 	
 	def __gt__( self, other: Self ) -> bool:
-		if self.type != other.type:
+		if self.type != other.type or self.correctionFactor != other.correctionFactor:
 			return NotImplemented
 		
-		return self.area > other.area
+		return self.capacity > other.capacity
+	
+	
+	@property
+	def correctedCapacity( self ):
+		'''
+		Current capacity corrected for temperature and grouping.
+		'''
+		
+		return self.capacity * self.correctionFactor
 
 
 
@@ -256,10 +268,19 @@ class Circuit:
 		Used only for calculating wire section by current capacity.
 		'''
 		
+		return self.current / self.correctionFactor
+	
+	
+	@property
+	def correctionFactor( self ):
+		'''
+		Correction factor for temperature and grouping.
+		'''
+		
 		temperatureFactor = TemperatureCorrectionFactor.forTemperature( self.temperature )
 		groupingFactor = GroupingCorrectionFactor.forGrouping( self.grouping )
 		
-		return self.current / temperatureFactor / groupingFactor
+		return temperatureFactor * groupingFactor
 	
 	
 	@property
@@ -269,7 +290,26 @@ class Circuit:
 		current.
 		'''
 		
-		wireSections = self.wireType.getWireCapacities()
+		return self.calculate()[0]
+	
+	
+	@property
+	def breaker( self ) -> Breaker:
+		'''
+		Suitable breaker for this circuit.
+		'''
+		
+		return self.calculate()[1]
+	
+	
+	def calculate( self ) -> tuple[Wire, Breaker]:
+		'''
+		Calculate wire and breaker for this circuit.
+		'''
+		
+		allCapacities = self.wireType.getWireCapacities()
+		wireSections = allCapacities.wireSections
+		wireCapacities = allCapacities.referenceMethods[self.referenceMethod.name][self.wireConfiguration.value]
 		wireByCriteria: dict[str, Wire] = {}
 		
 		
@@ -279,38 +319,37 @@ class Circuit:
 		elif self.loadType == LoadType.LIGHTING:
 			minimumSection = 1.5
 		else:
-			raise ProjectError( 'Invalid load  type.' )
+			raise ProjectError( 'Invalid load type.' )
 		
-		for section in wireSections.wireSections:
+		for index, section in enumerate( wireSections ):
 			if section >= minimumSection:
-				wireByCriteria['minimumSection'] = Wire( self.wireType, section )
+				wireByCriteria['minimumSection'] = Wire(
+					self.wireType,
+					section,
+					wireCapacities[index],
+					self.correctionFactor,
+				)
 				break
 		else:
 			raise ProjectError( 'Available wires are not thick enough.' )
 		
 		
-		# Currente capacity.
-		for index, capacity in enumerate(
-			wireSections.referenceMethods[self.referenceMethod.name][self.wireConfiguration.value]
-		):
+		# Current capacity.
+		for index, capacity in enumerate( wireCapacities ):
 			if capacity >= self.correctedCurrent:
-				wireByCriteria['currentCapacity'] = Wire( self.wireType, wireSections.wireSections[index] )
+				wireByCriteria['currentCapacity'] = Wire(
+					self.wireType,
+					wireSections[index],
+					capacity,
+					self.correctionFactor,
+				)
 				break
 		else:
 			raise ProjectError( 'Available wires are not thick enough.' )
 		
 		
 		# Select wire with largest section.
-		return max( wireByCriteria.values() )
-	
-	
-	@property
-	def breaker( self ):
-		'''
-		Suitable breaker for this circuit.
-		'''
-		
-		return Breaker.getBreaker( self.current )
+		return max( wireByCriteria.values() ), Breaker.getBreaker( self.current )
 
 
 

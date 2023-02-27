@@ -63,7 +63,7 @@ class CircuitModel( QAbstractTableModel ):
 			Field( 'wireConfiguration', True ),
 			Field( 'wireType', True ),
 			Field( 'length', True ),
-			Field( 'wire.area', False ),
+			Field( 'wire.section', False ),
 			Field( 'breaker.current', False ),
 		]
 		

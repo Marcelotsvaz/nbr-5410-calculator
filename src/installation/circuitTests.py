@@ -18,8 +18,6 @@ from .circuit import (
 	ReferenceMethod,
 	WireConfiguration,
 	Circuit,
-	Wire,
-	Breaker,
 	ProjectError,
 )
 
@@ -73,32 +71,6 @@ class CircuitBasicTests( BaseCircuitTests ):
 		self.assertEqual( self.circuit.correctedCurrent, 50.0 )
 	
 	
-	def testWire( self ) -> None:
-		'''
-		Test if proper wire section is returned for the specified reference method.
-		'''
-		
-		self.assertEqual( self.circuit.wire, Wire( self.wireType, 10.0 ) )
-	
-	
-	def testMinimumWireSection( self ) -> None:
-		'''
-		Test if minimum wire section is respected.
-		'''
-		
-		self.circuit.power = 1000
-		
-		self.assertEqual( self.circuit.wire, Wire( self.wireType, 2.5 ) )
-	
-	
-	def testBreaker( self ) -> None:
-		'''
-		Test if proper breaker is returned for the circuit.
-		'''
-		
-		self.assertEqual( self.circuit.breaker, Breaker( 50 ) )
-	
-	
 	def testTemperatureCorrection( self ) -> None:
 		'''
 		Test temperature correction with round value.
@@ -138,6 +110,101 @@ class CircuitBasicTests( BaseCircuitTests ):
 		
 		with self.assertRaises( ProjectError ):
 			_ = self.circuit.correctedCurrent
+
+
+
+class CircuitWireTests( BaseCircuitTests ):
+	'''
+	Wire related tests for `Circuit` class.
+	'''
+	
+	def testSectionByMinimumSection( self ) -> None:
+		'''
+		Minimum wire section given load type.
+		'''
+		
+		self.circuit.power = 1000
+		self.assertEqual( self.circuit.wire.section, 2.5 )
+	
+	
+	def testSectionByCapacity( self ) -> None:
+		'''
+		Wire section given reference method and wire configuration.
+		'''
+		
+		self.assertEqual( self.circuit.wire.section, 10.0 )
+	
+	
+	def testSectionByCorrectedCapacity( self ) -> None:
+		'''
+		Wire section with capacity corrected for temperature and grouping.
+		'''
+		
+		self.circuit.grouping = 2
+		self.circuit.temperature = 40
+		self.assertEqual( self.circuit.wire.section, 16.0 )
+	
+	
+	def testSectionByBreaker( self ) -> None:
+		'''
+		Wire section forced larger due to available breaker capacities.
+		'''
+		
+		self.circuit.power = 5500
+		self.assertEqual( self.circuit.wire.section, 16.0 )
+	
+	
+	def testCapacity( self ) -> None:
+		'''
+		Wire capacity given reference method and wire configuration.
+		'''
+		
+		self.assertEqual( self.circuit.wire.capacity, 57.0 )
+		self.assertEqual( self.circuit.wire.correctedCapacity, 57.0 )
+	
+	
+	def testCorrectedCapacity( self ) -> None:
+		'''
+		Wire capacity corrected for temperature and grouping.
+		'''
+		
+		self.circuit.grouping = 2
+		self.circuit.temperature = 40
+		self.assertEqual( self.circuit.wire.capacity, 76.0 )
+		self.assertAlmostEqual( self.circuit.wire.correctedCapacity, 52.896000, 6 )
+
+
+
+class CircuitBreakerTests( BaseCircuitTests ):
+	'''
+	Breaker related tests for `Circuit` class.
+	'''
+	
+	def testBreaker( self ) -> None:
+		'''
+		Test if proper breaker is returned for the circuit.
+		'''
+		
+		self.assertEqual( self.circuit.breaker.current, 50.0 )
+	
+	
+	def testCorrectedBreaker( self ) -> None:
+		'''
+		Test if proper breaker is returned for the circuit when using correction factors.
+		'''
+		
+		self.circuit.grouping = 2
+		self.circuit.temperature = 40
+		self.assertEqual( self.circuit.breaker.current, 50.0 )
+	
+	
+	def testBreakerWhenWireSectionByBreaker( self ) -> None:
+		'''
+		Test breaker when wire section is determined by available breaker.
+		'''
+		
+		self.circuit.power = 5500
+		self.assertEqual( self.circuit.breaker.current, 63.0 )
 
 
 
