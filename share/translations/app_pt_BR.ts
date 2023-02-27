@@ -2,6 +2,89 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="pt_BR">
 <context>
+    <name>CircuitModel</name>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="58"/>
+        <source>Name</source>
+        <translation>Nome</translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="59"/>
+        <source>Power</source>
+        <translation>Potência</translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="60"/>
+        <source>Load Type</source>
+        <translation>Tipo de Carga</translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="61"/>
+        <source>Voltage</source>
+        <translation>Tensão</translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="62"/>
+        <source>Phases</source>
+        <translation>Fases</translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="63"/>
+        <source>Grouping</source>
+        <translation>Agrupamento</translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="64"/>
+        <source>Temperature</source>
+        <translation>Temperatura</translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="65"/>
+        <source>Ref. Method</source>
+        <translation>Método de Ref.</translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="66"/>
+        <source>Configuration</source>
+        <translation>Configuração</translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="67"/>
+        <source>Wire Type</source>
+        <translation>Tipo de Fio</translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="68"/>
+        <source>Length</source>
+        <translation>Comprimento</translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="69"/>
+        <source>Current</source>
+        <translation>Corrente</translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="70"/>
+        <source>Breaker</source>
+        <translation>Disjuntor</translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="71"/>
+        <source>Wire Capacity</source>
+        <translation>Capacidade do Fio</translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="72"/>
+        <source>Wire Section</source>
+        <translation>Seção do Fio</translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="178"/>
+        <source>New Circuit</source>
+        <translation>Novo Circuito</translation>
+    </message>
+</context>
+<context>
     <name>mainWindow</name>
     <message>
         <location filename="../../src/ui/mainWindow.ui" line="15"/>

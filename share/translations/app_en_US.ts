@@ -2,6 +2,89 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="en_US">
 <context>
+    <name>CircuitModel</name>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="58"/>
+        <source>Name</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="59"/>
+        <source>Power</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="60"/>
+        <source>Load Type</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="61"/>
+        <source>Voltage</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="62"/>
+        <source>Phases</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="63"/>
+        <source>Grouping</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="64"/>
+        <source>Temperature</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="65"/>
+        <source>Ref. Method</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="66"/>
+        <source>Configuration</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="67"/>
+        <source>Wire Type</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="68"/>
+        <source>Length</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="69"/>
+        <source>Current</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="70"/>
+        <source>Breaker</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="71"/>
+        <source>Wire Capacity</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="72"/>
+        <source>Wire Section</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/circuitsTab.py" line="178"/>
+        <source>New Circuit</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>mainWindow</name>
     <message>
         <location filename="../../src/ui/mainWindow.ui" line="15"/>

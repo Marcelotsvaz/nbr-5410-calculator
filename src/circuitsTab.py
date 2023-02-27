@@ -34,6 +34,7 @@ class Field( NamedTuple ):
 	Field mapping for models.
 	'''
 	
+	label: str
 	name: str
 	editable: bool
 	format: str = ''
@@ -54,21 +55,21 @@ class CircuitModel( QAbstractTableModel ):
 		super().__init__()
 		
 		self.fields = [
-			Field( 'name', True ),
-			Field( 'power', True, format = ',', suffix = ' VA' ),
-			Field( 'loadType.value', True ),
-			Field( 'voltage', True, format = ',', suffix = ' V' ),
-			Field( 'phases', True ),
-			Field( 'grouping', True ),
-			Field( 'temperature', True, suffix = '°C' ),
-			Field( 'referenceMethod.name', True ),
-			Field( 'wireConfiguration.value', True ),
-			Field( 'wireType', True ),
-			Field( 'length', True, format = ',', suffix = ' m' ),
-			Field( 'current', False, format = ',.1f', suffix = ' A' ),
-			Field( 'breaker.current', False, suffix = ' A' ),
-			Field( 'wire.capacity', False, format = ',.1f', suffix = ' A' ),
-			Field( 'wire.section', False, format = ',', suffix = ' mm²' ),
+			Field( self.tr('Name'), 'name', True ),
+			Field( self.tr('Power'), 'power', True, format = ',', suffix = ' VA' ),
+			Field( self.tr('Load Type'), 'loadType.value', True ),
+			Field( self.tr('Voltage'), 'voltage', True, format = ',', suffix = ' V' ),
+			Field( self.tr('Phases'), 'phases', True ),
+			Field( self.tr('Grouping'), 'grouping', True ),
+			Field( self.tr('Temperature'), 'temperature', True, suffix = '°C' ),
+			Field( self.tr('Ref. Method'), 'referenceMethod.name', True ),
+			Field( self.tr('Configuration'), 'wireConfiguration.value', True ),
+			Field( self.tr('Wire Type'), 'wireType', True ),
+			Field( self.tr('Length'), 'length', True, format = ',', suffix = ' m' ),
+			Field( self.tr('Current'), 'current', False, format = ',.1f', suffix = ' A' ),
+			Field( self.tr('Breaker'), 'breaker.current', False, suffix = ' A' ),
+			Field( self.tr('Wire Capacity'), 'wire.capacity', False, format = ',.1f', suffix = ' A' ),
+			Field( self.tr('Wire Section'), 'wire.section', False, format = ',', suffix = ' mm²' ),
 		]
 		
 		self.circuits = circuits
@@ -119,7 +120,7 @@ class CircuitModel( QAbstractTableModel ):
 			return None
 		
 		if orientation == Qt.Orientation.Horizontal:
-			return self.fields[section].name
+			return self.fields[section].label
 		
 		return f'{section + 1}'
 	
@@ -174,7 +175,7 @@ class CircuitModel( QAbstractTableModel ):
 		
 		wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
 		circuit = Circuit(
-			name				= 'New Circuit',
+			name				= self.tr('New Circuit'),
 			loadType			= LoadType.POWER,
 			voltage				= 127,
 			phases				= 1,
