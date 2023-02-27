@@ -111,7 +111,7 @@ class WireType:
 		See NBR 5410 tables 36~39.
 		'''
 		
-		with open( f'data/wireTypes/{self.material.value}-{self.insulation.value}.json5' ) as file:
+		with open( f'share/data/wireTypes/{self.material.value}-{self.insulation.value}.json5' ) as file:
 			jsonData = decode_io( file )
 			sections = jsonData['wireSections']
 			capacities = jsonData['referenceMethods'][referenceMethod.name][wireConfiguration.value]
@@ -136,7 +136,7 @@ class TemperatureCorrectionFactor:
 		Return the interpolated correction factor for a given temperature.
 		'''
 		
-		with open( 'data/temperatureCorrectionFactor.json5' ) as file:
+		with open( 'share/data/temperatureCorrectionFactor.json5' ) as file:
 			factors = decode_io( file )
 		
 		if temperature <= factors[0]['temperature']:
@@ -168,7 +168,7 @@ class GroupingCorrectionFactor:
 		Return the correction factor for a given circuit grouping.
 		'''
 		
-		with open( 'data/groupingCorrectionFactor.json5' ) as file:
+		with open( 'share/data/groupingCorrectionFactor.json5' ) as file:
 			factors = decode_io( file )
 		
 		last = max( factors.keys() )
@@ -229,7 +229,7 @@ class Breaker:
 		Return breakers by curve.
 		'''
 		
-		with open( 'data/breakers.json5' ) as file:
+		with open( 'share/data/breakers.json5' ) as file:
 			breakers = decode_io( file )
 		
 		return [ Breaker( current, curve ) for current in breakers[curve] ]
