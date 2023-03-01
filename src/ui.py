@@ -8,7 +8,7 @@
 
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QMainWindow, QFileDialog, QMessageBox
-from jsons import loads, dumps	# pyright: ignore [reportUnknownVariableType]
+from jsons import loads, dumps
 
 from UiMainWindow import Ui_mainWindow as UiMainWindow
 from installation.project import Project

@@ -8,7 +8,7 @@
 
 from unittest import TestCase
 
-from jsons import load, dump	# pyright: ignore [reportUnknownVariableType]
+from jsons import load, dump
 
 from .circuit import (
 	LoadType,

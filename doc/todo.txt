@@ -7,6 +7,9 @@ Refactor tests docstrings
 Test section reason
 Action &
 Fix parents
+Ignore translations
+Validate edit
+REsize
 
 
 

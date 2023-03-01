@@ -8,14 +8,16 @@
 
 [tool.pyright]
 typeCheckingMode = 'strict'
-ignore = [ 'src/UiMainWindow.py' ]	# Generated file.
+stubPath = 'src/typings/'
+ignore = [ 'src/typings/', 'src/UiMainWindow.py' ]
+reportUnnecessaryTypeIgnoreComment = true
 
 
 
 [tool.pylint]
 	[tool.pylint.main]
 	init-hook = 'import sys; sys.path.append( "deployment/env/lib/python3.10/site-packages" )'
-	ignore = 'UiMainWindow.py'	# Generated file.
+	ignore-paths = [ '.*/src/typings/.*', '.*/src/UiMainWindow.py' ]
 	
 	[tool.pylint.format]
 	indent-string = '	'
@@ -26,7 +28,6 @@ ignore = [ 'src/UiMainWindow.py' ]	# Generated file.
 		'fixme',
 		'trailing-whitespace',
 		'missing-final-newline',
-		'missing-module-docstring',
 		'logging-fstring-interpolation',
 		'too-many-instance-attributes',
 		'unspecified-encoding',
