@@ -232,6 +232,7 @@ class CircuitsTableView( QTableView ):
 		'''
 		
 		self.setModel( CircuitModel( circuits ) )
+		self.resizeColumnsToContents()
 	
 	
 	@Slot()
