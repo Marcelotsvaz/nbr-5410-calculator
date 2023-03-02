@@ -7,7 +7,7 @@
 
 
 from PySide6.QtCore import Slot
-from PySide6.QtWidgets import QMainWindow, QFileDialog, QMessageBox
+from PySide6.QtWidgets import QWidget, QMainWindow, QFileDialog, QMessageBox
 from jsons import loads, dumps
 
 from UiMainWindow import Ui_mainWindow as UiMainWindow
@@ -20,15 +20,15 @@ class MainWindow( QMainWindow, UiMainWindow ):
 	Main application window.
 	'''
 	
-	def __init__( self ) -> None:
+	def __init__( self, parent: QWidget | None = None ) -> None:
 		'''
 		Setup main application window.
 		'''
 		
-		super().__init__()
+		super().__init__( parent )
 		self.setupUi( self )	# pyright: ignore [reportUnknownMemberType]
 		
-		self.setProject( Project( 'New project', [] ) )
+		self.newProject()
 	
 	
 	def setProject( self, project: Project ):
@@ -36,8 +36,9 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Set the current project, cascading changes to all models and views.
 		'''
 		
-		self.project = project
+		self.project = project	# pylint: disable = attribute-defined-outside-init
 		self.circuitsTableView.setDatasource( project.circuits )
+		self.circuitsTableView.resizeColumnsToContents()
 	
 	
 	@Slot()
@@ -47,6 +48,8 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		'''
 		
 		self.setProject( Project( 'New project', [] ) )
+		self.circuitsTableView.newCircuit()
+		self.circuitsTableView.resizeColumnsToContents()
 	
 	
 	@Slot()

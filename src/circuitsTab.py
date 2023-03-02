@@ -9,7 +9,14 @@
 from typing import NamedTuple
 from operator import attrgetter
 
-from PySide6.QtCore import Qt, QAbstractTableModel, QModelIndex, QPersistentModelIndex, Slot
+from PySide6.QtCore import (
+	Qt,
+	QObject,
+	QAbstractTableModel,
+	QModelIndex,
+	QPersistentModelIndex,
+	Slot,
+)
 from PySide6.QtWidgets import QWidget, QTableView
 
 from installation.circuit import (
@@ -47,12 +54,12 @@ class CircuitsModel( QAbstractTableModel ):
 	Maps a `Circuit` object to a QTableView.
 	'''
 	
-	def __init__( self, circuits: list[Circuit] ) -> None:
+	def __init__( self, parent: QObject | None = None, circuits: list[Circuit] | None = None ) -> None:
 		'''
 		Setup fields and load initial data.
 		'''
 		
-		super().__init__()
+		super().__init__( parent )
 		
 		self.fields = [
 			Field( self.tr('Name'), 'name', True ),
@@ -72,7 +79,7 @@ class CircuitsModel( QAbstractTableModel ):
 			Field( self.tr('Wire Section'), 'wire.section', False, format = ',', suffix = ' mm²' ),
 		]
 		
-		self.circuits = circuits
+		self.circuits = circuits or []
 	
 	
 	def rowCount( self, parent: ModelIndex = QModelIndex() ) -> int:
@@ -231,8 +238,7 @@ class CircuitsTableView( QTableView ):
 		Create new `CircuitModel` from `circuits` and assign it to this view. 
 		'''
 		
-		self.setModel( CircuitsModel( circuits ) )
-		self.resizeColumnsToContents()
+		self.setModel( CircuitsModel( self, circuits ) )
 	
 	
 	@Slot()
