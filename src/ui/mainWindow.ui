@@ -31,17 +31,6 @@
         <string>Circuits</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="1">
-         <widget class="QPushButton" name="newCircuitButton">
-          <property name="text">
-           <string>New circuit</string>
-          </property>
-          <property name="icon">
-           <iconset theme="window-new">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="0">
          <spacer name="horizontalSpacer">
           <property name="orientation">
@@ -55,7 +44,7 @@
           </property>
          </spacer>
         </item>
-        <item row="1" column="0" colspan="2">
+        <item row="1" column="0" colspan="3">
          <widget class="CircuitsTableView" name="circuitsTableView">
           <property name="alternatingRowColors">
            <bool>true</bool>
@@ -86,6 +75,28 @@
           </attribute>
          </widget>
         </item>
+        <item row="0" column="2">
+         <widget class="QPushButton" name="newCircuitButton">
+          <property name="text">
+           <string>New circuit</string>
+          </property>
+          <property name="icon">
+           <iconset theme="window-new">
+            <normaloff>.</normaloff>.</iconset>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="deleteCircuitButton">
+          <property name="text">
+           <string>Delete circuit</string>
+          </property>
+          <property name="icon">
+           <iconset theme="delete">
+            <normaloff>.</normaloff>.</iconset>
+          </property>
+         </widget>
+        </item>
        </layout>
       </widget>
       <widget class="QWidget" name="tab">
@@ -99,6 +110,14 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1000</width>
+     <height>30</height>
+    </rect>
+   </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>&amp;File</string>
@@ -197,6 +216,7 @@
    <header>circuitsTab</header>
    <slots>
     <slot>newCircuit()</slot>
+    <slot>deleteCircuit()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -311,6 +331,22 @@
     <hint type="destinationlabel">
      <x>499</x>
      <y>299</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>deleteCircuitButton</sender>
+   <signal>clicked()</signal>
+   <receiver>circuitsTableView</receiver>
+   <slot>deleteCircuit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>814</x>
+     <y>91</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>499</x>
+     <y>337</y>
     </hint>
    </hints>
   </connection>

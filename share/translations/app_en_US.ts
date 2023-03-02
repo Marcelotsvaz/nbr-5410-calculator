@@ -102,77 +102,82 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="37"/>
+        <location filename="../../src/ui/mainWindow.ui" line="81"/>
         <source>New circuit</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="90"/>
+        <location filename="../../src/ui/mainWindow.ui" line="92"/>
+        <source>Delete circuit</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/mainWindow.ui" line="104"/>
         <source>Conduits</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="101"/>
+        <location filename="../../src/ui/mainWindow.ui" line="123"/>
         <source>&amp;File</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="113"/>
+        <location filename="../../src/ui/mainWindow.ui" line="135"/>
         <source>&amp;Help</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="126"/>
+        <location filename="../../src/ui/mainWindow.ui" line="148"/>
         <source>&amp;New</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="138"/>
+        <location filename="../../src/ui/mainWindow.ui" line="160"/>
         <source>&amp;Open...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="150"/>
+        <location filename="../../src/ui/mainWindow.ui" line="172"/>
         <source>&amp;Save</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="162"/>
+        <location filename="../../src/ui/mainWindow.ui" line="184"/>
         <source>Save &amp;As...</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="174"/>
+        <location filename="../../src/ui/mainWindow.ui" line="196"/>
         <source>&amp;Quit</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="186"/>
+        <location filename="../../src/ui/mainWindow.ui" line="208"/>
         <source>&amp;About</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="129"/>
+        <location filename="../../src/ui/mainWindow.ui" line="151"/>
         <source>Ctrl+N</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="141"/>
+        <location filename="../../src/ui/mainWindow.ui" line="163"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="153"/>
+        <location filename="../../src/ui/mainWindow.ui" line="175"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="165"/>
+        <location filename="../../src/ui/mainWindow.ui" line="187"/>
         <source>Ctrl+Shift+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="177"/>
+        <location filename="../../src/ui/mainWindow.ui" line="199"/>
         <source>Ctrl+Q</source>
         <translation></translation>
     </message>

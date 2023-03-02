@@ -101,19 +101,6 @@ class Ui_mainWindow(object):
         self.circuitsTab.setObjectName(u"circuitsTab")
         self.gridLayout_2 = QGridLayout(self.circuitsTab)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.newCircuitButton = QPushButton(self.circuitsTab)
-        self.newCircuitButton.setObjectName(u"newCircuitButton")
-        icon6 = QIcon()
-        iconThemeName = u"window-new"
-        if QIcon.hasThemeIcon(iconThemeName):
-            icon6 = QIcon.fromTheme(iconThemeName)
-        else:
-            icon6.addFile(u".", QSize(), QIcon.Normal, QIcon.Off)
-
-        self.newCircuitButton.setIcon(icon6)
-
-        self.gridLayout_2.addWidget(self.newCircuitButton, 0, 1, 1, 1)
-
         self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
 
         self.gridLayout_2.addItem(self.horizontalSpacer, 0, 0, 1, 1)
@@ -130,7 +117,33 @@ class Ui_mainWindow(object):
         self.circuitsTableView.horizontalHeader().setProperty("showSortIndicator", True)
         self.circuitsTableView.horizontalHeader().setStretchLastSection(True)
 
-        self.gridLayout_2.addWidget(self.circuitsTableView, 1, 0, 1, 2)
+        self.gridLayout_2.addWidget(self.circuitsTableView, 1, 0, 1, 3)
+
+        self.newCircuitButton = QPushButton(self.circuitsTab)
+        self.newCircuitButton.setObjectName(u"newCircuitButton")
+        icon6 = QIcon()
+        iconThemeName = u"window-new"
+        if QIcon.hasThemeIcon(iconThemeName):
+            icon6 = QIcon.fromTheme(iconThemeName)
+        else:
+            icon6.addFile(u".", QSize(), QIcon.Normal, QIcon.Off)
+
+        self.newCircuitButton.setIcon(icon6)
+
+        self.gridLayout_2.addWidget(self.newCircuitButton, 0, 2, 1, 1)
+
+        self.deleteCircuitButton = QPushButton(self.circuitsTab)
+        self.deleteCircuitButton.setObjectName(u"deleteCircuitButton")
+        icon7 = QIcon()
+        iconThemeName = u"delete"
+        if QIcon.hasThemeIcon(iconThemeName):
+            icon7 = QIcon.fromTheme(iconThemeName)
+        else:
+            icon7.addFile(u".", QSize(), QIcon.Normal, QIcon.Off)
+
+        self.deleteCircuitButton.setIcon(icon7)
+
+        self.gridLayout_2.addWidget(self.deleteCircuitButton, 0, 1, 1, 1)
 
         self.tabWidget.addTab(self.circuitsTab, "")
         self.tab = QWidget()
@@ -145,6 +158,7 @@ class Ui_mainWindow(object):
         mainWindow.setStatusBar(self.statusbar)
         self.menuBar = QMenuBar(mainWindow)
         self.menuBar.setObjectName(u"menuBar")
+        self.menuBar.setGeometry(QRect(0, 0, 1000, 30))
         self.menuFile = QMenu(self.menuBar)
         self.menuFile.setObjectName(u"menuFile")
         self.menuHelp = QMenu(self.menuBar)
@@ -170,6 +184,7 @@ class Ui_mainWindow(object):
         self.actionNew.triggered.connect(mainWindow.newProject)
         self.actionAbout.triggered.connect(mainWindow.showAbout)
         self.actionQuit.triggered.connect(mainWindow.close)
+        self.deleteCircuitButton.clicked.connect(self.circuitsTableView.deleteCircuit)
 
         self.tabWidget.setCurrentIndex(1)
 
@@ -202,6 +217,7 @@ class Ui_mainWindow(object):
         self.actionAbout.setText(QCoreApplication.translate("mainWindow", u"&About", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.panelTab), QCoreApplication.translate("mainWindow", u"Panel", None))
         self.newCircuitButton.setText(QCoreApplication.translate("mainWindow", u"New circuit", None))
+        self.deleteCircuitButton.setText(QCoreApplication.translate("mainWindow", u"Delete circuit", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.circuitsTab), QCoreApplication.translate("mainWindow", u"Circuits", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("mainWindow", u"Conduits", None))
         self.menuFile.setTitle(QCoreApplication.translate("mainWindow", u"&File", None))

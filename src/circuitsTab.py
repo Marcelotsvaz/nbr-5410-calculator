@@ -262,3 +262,13 @@ class CircuitsTableView( QTableView ):
 		
 		circuitCount = self.model().rowCount()
 		self.model().insertRow( circuitCount )
+	
+	
+	@Slot()
+	def deleteCircuit( self ) -> None:
+		'''
+		Remove selected `Circuit` from table.
+		'''
+		
+		if indexes := self.selectedIndexes():
+			self.model().removeRow( indexes[0].row() )
