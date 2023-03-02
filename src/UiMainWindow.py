@@ -30,27 +30,63 @@ class Ui_mainWindow(object):
         mainWindow.resize(1000, 600)
         self.actionNew = QAction(mainWindow)
         self.actionNew.setObjectName(u"actionNew")
-        icon = QIcon(QIcon.fromTheme(u"document-new"))
+        icon = QIcon()
+        iconThemeName = u"document-new"
+        if QIcon.hasThemeIcon(iconThemeName):
+            icon = QIcon.fromTheme(iconThemeName)
+        else:
+            icon.addFile(u".", QSize(), QIcon.Normal, QIcon.Off)
+
         self.actionNew.setIcon(icon)
         self.actionOpen = QAction(mainWindow)
         self.actionOpen.setObjectName(u"actionOpen")
-        icon1 = QIcon(QIcon.fromTheme(u"document-open"))
+        icon1 = QIcon()
+        iconThemeName = u"document-open"
+        if QIcon.hasThemeIcon(iconThemeName):
+            icon1 = QIcon.fromTheme(iconThemeName)
+        else:
+            icon1.addFile(u".", QSize(), QIcon.Normal, QIcon.Off)
+
         self.actionOpen.setIcon(icon1)
         self.actionSave = QAction(mainWindow)
         self.actionSave.setObjectName(u"actionSave")
-        icon2 = QIcon(QIcon.fromTheme(u"document-save"))
+        icon2 = QIcon()
+        iconThemeName = u"document-save"
+        if QIcon.hasThemeIcon(iconThemeName):
+            icon2 = QIcon.fromTheme(iconThemeName)
+        else:
+            icon2.addFile(u".", QSize(), QIcon.Normal, QIcon.Off)
+
         self.actionSave.setIcon(icon2)
         self.actionSaveAs = QAction(mainWindow)
         self.actionSaveAs.setObjectName(u"actionSaveAs")
-        icon3 = QIcon(QIcon.fromTheme(u"document-save-as"))
+        icon3 = QIcon()
+        iconThemeName = u"document-save-as"
+        if QIcon.hasThemeIcon(iconThemeName):
+            icon3 = QIcon.fromTheme(iconThemeName)
+        else:
+            icon3.addFile(u".", QSize(), QIcon.Normal, QIcon.Off)
+
         self.actionSaveAs.setIcon(icon3)
         self.actionQuit = QAction(mainWindow)
         self.actionQuit.setObjectName(u"actionQuit")
-        icon4 = QIcon(QIcon.fromTheme(u"application-exit"))
+        icon4 = QIcon()
+        iconThemeName = u"application-exit"
+        if QIcon.hasThemeIcon(iconThemeName):
+            icon4 = QIcon.fromTheme(iconThemeName)
+        else:
+            icon4.addFile(u".", QSize(), QIcon.Normal, QIcon.Off)
+
         self.actionQuit.setIcon(icon4)
         self.actionAbout = QAction(mainWindow)
         self.actionAbout.setObjectName(u"actionAbout")
-        icon5 = QIcon(QIcon.fromTheme(u"help-about"))
+        icon5 = QIcon()
+        iconThemeName = u"help-about"
+        if QIcon.hasThemeIcon(iconThemeName):
+            icon5 = QIcon.fromTheme(iconThemeName)
+        else:
+            icon5.addFile(u".", QSize(), QIcon.Normal, QIcon.Off)
+
         self.actionAbout.setIcon(icon5)
         self.centralWidget = QWidget(mainWindow)
         self.centralWidget.setObjectName(u"centralWidget")
@@ -67,7 +103,13 @@ class Ui_mainWindow(object):
         self.gridLayout_2.setObjectName(u"gridLayout_2")
         self.newCircuitButton = QPushButton(self.circuitsTab)
         self.newCircuitButton.setObjectName(u"newCircuitButton")
-        icon6 = QIcon(QIcon.fromTheme(u"window-new"))
+        icon6 = QIcon()
+        iconThemeName = u"window-new"
+        if QIcon.hasThemeIcon(iconThemeName):
+            icon6 = QIcon.fromTheme(iconThemeName)
+        else:
+            icon6.addFile(u".", QSize(), QIcon.Normal, QIcon.Off)
+
         self.newCircuitButton.setIcon(icon6)
 
         self.gridLayout_2.addWidget(self.newCircuitButton, 0, 1, 1, 1)
@@ -102,7 +144,6 @@ class Ui_mainWindow(object):
         mainWindow.setStatusBar(self.statusbar)
         self.menuBar = QMenuBar(mainWindow)
         self.menuBar.setObjectName(u"menuBar")
-        self.menuBar.setGeometry(QRect(0, 0, 1000, 30))
         self.menuFile = QMenu(self.menuBar)
         self.menuFile.setObjectName(u"menuFile")
         self.menuHelp = QMenu(self.menuBar)
@@ -137,32 +178,32 @@ class Ui_mainWindow(object):
 
     def retranslateUi(self, mainWindow):
         mainWindow.setWindowTitle(QCoreApplication.translate("mainWindow", u"NBR 5410 Calculator", None))
-        self.actionNew.setText(QCoreApplication.translate("mainWindow", u"New", None))
+        self.actionNew.setText(QCoreApplication.translate("mainWindow", u"&New", None))
 #if QT_CONFIG(shortcut)
         self.actionNew.setShortcut(QCoreApplication.translate("mainWindow", u"Ctrl+N", None))
 #endif // QT_CONFIG(shortcut)
-        self.actionOpen.setText(QCoreApplication.translate("mainWindow", u"Open...", None))
+        self.actionOpen.setText(QCoreApplication.translate("mainWindow", u"&Open...", None))
 #if QT_CONFIG(shortcut)
         self.actionOpen.setShortcut(QCoreApplication.translate("mainWindow", u"Ctrl+O", None))
 #endif // QT_CONFIG(shortcut)
-        self.actionSave.setText(QCoreApplication.translate("mainWindow", u"Save", None))
+        self.actionSave.setText(QCoreApplication.translate("mainWindow", u"&Save", None))
 #if QT_CONFIG(shortcut)
         self.actionSave.setShortcut(QCoreApplication.translate("mainWindow", u"Ctrl+S", None))
 #endif // QT_CONFIG(shortcut)
-        self.actionSaveAs.setText(QCoreApplication.translate("mainWindow", u"Save As...", None))
+        self.actionSaveAs.setText(QCoreApplication.translate("mainWindow", u"Save &As...", None))
 #if QT_CONFIG(shortcut)
         self.actionSaveAs.setShortcut(QCoreApplication.translate("mainWindow", u"Ctrl+Shift+S", None))
 #endif // QT_CONFIG(shortcut)
-        self.actionQuit.setText(QCoreApplication.translate("mainWindow", u"Quit", None))
+        self.actionQuit.setText(QCoreApplication.translate("mainWindow", u"&Quit", None))
 #if QT_CONFIG(shortcut)
         self.actionQuit.setShortcut(QCoreApplication.translate("mainWindow", u"Ctrl+Q", None))
 #endif // QT_CONFIG(shortcut)
-        self.actionAbout.setText(QCoreApplication.translate("mainWindow", u"About", None))
+        self.actionAbout.setText(QCoreApplication.translate("mainWindow", u"&About", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.panelTab), QCoreApplication.translate("mainWindow", u"Panel", None))
         self.newCircuitButton.setText(QCoreApplication.translate("mainWindow", u"New circuit", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.circuitsTab), QCoreApplication.translate("mainWindow", u"Circuits", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("mainWindow", u"Conduits", None))
-        self.menuFile.setTitle(QCoreApplication.translate("mainWindow", u"File", None))
-        self.menuHelp.setTitle(QCoreApplication.translate("mainWindow", u"Help", None))
+        self.menuFile.setTitle(QCoreApplication.translate("mainWindow", u"&File", None))
+        self.menuHelp.setTitle(QCoreApplication.translate("mainWindow", u"&Help", None))
     # retranslateUi
 

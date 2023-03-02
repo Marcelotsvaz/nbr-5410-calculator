@@ -2,84 +2,84 @@
 <!DOCTYPE TS>
 <TS version="2.1" language="pt_BR">
 <context>
-    <name>CircuitModel</name>
+    <name>CircuitsModel</name>
     <message>
-        <location filename="../../src/circuitsTab.py" line="58"/>
+        <location filename="../../src/circuitsTab.py" line="65"/>
         <source>Name</source>
         <translation>Nome</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="59"/>
+        <location filename="../../src/circuitsTab.py" line="66"/>
         <source>Power</source>
         <translation>Potência</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="60"/>
+        <location filename="../../src/circuitsTab.py" line="67"/>
         <source>Load Type</source>
         <translation>Tipo de Carga</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="61"/>
+        <location filename="../../src/circuitsTab.py" line="68"/>
         <source>Voltage</source>
         <translation>Tensão</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="62"/>
+        <location filename="../../src/circuitsTab.py" line="69"/>
         <source>Phases</source>
         <translation>Fases</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="63"/>
+        <location filename="../../src/circuitsTab.py" line="70"/>
         <source>Grouping</source>
         <translation>Agrupamento</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="64"/>
+        <location filename="../../src/circuitsTab.py" line="71"/>
         <source>Temperature</source>
         <translation>Temperatura</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="65"/>
+        <location filename="../../src/circuitsTab.py" line="72"/>
         <source>Ref. Method</source>
         <translation>Método de Ref.</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="66"/>
+        <location filename="../../src/circuitsTab.py" line="73"/>
         <source>Configuration</source>
         <translation>Configuração</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="67"/>
+        <location filename="../../src/circuitsTab.py" line="74"/>
         <source>Wire Type</source>
         <translation>Tipo de Fio</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="68"/>
+        <location filename="../../src/circuitsTab.py" line="75"/>
         <source>Length</source>
         <translation>Comprimento</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="69"/>
+        <location filename="../../src/circuitsTab.py" line="76"/>
         <source>Current</source>
         <translation>Corrente</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="70"/>
+        <location filename="../../src/circuitsTab.py" line="77"/>
         <source>Breaker</source>
         <translation>Disjuntor</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="71"/>
+        <location filename="../../src/circuitsTab.py" line="78"/>
         <source>Wire Capacity</source>
         <translation>Capacidade do Fio</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="72"/>
+        <location filename="../../src/circuitsTab.py" line="79"/>
         <source>Wire Section</source>
         <translation>Seção do Fio</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="178"/>
+        <location filename="../../src/circuitsTab.py" line="185"/>
         <source>New Circuit</source>
         <translation>Novo Circuito</translation>
     </message>
@@ -107,24 +107,49 @@
         <translation>Novo circuito</translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="83"/>
+        <location filename="../../src/ui/mainWindow.ui" line="90"/>
         <source>Conduits</source>
         <translation>Conduítes</translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="102"/>
-        <source>File</source>
-        <translation>Arquivo</translation>
+        <location filename="../../src/ui/mainWindow.ui" line="101"/>
+        <source>&amp;File</source>
+        <translation>&amp;Arquivo</translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="114"/>
-        <source>Help</source>
-        <translation>Ajuda</translation>
+        <location filename="../../src/ui/mainWindow.ui" line="113"/>
+        <source>&amp;Help</source>
+        <translation>Aj&amp;uda</translation>
     </message>
     <message>
         <location filename="../../src/ui/mainWindow.ui" line="126"/>
-        <source>New</source>
-        <translation>Novo</translation>
+        <source>&amp;New</source>
+        <translation>&amp;Novo</translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/mainWindow.ui" line="138"/>
+        <source>&amp;Open...</source>
+        <translation>&amp;Abrir...</translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/mainWindow.ui" line="150"/>
+        <source>&amp;Save</source>
+        <translation>&amp;Salvar</translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/mainWindow.ui" line="162"/>
+        <source>Save &amp;As...</source>
+        <translation>Salvar &amp;Como...</translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/mainWindow.ui" line="174"/>
+        <source>&amp;Quit</source>
+        <translation>&amp;Sair</translation>
+    </message>
+    <message>
+        <location filename="../../src/ui/mainWindow.ui" line="186"/>
+        <source>&amp;About</source>
+        <translation>&amp;Sobre</translation>
     </message>
     <message>
         <location filename="../../src/ui/mainWindow.ui" line="129"/>
@@ -132,49 +157,24 @@
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="137"/>
-        <source>Open...</source>
-        <translation>Abrir...</translation>
-    </message>
-    <message>
-        <location filename="../../src/ui/mainWindow.ui" line="140"/>
+        <location filename="../../src/ui/mainWindow.ui" line="141"/>
         <source>Ctrl+O</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="148"/>
-        <source>Save</source>
-        <translation>Salvar</translation>
-    </message>
-    <message>
-        <location filename="../../src/ui/mainWindow.ui" line="151"/>
+        <location filename="../../src/ui/mainWindow.ui" line="153"/>
         <source>Ctrl+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="159"/>
-        <source>Save As...</source>
-        <translation>Salvar Como...</translation>
-    </message>
-    <message>
-        <location filename="../../src/ui/mainWindow.ui" line="162"/>
+        <location filename="../../src/ui/mainWindow.ui" line="165"/>
         <source>Ctrl+Shift+S</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/ui/mainWindow.ui" line="170"/>
-        <source>Quit</source>
-        <translation>Sair</translation>
-    </message>
-    <message>
-        <location filename="../../src/ui/mainWindow.ui" line="173"/>
+        <location filename="../../src/ui/mainWindow.ui" line="177"/>
         <source>Ctrl+Q</source>
         <translation></translation>
-    </message>
-    <message>
-        <location filename="../../src/ui/mainWindow.ui" line="181"/>
-        <source>About</source>
-        <translation>Sobre</translation>
     </message>
 </context>
 </TS>

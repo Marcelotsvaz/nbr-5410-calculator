@@ -221,12 +221,12 @@ class CircuitsModel( QAbstractTableModel ):
 
 class CircuitsTableView( QTableView ):
 	'''
-	`QTableView` for `CircuitModel`.
+	`QTableView` for `CircuitsModel`.
 	'''
 	
 	def __init__( self, parent: QWidget | None ) -> None:
 		'''
-		Initialize with empty `CircuitModel`.
+		Initialize with empty `CircuitsModel`.
 		'''
 		
 		super().__init__( parent )
@@ -235,7 +235,7 @@ class CircuitsTableView( QTableView ):
 	
 	def setDatasource( self, circuits: list[Circuit] ) -> None:
 		'''
-		Create new `CircuitModel` from `circuits` and assign it to this view. 
+		Create new `CircuitsModel` from `circuits` and assign it to this view. 
 		'''
 		
 		self.setModel( CircuitsModel( self, circuits ) )
