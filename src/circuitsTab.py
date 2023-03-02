@@ -42,7 +42,7 @@ class Field( NamedTuple ):
 
 
 
-class CircuitModel( QAbstractTableModel ):
+class CircuitsModel( QAbstractTableModel ):
 	'''
 	Maps a `Circuit` object to a QTableView.
 	'''
@@ -231,7 +231,7 @@ class CircuitsTableView( QTableView ):
 		Create new `CircuitModel` from `circuits` and assign it to this view. 
 		'''
 		
-		self.setModel( CircuitModel( circuits ) )
+		self.setModel( CircuitsModel( circuits ) )
 		self.resizeColumnsToContents()
 	
 	
