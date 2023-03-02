@@ -7,6 +7,7 @@ Refactor tests docstrings
 Test section reason
 Ignore translations
 Validate edit
+Fix missing signals and tr
 
 
 

@@ -216,6 +216,19 @@ class CircuitsModel( QAbstractTableModel ):
 		self.endRemoveRows()
 		
 		return True
+	
+	
+	def sort( self, column: int, order: Qt.SortOrder = Qt.SortOrder.AscendingOrder ) -> None:
+		'''
+		Sort `Circuit`s by specified field.
+		'''
+		
+		reverse = order == Qt.SortOrder.DescendingOrder
+		key = attrgetter( self.fields[column].name )
+		
+		self.layoutAboutToBeChanged.emit()
+		self.circuits = sorted( self.circuits, key = key, reverse = reverse )
+		self.layoutChanged.emit()
 
 
 

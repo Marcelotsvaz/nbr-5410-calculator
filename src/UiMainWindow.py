@@ -124,6 +124,7 @@ class Ui_mainWindow(object):
         self.circuitsTableView.setSelectionMode(QAbstractItemView.SingleSelection)
         self.circuitsTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.circuitsTableView.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.circuitsTableView.setSortingEnabled(True)
         self.circuitsTableView.setWordWrap(False)
         self.circuitsTableView.horizontalHeader().setHighlightSections(False)
         self.circuitsTableView.horizontalHeader().setProperty("showSortIndicator", True)
