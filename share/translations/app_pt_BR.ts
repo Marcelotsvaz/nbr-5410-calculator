@@ -4,82 +4,82 @@
 <context>
     <name>CircuitsModel</name>
     <message>
-        <location filename="../../src/circuitsTab.py" line="65"/>
+        <location filename="../../src/circuitsTab.py" line="83"/>
         <source>Name</source>
         <translation>Nome</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="66"/>
+        <location filename="../../src/circuitsTab.py" line="84"/>
         <source>Power</source>
         <translation>Potência</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="67"/>
+        <location filename="../../src/circuitsTab.py" line="85"/>
         <source>Load Type</source>
         <translation>Tipo de Carga</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="68"/>
+        <location filename="../../src/circuitsTab.py" line="86"/>
         <source>Voltage</source>
         <translation>Tensão</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="69"/>
+        <location filename="../../src/circuitsTab.py" line="87"/>
         <source>Phases</source>
         <translation>Fases</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="70"/>
+        <location filename="../../src/circuitsTab.py" line="88"/>
         <source>Grouping</source>
         <translation>Agrupamento</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="71"/>
+        <location filename="../../src/circuitsTab.py" line="89"/>
         <source>Temperature</source>
         <translation>Temperatura</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="72"/>
+        <location filename="../../src/circuitsTab.py" line="90"/>
         <source>Ref. Method</source>
         <translation>Método de Ref.</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="73"/>
+        <location filename="../../src/circuitsTab.py" line="91"/>
         <source>Configuration</source>
         <translation>Configuração</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="74"/>
+        <location filename="../../src/circuitsTab.py" line="92"/>
         <source>Wire Type</source>
         <translation>Tipo de Fio</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="75"/>
+        <location filename="../../src/circuitsTab.py" line="93"/>
         <source>Length</source>
         <translation>Comprimento</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="76"/>
+        <location filename="../../src/circuitsTab.py" line="94"/>
         <source>Current</source>
         <translation>Corrente</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="77"/>
+        <location filename="../../src/circuitsTab.py" line="95"/>
         <source>Breaker</source>
         <translation>Disjuntor</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="78"/>
+        <location filename="../../src/circuitsTab.py" line="96"/>
         <source>Wire Capacity</source>
         <translation>Capacidade do Fio</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="79"/>
+        <location filename="../../src/circuitsTab.py" line="97"/>
         <source>Wire Section</source>
         <translation>Seção do Fio</translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="185"/>
+        <location filename="../../src/circuitsTab.py" line="201"/>
         <source>New Circuit</source>
         <translation>Novo Circuito</translation>
     </message>

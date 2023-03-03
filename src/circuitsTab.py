@@ -6,8 +6,9 @@
 
 
 
-from typing import NamedTuple
+from typing import NamedTuple, Any
 from operator import attrgetter
+from contextlib import suppress
 
 from PySide6.QtCore import (
 	Qt,
@@ -41,12 +42,28 @@ class Field( NamedTuple ):
 	Field mapping for models.
 	'''
 	
-	label: str
 	name: str
-	editable: bool
+	label: str
+	editable: bool = True
+	setter: str = ''
 	format: str = ''
 	suffix: str = ''
-
+	
+	
+	def type( self, instance: Any ) -> type:
+		'''
+		Return type of field in `instance`.
+		'''
+		
+		return type( getattr( instance, self.setter or self.name ) )
+	
+	
+	def set( self, instance: Any, value: Any ) -> None:
+		'''
+		Set value of field in `instance`.
+		'''
+		
+		setattr( instance, self.setter or self.name, self.type( instance )( value ) )
 
 
 class CircuitsModel( QAbstractTableModel ):
@@ -62,21 +79,21 @@ class CircuitsModel( QAbstractTableModel ):
 		super().__init__( parent )
 		
 		self.fields = [
-			Field( self.tr('Name'), 'name', True ),
-			Field( self.tr('Power'), 'power', True, format = ',', suffix = ' VA' ),
-			Field( self.tr('Load Type'), 'loadType.value', True ),
-			Field( self.tr('Voltage'), 'voltage', True, format = ',', suffix = ' V' ),
-			Field( self.tr('Phases'), 'phases', True ),
-			Field( self.tr('Grouping'), 'grouping', True ),
-			Field( self.tr('Temperature'), 'temperature', True, suffix = '°C' ),
-			Field( self.tr('Ref. Method'), 'referenceMethod.name', True ),
-			Field( self.tr('Configuration'), 'wireConfiguration.value', True ),
-			Field( self.tr('Wire Type'), 'wireType', True ),
-			Field( self.tr('Length'), 'length', True, format = ',', suffix = ' m' ),
-			Field( self.tr('Current'), 'current', False, format = ',.1f', suffix = ' A' ),
-			Field( self.tr('Breaker'), 'breaker.current', False, suffix = ' A' ),
-			Field( self.tr('Wire Capacity'), 'wire.capacity', False, format = ',.1f', suffix = ' A' ),
-			Field( self.tr('Wire Section'), 'wire.section', False, format = ',', suffix = ' mm²' ),
+			Field( 'name',						self.tr('Name') ),
+			Field( 'power',						self.tr('Power'),			format = ',', suffix = ' VA' ),
+			Field( 'loadType.value',			self.tr('Load Type'),		setter = 'loadType' ),
+			Field( 'voltage',					self.tr('Voltage'),			format = ',', suffix = ' V' ),
+			Field( 'phases',					self.tr('Phases') ),
+			Field( 'grouping',					self.tr('Grouping') ),
+			Field( 'temperature',				self.tr('Temperature'),		suffix = '°C' ),
+			Field( 'referenceMethod.name',		self.tr('Ref. Method'),		setter = 'referenceMethod' ),
+			Field( 'wireConfiguration.value',	self.tr('Configuration'),	setter = 'wireConfiguration' ),
+			Field( 'wireType',					self.tr('Wire Type') ),
+			Field( 'length',					self.tr('Length'),			format = ',', suffix = ' m' ),
+			Field( 'current',					self.tr('Current'),			False, format = ',.1f', suffix = ' A' ),
+			Field( 'breaker.current',			self.tr('Breaker'),			False, suffix = ' A' ),
+			Field( 'wire.capacity',				self.tr('Wire Capacity'),	False, format = ',.1f', suffix = ' A' ),
+			Field( 'wire.section',				self.tr('Wire Section'),	False, format = ',', suffix = ' mm²' ),
 		]
 		
 		self.circuits = circuits or []
@@ -157,18 +174,15 @@ class CircuitsModel( QAbstractTableModel ):
 		'''
 		
 		if role == Qt.ItemDataRole.EditRole and index.isValid():
+			field = self.fields[index.column()]
 			circuit = self.circuits[index.row()]
-			field = self.fields[index.column()].name
-			fieldType = type( getattr( circuit, field ) )
 			
-			try:
-				setattr( circuit, field, fieldType( value ) )
+			with suppress( ValueError ):
+				field.set( circuit, value )
 				# pylint: disable-next=line-too-long
 				self.dataChanged.emit( index, index, role )	# pyright: ignore [reportGeneralTypeIssues, reportUnknownMemberType]
-			except ValueError:
-				return False
-			
-			return True
+				
+				return True
 		
 		return False
 	
@@ -180,22 +194,21 @@ class CircuitsModel( QAbstractTableModel ):
 		
 		self.beginInsertRows( parent, row, row + count - 1 )
 		
-		wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
-		circuit = Circuit(
-			name				= self.tr('New Circuit'),
-			loadType			= LoadType.POWER,
-			voltage				= 127,
-			phases				= 1,
-			grouping			= 1,
-			length				= 10.0,
-			referenceMethod		= ReferenceMethod.B1,
-			wireConfiguration	= WireConfiguration.TWO,
-			wireType			= wireType,
-			temperature			= 30,
-			power				= 1000,
-		)
-		
 		for index in range( row, row + count ):
+			wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
+			circuit = Circuit(
+				name				= self.tr('New Circuit'),
+				loadType			= LoadType.POWER,
+				voltage				= 127,
+				phases				= 1,
+				grouping			= 1,
+				length				= 10.0,
+				referenceMethod		= ReferenceMethod.B1,
+				wireConfiguration	= WireConfiguration.TWO,
+				wireType			= wireType,
+				temperature			= 30,
+				power				= 1000,
+			)
 			self.circuits.insert( index, circuit )
 		
 		self.endInsertRows()
@@ -209,10 +222,8 @@ class CircuitsModel( QAbstractTableModel ):
 		'''
 		
 		self.beginRemoveRows( parent, row, row + count - 1 )
-		
 		for _ in range( count ):
 			self.circuits.pop( row )
-		
 		self.endRemoveRows()
 		
 		return True

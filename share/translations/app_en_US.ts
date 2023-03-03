@@ -4,82 +4,82 @@
 <context>
     <name>CircuitsModel</name>
     <message>
-        <location filename="../../src/circuitsTab.py" line="65"/>
+        <location filename="../../src/circuitsTab.py" line="83"/>
         <source>Name</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="66"/>
+        <location filename="../../src/circuitsTab.py" line="84"/>
         <source>Power</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="67"/>
+        <location filename="../../src/circuitsTab.py" line="85"/>
         <source>Load Type</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="68"/>
+        <location filename="../../src/circuitsTab.py" line="86"/>
         <source>Voltage</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="69"/>
+        <location filename="../../src/circuitsTab.py" line="87"/>
         <source>Phases</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="70"/>
+        <location filename="../../src/circuitsTab.py" line="88"/>
         <source>Grouping</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="71"/>
+        <location filename="../../src/circuitsTab.py" line="89"/>
         <source>Temperature</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="72"/>
+        <location filename="../../src/circuitsTab.py" line="90"/>
         <source>Ref. Method</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="73"/>
+        <location filename="../../src/circuitsTab.py" line="91"/>
         <source>Configuration</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="74"/>
+        <location filename="../../src/circuitsTab.py" line="92"/>
         <source>Wire Type</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="75"/>
+        <location filename="../../src/circuitsTab.py" line="93"/>
         <source>Length</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="76"/>
+        <location filename="../../src/circuitsTab.py" line="94"/>
         <source>Current</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="77"/>
+        <location filename="../../src/circuitsTab.py" line="95"/>
         <source>Breaker</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="78"/>
+        <location filename="../../src/circuitsTab.py" line="96"/>
         <source>Wire Capacity</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="79"/>
+        <location filename="../../src/circuitsTab.py" line="97"/>
         <source>Wire Section</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../../src/circuitsTab.py" line="185"/>
+        <location filename="../../src/circuitsTab.py" line="201"/>
         <source>New Circuit</source>
         <translation></translation>
     </message>
