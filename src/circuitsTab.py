@@ -99,6 +99,16 @@ class CircuitsModel( QAbstractTableModel ):
 		self.circuits = circuits or []
 	
 	
+	# pylint: disable-next = useless-parent-delegation, invalid-name
+	def tr( self, *args: str ) -> str:
+		'''
+		Translate string.
+		Temporary fix for missing `tr` method in `QObject`.
+		'''
+		
+		return super().tr( *args )	# pyright: ignore
+	
+	
 	def rowCount( self, parent: ModelIndex = QModelIndex() ) -> int:
 		'''
 		Return number of rows in table.
@@ -179,8 +189,7 @@ class CircuitsModel( QAbstractTableModel ):
 			
 			with suppress( ValueError ):
 				field.set( circuit, value )
-				# pylint: disable-next=line-too-long
-				self.dataChanged.emit( index, index, role )	# pyright: ignore [reportGeneralTypeIssues, reportUnknownMemberType]
+				self.dataChanged.emit( index, index, role )	# pyright: ignore
 				
 				return True
 		
@@ -237,9 +246,9 @@ class CircuitsModel( QAbstractTableModel ):
 		reverse = order == Qt.SortOrder.DescendingOrder
 		key = attrgetter( self.fields[column].name )
 		
-		self.layoutAboutToBeChanged.emit()
+		self.layoutAboutToBeChanged.emit()	# pyright: ignore
 		self.circuits = sorted( self.circuits, key = key, reverse = reverse )
-		self.layoutChanged.emit()
+		self.layoutChanged.emit()	# pyright: ignore
 
 
 
