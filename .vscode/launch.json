@@ -14,7 +14,7 @@
 		{
 			"name": "Launch Program",
 			"type": "python",
-			"preLaunchTask": "Compile UI",
+			"preLaunchTask": "Build",
 			"request": "launch",
 			"program": "src/main.py",
 			"console": "integratedTerminal",

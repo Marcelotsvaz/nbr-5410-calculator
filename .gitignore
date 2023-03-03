@@ -7,4 +7,5 @@
 
 
 /deployment/
-__pycache__
+/share/translations/**.qm
+**/__pycache__/

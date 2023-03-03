@@ -25,7 +25,7 @@
 		{
 			"label": "Update Translations",
 			"type": "shell",
-			"command": "deployment/env/bin/pyside6-lupdate $(find src -regextype posix-extended -regex '.*\\.(py|ui)$') -no-obsolete -ts share/translations/app_{en_US,pt_BR}.ts",
+			"command": "deployment/env/bin/pyside6-lupdate $(find src -regextype posix-extended -regex '.*\\.(py|ui)$') -no-obsolete -locations none -ts share/translations/app_{en_US,pt_BR}.ts",
 			"icon": {
 				"id": "symbol-type-parameter",
 				"color": "terminal.ansiGreen",
@@ -40,6 +40,14 @@
 				"id": "symbol-type-parameter",
 				"color": "terminal.ansiGreen",
 			},
+			"problemMatcher": [],
+		},
+		{
+			"label": "Build",
+			"dependsOn": [
+				"Compile UI",
+				"Compile Translations",
+			],
 			"problemMatcher": [],
 		},
 	]
