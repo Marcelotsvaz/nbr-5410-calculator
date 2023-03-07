@@ -1,5 +1,4 @@
 CircuitsModel parent should be table?
-Translate about dialog
 Add arguments with units to docstrings
 Use integer keys in json
 Interpreter env var on pyproject

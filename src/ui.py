@@ -48,7 +48,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Create a new empty project.
 		'''
 		
-		self.setProject( Project( 'New project', [] ) )
+		self.setProject( Project( self.tr('New project'), [] ) )
 		self.circuitsTableView.newItem()
 		self.circuitsTableView.resizeColumnsToContents()
 	
@@ -61,8 +61,8 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		
 		fileName: str = QFileDialog().getOpenFileName(	# pyright: ignore [ reportUnknownMemberType ]
 			self,
-			filter = 'Project files (*.json)',
-			caption = 'Open Project',
+			filter = self.tr('Project files (*.json)'),
+			caption = self.tr('Open Project'),
 		)[0]
 		
 		if not fileName:
@@ -74,7 +74,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 			
 			self.setProject( project )
 		except FileNotFoundError as error:
-			QMessageBox.critical( self, 'Error', f'{error}' )
+			QMessageBox.critical( self, self.tr('Error'), f'{error}' )
 	
 	
 	@Slot()
@@ -85,8 +85,8 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		
 		fileName: str = QFileDialog().getSaveFileName(	# pyright: ignore [ reportUnknownMemberType ]
 			self,
-			filter = 'Project files (*.json)',
-			caption = 'Save Project As',
+			filter = self.tr('Project files (*.json)'),
+			caption = self.tr('Save Project As'),
 		)[0]
 		
 		if not fileName:
@@ -100,7 +100,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 				}
 				file.write( dumps( self.project, strip_properties = True, jdkwargs = jsonOptions ) )
 		except PermissionError as error:
-			QMessageBox.critical( self, 'Error', str( error ) )
+			QMessageBox.critical( self, self.tr('Error'), str( error ) )
 	
 	
 	@Slot()
@@ -109,4 +109,14 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Show about dialog.
 		'''
 		
-		QMessageBox.about( self, 'About NBR 5410 Calculator', 'Version 0.1.0' )
+		QMessageBox.about( self, self.tr('About NBR 5410 Calculator'), self.tr('Version {0}.').format( '0.1.0' ) )
+	
+	
+	# pylint: disable-next = useless-parent-delegation, invalid-name
+	def tr( self, *args: str ) -> str:
+		'''
+		Translate string.
+		Temporary fix for missing `tr` method in `QObject`.
+		'''
+		
+		return super().tr( *args )	# pyright: ignore

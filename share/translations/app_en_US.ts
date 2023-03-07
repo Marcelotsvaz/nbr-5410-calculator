@@ -69,6 +69,37 @@
     </message>
 </context>
 <context>
+    <name>MainWindow</name>
+    <message>
+        <source>New project</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Project files (*.json)</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Open Project</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Error</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Save Project As</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>About NBR 5410 Calculator</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Version {0}.</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>mainWindow</name>
     <message>
         <source>NBR 5410 Calculator</source>
