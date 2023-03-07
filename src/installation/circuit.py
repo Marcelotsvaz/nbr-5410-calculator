@@ -342,7 +342,7 @@ class Circuit:
 		
 		
 		# Wire section by minimum section.
-		if self.loadType == LoadType.LIGHTING:
+		if self.loadType is LoadType.LIGHTING:
 			minimumSection = 1.5
 		else:
 			minimumSection = 2.5

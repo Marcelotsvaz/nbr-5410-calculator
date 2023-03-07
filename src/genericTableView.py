@@ -127,10 +127,11 @@ class GenericTableModel( QAbstractTableModel ):
 		Return data for table headers.
 		'''
 		
-		if role != Qt.ItemDataRole.DisplayRole:
+		role = Qt.ItemDataRole( role )
+		if role is not Qt.ItemDataRole.DisplayRole:
 			return None
 		
-		if orientation == Qt.Orientation.Horizontal:
+		if orientation is Qt.Orientation.Horizontal:
 			return self.fields[section].label
 		
 		return f'{section + 1}'
@@ -141,13 +142,14 @@ class GenericTableModel( QAbstractTableModel ):
 		Return data for table cells.
 		'''
 		
+		role = Qt.ItemDataRole( role )
 		if role not in { Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.EditRole } or not index.isValid():
 			return None
 		
 		field = self.fields[index.column()]
 		item = self.datasource[index.row()]
 		
-		if role == Qt.ItemDataRole.EditRole:
+		if role is Qt.ItemDataRole.EditRole:
 			return field.getFrom( item )
 		
 		return f'{field.getFrom( item ):{field.format}}{field.suffix}'
@@ -158,7 +160,8 @@ class GenericTableModel( QAbstractTableModel ):
 		Update values in model.
 		'''
 		
-		if role != Qt.ItemDataRole.EditRole or not index.isValid():
+		role = Qt.ItemDataRole( role )
+		if role is not Qt.ItemDataRole.EditRole or not index.isValid():
 			return False
 		
 		field = self.fields[index.column()]
@@ -212,7 +215,7 @@ class GenericTableModel( QAbstractTableModel ):
 		Sort items by specified field.
 		'''
 		
-		reverse = order != Qt.SortOrder.AscendingOrder
+		reverse = order is not Qt.SortOrder.AscendingOrder
 		key = attrgetter( self.fields[column].name )
 		
 		self.layoutAboutToBeChanged.emit()	# pyright: ignore

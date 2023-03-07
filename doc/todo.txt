@@ -1,5 +1,4 @@
 CircuitsModel parent should be table?
-Use is with Enum
 Delete multiple items
 Translate about dialog
 Add arguments with units to docstrings
