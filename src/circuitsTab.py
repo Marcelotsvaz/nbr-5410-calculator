@@ -50,20 +50,29 @@ class Field( NamedTuple ):
 	suffix: str = ''
 	
 	
-	def type( self, instance: Any ) -> type:
+	def typeIn( self, instance: Any ) -> type:
 		'''
-		Return type of field in `instance`.
+		Return type of `Field` in `instance`.
 		'''
 		
 		return type( getattr( instance, self.setter or self.name ) )
 	
 	
-	def set( self, instance: Any, value: Any ) -> None:
+	def getFrom( self, instance: Any ) -> Any:
 		'''
-		Set value of field in `instance`.
+		Return the value of `Field` in `instance`.
 		'''
 		
-		setattr( instance, self.setter or self.name, self.type( instance )( value ) )
+		return attrgetter( self.name )( instance )
+	
+	
+	def setIn( self, instance: Any, value: Any ) -> None:
+		'''
+		Set value of `Field` in `instance`.
+		'''
+		
+		setattr( instance, self.setter or self.name, self.typeIn( instance )( value ) )
+
 
 
 class CircuitsModel( QAbstractTableModel ):
@@ -159,26 +168,24 @@ class CircuitsModel( QAbstractTableModel ):
 		return f'{section + 1}'
 	
 	
-	def data( self, index: ModelIndex, role: int = 0 ) -> str | None:
+	def data( self, index: ModelIndex, role: int = 0 ) -> Any | None:
 		'''
 		Return data for table cells.
 		'''
 		
 		if role in { Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.EditRole } and index.isValid():
+			field = self.fields[index.column()]
 			circuit = self.circuits[index.row()]
-			fieldGetter = attrgetter( self.fields[index.column()].name )
-			fieldFormat = self.fields[index.column()].format
-			fieldSuffix = self.fields[index.column()].suffix
 			
 			if role == Qt.ItemDataRole.EditRole:
-				return str( fieldGetter( circuit ) )
+				return field.getFrom( circuit )
 			
-			return f'{fieldGetter( circuit ):{fieldFormat}}{fieldSuffix}'
+			return f'{field.getFrom( circuit ):{field.format}}{field.suffix}'
 		
 		return None
 	
 	
-	def setData( self, index: ModelIndex, value: float, role: int = 0 ) -> bool:
+	def setData( self, index: ModelIndex, value: Any, role: int = 0 ) -> bool:
 		'''
 		Update values in model.
 		'''
@@ -188,7 +195,7 @@ class CircuitsModel( QAbstractTableModel ):
 			circuit = self.circuits[index.row()]
 			
 			with suppress( ValueError ):
-				field.set( circuit, value )
+				field.setIn( circuit, value )
 				self.dataChanged.emit( index, index, role )	# pyright: ignore
 				
 				return True
