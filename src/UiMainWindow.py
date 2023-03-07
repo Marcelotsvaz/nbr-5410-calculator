@@ -108,7 +108,7 @@ class Ui_mainWindow(object):
         self.circuitsTableView = GenericTableView(self.circuitsTab)
         self.circuitsTableView.setObjectName(u"circuitsTableView")
         self.circuitsTableView.setAlternatingRowColors(True)
-        self.circuitsTableView.setSelectionMode(QAbstractItemView.SingleSelection)
+        self.circuitsTableView.setSelectionMode(QAbstractItemView.ExtendedSelection)
         self.circuitsTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
         self.circuitsTableView.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
         self.circuitsTableView.setSortingEnabled(True)
@@ -184,7 +184,7 @@ class Ui_mainWindow(object):
         self.actionNew.triggered.connect(mainWindow.newProject)
         self.actionAbout.triggered.connect(mainWindow.showAbout)
         self.actionQuit.triggered.connect(mainWindow.close)
-        self.deleteCircuitButton.clicked.connect(self.circuitsTableView.deleteItem)
+        self.deleteCircuitButton.clicked.connect(self.circuitsTableView.deleteSelectedItems)
 
         self.tabWidget.setCurrentIndex(1)
 

@@ -50,7 +50,7 @@
            <bool>true</bool>
           </property>
           <property name="selectionMode">
-           <enum>QAbstractItemView::SingleSelection</enum>
+           <enum>QAbstractItemView::ExtendedSelection</enum>
           </property>
           <property name="selectionBehavior">
            <enum>QAbstractItemView::SelectRows</enum>
@@ -216,7 +216,7 @@
    <header>genericTableView</header>
    <slots>
     <slot>newItem()</slot>
-    <slot>deleteItem()</slot>
+    <slot>deleteSelectedItems()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -338,7 +338,7 @@
    <sender>deleteCircuitButton</sender>
    <signal>clicked()</signal>
    <receiver>circuitsTableView</receiver>
-   <slot>deleteItem()</slot>
+   <slot>deleteSelectedItems()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>814</x>

@@ -1,5 +1,4 @@
 CircuitsModel parent should be table?
-Delete multiple items
 Translate about dialog
 Add arguments with units to docstrings
 Use integer keys in json

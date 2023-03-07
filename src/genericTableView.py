@@ -250,10 +250,16 @@ class GenericTableView( QTableView ):
 	
 	
 	@Slot()
-	def deleteItem( self ) -> None:
+	def deleteSelectedItems( self ) -> None:
 		'''
-		Delete selected item from table.
+		Delete selected items from table.
 		'''
 		
-		if indexes := self.selectedIndexes():
-			self.model().removeRow( indexes[0].row() )
+		indexes = {
+			QPersistentModelIndex( index )
+			for index in self.selectedIndexes()
+			if index.column() == 0
+		}
+		
+		for index in indexes:
+			self.model().removeRow( index.row() )
