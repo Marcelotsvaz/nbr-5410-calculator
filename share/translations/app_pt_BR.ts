@@ -69,10 +69,29 @@
     </message>
 </context>
 <context>
+    <name>ConduitRunsModel</name>
+    <message>
+        <source>Name</source>
+        <translation>Nome</translation>
+    </message>
+    <message>
+        <source>Diameter</source>
+        <translation>Diâmetro</translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation>Comprimento</translation>
+    </message>
+    <message>
+        <source>New Conduit Run</source>
+        <translation>Nova Passagem de Conduítes</translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
-        <source>New project</source>
-        <translation>Novo projeto</translation>
+        <source>New Project</source>
+        <translation>Novo Projeto</translation>
     </message>
     <message>
         <source>Project files (*.json)</source>
@@ -176,6 +195,14 @@
     <message>
         <source>Ctrl+Q</source>
         <translation></translation>
+    </message>
+    <message>
+        <source>New conduit run</source>
+        <translation>Nova passagem de conduítes</translation>
+    </message>
+    <message>
+        <source>Delete conduit run</source>
+        <translation>Deletar passagem de conduítes</translation>
     </message>
 </context>
 </TS>

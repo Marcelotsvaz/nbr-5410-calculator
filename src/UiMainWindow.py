@@ -146,9 +146,41 @@ class Ui_mainWindow(object):
         self.gridLayout_2.addWidget(self.deleteCircuitButton, 0, 1, 1, 1)
 
         self.tabWidget.addTab(self.circuitsTab, "")
-        self.tab = QWidget()
-        self.tab.setObjectName(u"tab")
-        self.tabWidget.addTab(self.tab, "")
+        self.conduitsTab = QWidget()
+        self.conduitsTab.setObjectName(u"conduitsTab")
+        self.gridLayout_3 = QGridLayout(self.conduitsTab)
+        self.gridLayout_3.setObjectName(u"gridLayout_3")
+        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum)
+
+        self.gridLayout_3.addItem(self.horizontalSpacer_2, 0, 0, 1, 1)
+
+        self.newConduitRunButton = QPushButton(self.conduitsTab)
+        self.newConduitRunButton.setObjectName(u"newConduitRunButton")
+        self.newConduitRunButton.setIcon(icon6)
+
+        self.gridLayout_3.addWidget(self.newConduitRunButton, 0, 2, 1, 1)
+
+        self.deleteConduitRunButton = QPushButton(self.conduitsTab)
+        self.deleteConduitRunButton.setObjectName(u"deleteConduitRunButton")
+        self.deleteConduitRunButton.setIcon(icon7)
+
+        self.gridLayout_3.addWidget(self.deleteConduitRunButton, 0, 1, 1, 1)
+
+        self.conduitsTableView = GenericTableView(self.conduitsTab)
+        self.conduitsTableView.setObjectName(u"conduitsTableView")
+        self.conduitsTableView.setAlternatingRowColors(True)
+        self.conduitsTableView.setSelectionMode(QAbstractItemView.ExtendedSelection)
+        self.conduitsTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
+        self.conduitsTableView.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
+        self.conduitsTableView.setSortingEnabled(True)
+        self.conduitsTableView.setWordWrap(False)
+        self.conduitsTableView.horizontalHeader().setHighlightSections(False)
+        self.conduitsTableView.horizontalHeader().setProperty("showSortIndicator", True)
+        self.conduitsTableView.horizontalHeader().setStretchLastSection(True)
+
+        self.gridLayout_3.addWidget(self.conduitsTableView, 1, 0, 1, 3)
+
+        self.tabWidget.addTab(self.conduitsTab, "")
 
         self.gridLayout.addWidget(self.tabWidget, 0, 0, 1, 4)
 
@@ -185,6 +217,8 @@ class Ui_mainWindow(object):
         self.actionAbout.triggered.connect(mainWindow.showAbout)
         self.actionQuit.triggered.connect(mainWindow.close)
         self.deleteCircuitButton.clicked.connect(self.circuitsTableView.deleteSelectedItems)
+        self.newConduitRunButton.clicked.connect(self.conduitsTableView.newItem)
+        self.deleteConduitRunButton.clicked.connect(self.conduitsTableView.deleteSelectedItems)
 
         self.tabWidget.setCurrentIndex(1)
 
@@ -219,7 +253,9 @@ class Ui_mainWindow(object):
         self.newCircuitButton.setText(QCoreApplication.translate("mainWindow", u"New circuit", None))
         self.deleteCircuitButton.setText(QCoreApplication.translate("mainWindow", u"Delete circuit", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.circuitsTab), QCoreApplication.translate("mainWindow", u"Circuits", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.tab), QCoreApplication.translate("mainWindow", u"Conduits", None))
+        self.newConduitRunButton.setText(QCoreApplication.translate("mainWindow", u"New conduit run", None))
+        self.deleteConduitRunButton.setText(QCoreApplication.translate("mainWindow", u"Delete conduit run", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.conduitsTab), QCoreApplication.translate("mainWindow", u"Conduits", None))
         self.menuFile.setTitle(QCoreApplication.translate("mainWindow", u"&File", None))
         self.menuHelp.setTitle(QCoreApplication.translate("mainWindow", u"&Help", None))
     # retranslateUi

@@ -26,7 +26,7 @@ class CircuitsModel( GenericTableModel ):
 	Map a list of `Circuit`s to a QTableView.
 	'''
 	
-	def __init__( self, parent: QObject | None = None, circuits: list[Circuit] | None = None ) -> None:
+	def __init__( self, circuits: list[Circuit], parent: QObject | None = None ) -> None:
 		'''
 		Setup fields and load initial data.
 		'''

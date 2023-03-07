@@ -9,6 +9,7 @@
 from dataclasses import dataclass
 
 from .circuit import Circuit
+from .conduitRun import ConduitRun
 
 
 
@@ -20,3 +21,4 @@ class Project:
 	
 	name: str
 	circuits: list[Circuit]
+	conduitRuns: list[ConduitRun]

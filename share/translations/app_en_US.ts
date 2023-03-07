@@ -69,9 +69,28 @@
     </message>
 </context>
 <context>
+    <name>ConduitRunsModel</name>
+    <message>
+        <source>Name</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Diameter</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Length</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>New Conduit Run</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
-        <source>New project</source>
+        <source>New Project</source>
         <translation></translation>
     </message>
     <message>
@@ -175,6 +194,14 @@
     </message>
     <message>
         <source>Ctrl+Q</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>New conduit run</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Delete conduit run</source>
         <translation></translation>
     </message>
 </context>

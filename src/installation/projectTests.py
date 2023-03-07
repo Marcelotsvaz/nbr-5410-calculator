@@ -18,6 +18,7 @@ from .circuit import (
 	WireConfiguration,
 	Circuit,
 )
+from .conduitRun import ConduitRun
 
 
 
@@ -31,7 +32,7 @@ class ProjectTests( TestCase ):
 		Test empty `Project`.
 		'''
 		
-		Project( 'Test Project', [] )
+		Project( 'Test Project', [], [] )
 	
 	
 	def testProjectWithCircuits( self ) -> None:
@@ -54,4 +55,18 @@ class ProjectTests( TestCase ):
 			power				= 5000,
 		)
 		
-		Project( 'Test Project', [ circuit ] )
+		Project( 'Test Project', [ circuit ], [] )
+	
+	
+	def testProjectWithConduitRuns( self ) -> None:
+		'''
+		Test `Project` with `ConduitRun`s.
+		'''
+		
+		conduitRun = ConduitRun(
+			name = 'Test Conduit Run',
+			diameter = 10.0,
+			length = 10.0,
+		)
+		
+		Project( 'Test Project', [], [ conduitRun ] )

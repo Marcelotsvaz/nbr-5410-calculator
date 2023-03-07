@@ -73,7 +73,7 @@ class GenericTableModel( QAbstractTableModel ):
 	def __init__(
 		self,
 		fields: list[Field],
-		datasource: list[Any] | None = None,
+		datasource: list[Any],
 		parent: QObject | None = None,
 	) -> None:
 		'''
@@ -83,7 +83,7 @@ class GenericTableModel( QAbstractTableModel ):
 		super().__init__( parent )
 		
 		self.fields = fields
-		self.datasource = datasource or []
+		self.datasource = datasource
 	
 	
 	def columnCount( self, parent: ModelIndex = QModelIndex() ) -> int:

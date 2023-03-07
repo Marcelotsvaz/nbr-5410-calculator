@@ -13,6 +13,7 @@ from jsons import loads, dumps
 from UiMainWindow import Ui_mainWindow as UiMainWindow
 from installation.project import Project
 from circuitsTab import CircuitsModel
+from conduitsTab import ConduitRunsModel
 
 
 
@@ -38,8 +39,12 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		'''
 		
 		self.project = project	# pylint: disable = attribute-defined-outside-init
-		self.circuitsTableView.setModel( CircuitsModel( self, project.circuits ) )
+		
+		self.circuitsTableView.setModel( CircuitsModel( project.circuits, self ) )
 		self.circuitsTableView.resizeColumnsToContents()
+		
+		self.conduitsTableView.setModel( ConduitRunsModel( project.conduitRuns, self ) )
+		self.conduitsTableView.resizeColumnsToContents()
 	
 	
 	@Slot()
@@ -48,9 +53,12 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Create a new empty project.
 		'''
 		
-		self.setProject( Project( self.tr('New project'), [] ) )
+		self.setProject( Project( self.tr('New Project'), [], [] ) )
 		self.circuitsTableView.newItem()
 		self.circuitsTableView.resizeColumnsToContents()
+		
+		self.conduitsTableView.newItem()
+		self.conduitsTableView.resizeColumnsToContents()
 	
 	
 	@Slot()
@@ -109,7 +117,11 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Show about dialog.
 		'''
 		
-		QMessageBox.about( self, self.tr('About NBR 5410 Calculator'), self.tr('Version {0}.').format( '0.1.0' ) )
+		QMessageBox.about(
+			self,
+			self.tr('About NBR 5410 Calculator'),
+			self.tr('Version {0}.').format( '0.1.0' )
+		)
 	
 	
 	# pylint: disable-next = useless-parent-delegation, invalid-name
