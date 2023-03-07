@@ -45,7 +45,7 @@
          </spacer>
         </item>
         <item row="1" column="0" colspan="3">
-         <widget class="CircuitsTableView" name="circuitsTableView">
+         <widget class="GenericTableView" name="circuitsTableView">
           <property name="alternatingRowColors">
            <bool>true</bool>
           </property>
@@ -211,12 +211,12 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>CircuitsTableView</class>
+   <class>GenericTableView</class>
    <extends>QTableView</extends>
-   <header>circuitsTab</header>
+   <header>genericTableView</header>
    <slots>
-    <slot>newCircuit()</slot>
-    <slot>deleteCircuit()</slot>
+    <slot>newItem()</slot>
+    <slot>deleteItem()</slot>
    </slots>
   </customwidget>
  </customwidgets>
@@ -274,7 +274,7 @@
    <sender>newCircuitButton</sender>
    <signal>clicked()</signal>
    <receiver>circuitsTableView</receiver>
-   <slot>newCircuit()</slot>
+   <slot>newItem()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>968</x>
@@ -338,7 +338,7 @@
    <sender>deleteCircuitButton</sender>
    <signal>clicked()</signal>
    <receiver>circuitsTableView</receiver>
-   <slot>deleteCircuit()</slot>
+   <slot>deleteItem()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>814</x>

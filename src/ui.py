@@ -12,6 +12,7 @@ from jsons import loads, dumps
 
 from UiMainWindow import Ui_mainWindow as UiMainWindow
 from installation.project import Project
+from circuitsTab import CircuitsModel
 
 
 
@@ -37,7 +38,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		'''
 		
 		self.project = project	# pylint: disable = attribute-defined-outside-init
-		self.circuitsTableView.setDatasource( project.circuits )
+		self.circuitsTableView.setModel( CircuitsModel( self, project.circuits ) )
 		self.circuitsTableView.resizeColumnsToContents()
 	
 	
@@ -48,7 +49,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		'''
 		
 		self.setProject( Project( 'New project', [] ) )
-		self.circuitsTableView.newCircuit()
+		self.circuitsTableView.newItem()
 		self.circuitsTableView.resizeColumnsToContents()
 	
 	

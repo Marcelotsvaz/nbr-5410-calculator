@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (QAbstractItemView, QApplication, QGridLayout, QHe
     QSizePolicy, QSpacerItem, QStatusBar, QTabWidget,
     QWidget)
 
-from circuitsTab import CircuitsTableView
+from genericTableView import GenericTableView
 
 class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
@@ -105,7 +105,7 @@ class Ui_mainWindow(object):
 
         self.gridLayout_2.addItem(self.horizontalSpacer, 0, 0, 1, 1)
 
-        self.circuitsTableView = CircuitsTableView(self.circuitsTab)
+        self.circuitsTableView = GenericTableView(self.circuitsTab)
         self.circuitsTableView.setObjectName(u"circuitsTableView")
         self.circuitsTableView.setAlternatingRowColors(True)
         self.circuitsTableView.setSelectionMode(QAbstractItemView.SingleSelection)
@@ -180,11 +180,11 @@ class Ui_mainWindow(object):
         self.actionSave.triggered.connect(mainWindow.saveProject)
         self.actionOpen.triggered.connect(mainWindow.loadProject)
         self.actionSaveAs.triggered.connect(mainWindow.saveProject)
-        self.newCircuitButton.clicked.connect(self.circuitsTableView.newCircuit)
+        self.newCircuitButton.clicked.connect(self.circuitsTableView.newItem)
         self.actionNew.triggered.connect(mainWindow.newProject)
         self.actionAbout.triggered.connect(mainWindow.showAbout)
         self.actionQuit.triggered.connect(mainWindow.close)
-        self.deleteCircuitButton.clicked.connect(self.circuitsTableView.deleteCircuit)
+        self.deleteCircuitButton.clicked.connect(self.circuitsTableView.deleteItem)
 
         self.tabWidget.setCurrentIndex(1)
 
