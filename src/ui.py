@@ -53,7 +53,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Create a new empty project.
 		'''
 		
-		self.setProject( Project( self.tr('New Project'), [], [] ) )
+		self.setProject( Project( self.tr('New Project') ) )
 		self.circuitsTableView.newItem()
 		self.circuitsTableView.resizeColumnsToContents()
 		

@@ -22,3 +22,14 @@ class Project:
 	name: str
 	circuits: list[Circuit]
 	conduitRuns: list[ConduitRun]
+	
+	
+	def __init__(
+		self,
+		name:str,
+		circuits: list[Circuit] | None = None,
+		conduitRuns: list[ConduitRun] | None = None
+	) -> None:
+		self.name = name
+		self.circuits = circuits if circuits is not None else []
+		self.conduitRuns = conduitRuns if conduitRuns is not None else []

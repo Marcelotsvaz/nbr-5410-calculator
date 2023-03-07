@@ -32,7 +32,7 @@ class ProjectTests( TestCase ):
 		Test empty `Project`.
 		'''
 		
-		Project( 'Test Project', [], [] )
+		Project( 'Test Project' )
 	
 	
 	def testProjectWithCircuits( self ) -> None:
@@ -55,7 +55,7 @@ class ProjectTests( TestCase ):
 			power				= 5000,
 		)
 		
-		Project( 'Test Project', [ circuit ], [] )
+		Project( 'Test Project', circuits = [ circuit ] )
 	
 	
 	def testProjectWithConduitRuns( self ) -> None:
@@ -69,4 +69,4 @@ class ProjectTests( TestCase ):
 			length = 10.0,
 		)
 		
-		Project( 'Test Project', [], [ conduitRun ] )
+		Project( 'Test Project', conduitRuns = [ conduitRun ] )
