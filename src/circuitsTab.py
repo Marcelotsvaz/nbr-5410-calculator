@@ -27,10 +27,6 @@ class CircuitsModel( GenericTableModel ):
 	'''
 	
 	def __init__( self, circuits: list[Circuit], parent: QObject | None = None ) -> None:
-		'''
-		Setup fields and load initial data.
-		'''
-		
 		fields = [
 			Field( 'name',						self.tr('Name') ),
 			Field( 'power',						self.tr('Power'),			format = ',', suffix = ' VA' ),

@@ -19,10 +19,6 @@ class ConduitRunsModel( GenericTableModel ):
 	'''
 	
 	def __init__( self, conduitRuns: list[ConduitRun], parent: QObject | None = None ) -> None:
-		'''
-		Setup fields and load initial data.
-		'''
-		
 		fields = [
 			Field( 'name',		self.tr('Name') ),
 			Field( 'diameter',	self.tr('Diameter'),	format = ',', suffix = ' mm' ),

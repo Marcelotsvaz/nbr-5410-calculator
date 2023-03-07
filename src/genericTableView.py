@@ -76,10 +76,6 @@ class GenericTableModel( QAbstractTableModel ):
 		datasource: list[Any],
 		parent: QObject | None = None,
 	) -> None:
-		'''
-		Setup fields and load initial data.
-		'''
-		
 		super().__init__( parent )
 		
 		self.fields = fields

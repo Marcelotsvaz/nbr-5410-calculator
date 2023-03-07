@@ -23,10 +23,6 @@ class MainWindow( QMainWindow, UiMainWindow ):
 	'''
 	
 	def __init__( self, parent: QWidget | None = None ) -> None:
-		'''
-		Setup main application window.
-		'''
-		
 		super().__init__( parent )
 		self.setupUi( self )	# pyright: ignore [reportUnknownMemberType]
 		
