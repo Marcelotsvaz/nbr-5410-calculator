@@ -16,7 +16,6 @@ from installation.circuit import (
 	WireInsulation,
 	WireType,
 	ReferenceMethod,
-	WireConfiguration,
 	Circuit,
 )
 
@@ -54,7 +53,7 @@ class CircuitsModel( GenericTableModel ):
 		'''
 		
 		loadType = LoadType( 'Power', 2.5, 1.0 )
-		supply = Supply( 127, 1, WireConfiguration.TWO )
+		supply = Supply( 127, 1 )
 		wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
 		circuit = Circuit(
 			grouping		= 1,

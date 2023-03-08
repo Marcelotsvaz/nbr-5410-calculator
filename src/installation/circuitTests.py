@@ -17,7 +17,6 @@ from .circuit import (
 	WireInsulation,
 	WireType,
 	ReferenceMethod,
-	WireConfiguration,
 	Circuit,
 	ProjectError,
 )
@@ -35,7 +34,7 @@ class BaseCircuitTests( TestCase ):
 		'''
 		
 		loadType = LoadType( 'Power', 2.5, 1.0 )
-		supply = Supply( 100, 1, WireConfiguration.TWO )
+		supply = Supply( 100, 1 )
 		wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
 		self.circuit = Circuit(
 			grouping		= 1,
@@ -258,13 +257,12 @@ class CircuitSerializationTests( BaseCircuitTests ):
 			'referenceMethod': 'B1',
 			'supply': {
 				'voltage': 100,
-				'wireConfiguration': 'TWO',
 				'phases': 1,
 			},
 			'temperature': 30,
 			'wireType': {
 				'insulation': 'PVC',
-				'material': 'COPPER'
+				'material': 'COPPER',
 			},
 		}
 	
@@ -274,7 +272,7 @@ class CircuitSerializationTests( BaseCircuitTests ):
 		Test serialization with jsons.dump.
 		'''
 		
-		circuitJsonDict = dump( self.circuit, strip_properties = True )
+		circuitJsonDict = dump( self.circuit, strip_properties = True, strip_privates = True )
 		self.assertEqual( circuitJsonDict, self.circuitJsonDict )
 	
 	

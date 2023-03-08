@@ -102,7 +102,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 					'indent': '\t',
 					'sort_keys': True,
 				}
-				file.write( dumps( self.project, strip_properties = True, jdkwargs = jsonOptions ) )
+				file.write( dumps( self.project, strip_properties = True, strip_privates = True, jdkwargs = jsonOptions ) )
 		except PermissionError as error:
 			QMessageBox.critical( self, self.tr('Error'), str( error ) )
 	

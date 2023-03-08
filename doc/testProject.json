@@ -14,8 +14,7 @@
 			"referenceMethod": "B1",
 			"supply": {
 				"phases": 2,
-				"voltage": 220,
-				"wireConfiguration": "TWO"
+				"voltage": 220
 			},
 			"temperature": 30,
 			"wireType": {
@@ -37,8 +36,7 @@
 			"referenceMethod": "B1",
 			"supply": {
 				"phases": 2,
-				"voltage": 220,
-				"wireConfiguration": "TWO"
+				"voltage": 220
 			},
 			"temperature": 30,
 			"wireType": {
@@ -60,8 +58,7 @@
 			"referenceMethod": "B1",
 			"supply": {
 				"phases": 2,
-				"voltage": 220,
-				"wireConfiguration": "TWO"
+				"voltage": 220
 			},
 			"temperature": 30,
 			"wireType": {
@@ -83,8 +80,7 @@
 			"referenceMethod": "B1",
 			"supply": {
 				"phases": 2,
-				"voltage": 220,
-				"wireConfiguration": "TWO"
+				"voltage": 220
 			},
 			"temperature": 30,
 			"wireType": {
@@ -106,8 +102,7 @@
 			"referenceMethod": "B1",
 			"supply": {
 				"phases": 2,
-				"voltage": 220,
-				"wireConfiguration": "TWO"
+				"voltage": 220
 			},
 			"temperature": 30,
 			"wireType": {
@@ -129,8 +124,7 @@
 			"referenceMethod": "B1",
 			"supply": {
 				"phases": 2,
-				"voltage": 220,
-				"wireConfiguration": "TWO"
+				"voltage": 220
 			},
 			"temperature": 30,
 			"wireType": {
@@ -152,8 +146,7 @@
 			"referenceMethod": "B1",
 			"supply": {
 				"phases": 2,
-				"voltage": 220,
-				"wireConfiguration": "TWO"
+				"voltage": 220
 			},
 			"temperature": 30,
 			"wireType": {
@@ -175,8 +168,7 @@
 			"referenceMethod": "B1",
 			"supply": {
 				"phases": 2,
-				"voltage": 220,
-				"wireConfiguration": "TWO"
+				"voltage": 220
 			},
 			"temperature": 30,
 			"wireType": {
@@ -198,8 +190,7 @@
 			"referenceMethod": "B1",
 			"supply": {
 				"phases": 2,
-				"voltage": 220,
-				"wireConfiguration": "TWO"
+				"voltage": 220
 			},
 			"temperature": 30,
 			"wireType": {
@@ -221,8 +212,7 @@
 			"referenceMethod": "B1",
 			"supply": {
 				"phases": 2,
-				"voltage": 220,
-				"wireConfiguration": "TWO"
+				"voltage": 220
 			},
 			"temperature": 30,
 			"wireType": {
@@ -244,8 +234,7 @@
 			"referenceMethod": "B1",
 			"supply": {
 				"phases": 2,
-				"voltage": 220,
-				"wireConfiguration": "TWO"
+				"voltage": 220
 			},
 			"temperature": 30,
 			"wireType": {
@@ -267,8 +256,7 @@
 			"referenceMethod": "B1",
 			"supply": {
 				"phases": 2,
-				"voltage": 220,
-				"wireConfiguration": "TWO"
+				"voltage": 220
 			},
 			"temperature": 30,
 			"wireType": {

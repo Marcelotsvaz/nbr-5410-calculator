@@ -15,6 +15,21 @@ from pyjson5 import decode_io
 
 
 @dataclass
+class Supply:
+	'''
+	Power supply feeding a `Circuit`. Eg.: 3 Phase 220V.
+	'''
+	
+	voltage: int
+	phases: int
+	
+	
+	def __str__( self ) -> str:
+		return f'{self.voltage:,} V {self.phases} Phase{"s" if self.phases > 1 else ""}'
+
+
+
+@dataclass
 class LoadType:
 	'''
 	Load type to determine minimum wire section and demand factor.
@@ -25,41 +40,6 @@ class LoadType:
 	name: str
 	minimumWireSection: float
 	demandFactor: float
-
-
-
-@dataclass
-class Supply:
-	'''
-	Power supply feeding a `Circuit`. Eg.: 3 Phase 220V.
-	'''
-	
-	voltage: int
-	phases: int
-	wireConfiguration: 'WireConfiguration'
-	
-	
-	def __str__( self ) -> str:
-		return f'{self.voltage:,} V {self.phases} Phase{"s" if self.phases > 1 else ""}'
-
-
-
-class ReferenceMethod( Enum ):
-	'''
-	Reference wire installation methods used to determine wire current capacity.
-	
-	See NBR 5410 6.2.5.1.2.
-	'''
-	
-	A1 = auto()
-	A2 = auto()
-	B1 = auto()
-	B2 = auto()
-	C = auto()
-	D = auto()
-	E = auto()
-	F = auto()
-	G = auto()
 
 
 
@@ -88,18 +68,25 @@ class WireInsulation( Enum ):
 
 
 
-class WireConfiguration( Enum ):
+class ReferenceMethod( Enum ):
 	'''
-	Number and layout of loaded wires for a specific reference method.
+	Reference wire installation methods used to determine wire current capacity.
 	
+	See NBR 5410 6.2.5.1.2.
 	See NBR 5410 tables 36~39.
 	'''
 	
-	TWO = 'two'
-	THREE = 'three'
-	THREE_JUXTAPOSED = 'threeJuxtaposed'
-	THREE_HORIZONTAL = 'threeHorizontal'
-	THREE_VERTICAL = 'threeVertical'
+	A1 = auto()
+	A2 = auto()
+	B1 = auto()
+	B2 = auto()
+	C = auto()
+	D = auto()
+	E = auto()
+	F = auto()
+	F_JUXTAPOSED = auto()
+	G_HORIZONTAL = auto()
+	G_VERTICAL = auto()
 
 
 
@@ -112,15 +99,40 @@ class WireType:
 	material: WireMaterial
 	insulation: WireInsulation
 	
+	_resistivity: float
+	_sections: list[float]
+	_referenceMethods: dict[str, dict[str, list[float]]]
+	
+	
+	def __init__( self, material: WireMaterial, insulation: WireInsulation ):
+		with open( f'share/data/wireTypes/{material.value}-{insulation.value}.json5' ) as file:
+			jsonData = decode_io( file )
+		
+		self.material = material
+		self.insulation = insulation
+		
+		self._resistivity = jsonData['resistivity']
+		self._sections = jsonData['wireSections']
+		self._referenceMethods = jsonData['referenceMethods']
+	
 	
 	def __str__( self ) -> str:
 		return f'{self.insulation.value}-insulated {self.material.value} wire'
 	
 	
+	@property
+	def resistivity( self ):
+		'''
+		Resistivity in ohm meter.
+		'''
+		
+		return self._resistivity
+	
+	
 	def getWires(
 		self,
 		referenceMethod: ReferenceMethod,
-		wireConfiguration: WireConfiguration,
+		phases: int,
 		correctionFactor: float,
 	) -> list['Wire']:
 		'''
@@ -129,14 +141,11 @@ class WireType:
 		See NBR 5410 tables 36~39.
 		'''
 		
-		with open( f'share/data/wireTypes/{self.material.value}-{self.insulation.value}.json5' ) as file:
-			jsonData = decode_io( file )
-			sections = jsonData['wireSections']
-			capacities = jsonData['referenceMethods'][referenceMethod.name][wireConfiguration.value]
+		capacities = self._referenceMethods[referenceMethod.name][str( phases + 1 )]
 		
 		return [
 			Wire( self, section, capacity, correctionFactor )
-			for section, capacity in zip( sections, capacities )
+			for section, capacity in zip( self._sections, capacities )
 		]
 
 
@@ -247,11 +256,7 @@ class Wire:
 		Wire resistance in ohm/meter.
 		'''
 		
-		# Resistivity in ohm meter.
-		# TODO: Move this to WireType.
-		resistivity = 17.2E-9 if self.type.material is WireMaterial.COPPER else 26.5E-9
-		
-		return resistivity / ( self.section / 1000**2 )
+		return self.type.resistivity / ( self.section / 1000**2 )
 
 
 
@@ -389,7 +394,7 @@ class Circuit:
 		wireByCriteria: dict[str, Wire] = {}
 		allWires = self.wireType.getWires(
 			self.referenceMethod,
-			self.supply.wireConfiguration,
+			self.supply.phases,
 			self.correctionFactor,
 		)
 		

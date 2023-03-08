@@ -63,7 +63,7 @@ class ConduitRunSerializationTests( BaseConduitRunTests ):
 		Test serialization with jsons.dump.
 		'''
 		
-		conduitRunJsonDict = dump( self.conduitRun, strip_properties = True )
+		conduitRunJsonDict = dump( self.conduitRun, strip_properties = True, strip_privates = True )
 		self.assertEqual( conduitRunJsonDict, self.conduitRunJsonDict )
 	
 	
