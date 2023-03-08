@@ -1,4 +1,3 @@
-Make load type regular class
 Unify voltage and phases into supply class
 Add arguments with units to docstrings, including properties
 CircuitsModel parent should be table?

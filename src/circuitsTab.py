@@ -30,7 +30,7 @@ class CircuitsModel( GenericTableModel ):
 		fields = [
 			Field( 'name',						self.tr('Name') ),
 			Field( 'power',						self.tr('Power'),			format = ',', suffix = ' VA' ),
-			Field( 'loadType.value',			self.tr('Load Type'),		setter = 'loadType' ),
+			Field( 'loadType.name',				self.tr('Load Type'),		setter = 'loadType' ),
 			Field( 'voltage',					self.tr('Voltage'),			format = ',', suffix = ' V' ),
 			Field( 'phases',					self.tr('Phases') ),
 			Field( 'grouping',					self.tr('Grouping') ),
@@ -54,10 +54,11 @@ class CircuitsModel( GenericTableModel ):
 		Return a new `Circuit` to be used with `insertRows`.
 		'''
 		
+		loadType = LoadType( 'Power', 2.5, 1.0 )
 		wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
 		circuit = Circuit(
 			name				= self.tr('New Circuit'),
-			loadType			= LoadType.POWER,
+			loadType			= loadType,
 			voltage				= 127,
 			phases				= 1,
 			grouping			= 1,

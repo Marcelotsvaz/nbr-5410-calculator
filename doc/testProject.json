@@ -4,7 +4,11 @@
 			"description": null,
 			"grouping": 1,
 			"length": 10.0,
-			"loadType": "POWER",
+			"loadType": {
+				"demandFactor": 1.0,
+				"minimumWireSection": 2.5,
+				"name": "Power"
+			},
 			"name": "Chuveiro",
 			"phases": 2,
 			"power": 8000,
@@ -21,7 +25,11 @@
 			"description": null,
 			"grouping": 1,
 			"length": 10.0,
-			"loadType": "POWER",
+			"loadType": {
+				"demandFactor": 1.0,
+				"minimumWireSection": 2.5,
+				"name": "Power"
+			},
 			"name": "Torneira El\u00e9trica Cozinha",
 			"phases": 2,
 			"power": 6000,
@@ -38,7 +46,11 @@
 			"description": null,
 			"grouping": 1,
 			"length": 10.0,
-			"loadType": "POWER",
+			"loadType": {
+				"demandFactor": 1.0,
+				"minimumWireSection": 2.5,
+				"name": "Power"
+			},
 			"name": "Lavadora/Secadora de Roupas",
 			"phases": 2,
 			"power": 3000,
@@ -55,7 +67,11 @@
 			"description": null,
 			"grouping": 1,
 			"length": 10.0,
-			"loadType": "POWER",
+			"loadType": {
+				"demandFactor": 1.0,
+				"minimumWireSection": 2.5,
+				"name": "Power"
+			},
 			"name": "Microondas/Forno El\u00e9trico",
 			"phases": 2,
 			"power": 3000,
@@ -72,7 +88,11 @@
 			"description": null,
 			"grouping": 1,
 			"length": 10.0,
-			"loadType": "POWER",
+			"loadType": {
+				"demandFactor": 1.0,
+				"minimumWireSection": 2.5,
+				"name": "Power"
+			},
 			"name": "Lava-Lou\u00e7as",
 			"phases": 2,
 			"power": 1500,
@@ -89,7 +109,11 @@
 			"description": null,
 			"grouping": 1,
 			"length": 10.0,
-			"loadType": "POWER",
+			"loadType": {
+				"demandFactor": 1.0,
+				"minimumWireSection": 2.5,
+				"name": "Power"
+			},
 			"name": "Ar Condicionado 1",
 			"phases": 2,
 			"power": 1000,
@@ -106,7 +130,11 @@
 			"description": null,
 			"grouping": 1,
 			"length": 10.0,
-			"loadType": "POWER",
+			"loadType": {
+				"demandFactor": 1.0,
+				"minimumWireSection": 2.5,
+				"name": "Power"
+			},
 			"name": "Ar Condicionado 2",
 			"phases": 2,
 			"power": 1000,
@@ -123,7 +151,11 @@
 			"description": null,
 			"grouping": 1,
 			"length": 10.0,
-			"loadType": "POWER",
+			"loadType": {
+				"demandFactor": 1.0,
+				"minimumWireSection": 2.5,
+				"name": "Power"
+			},
 			"name": "Ar Condicionado 3",
 			"phases": 2,
 			"power": 1000,
@@ -140,7 +172,11 @@
 			"description": null,
 			"grouping": 1,
 			"length": 10.0,
-			"loadType": "POWER",
+			"loadType": {
+				"demandFactor": 1.0,
+				"minimumWireSection": 2.5,
+				"name": "Power"
+			},
 			"name": "Tomadas Cozinha / Area de Servi\u00e7o",
 			"phases": 2,
 			"power": 1500,
@@ -157,7 +193,11 @@
 			"description": null,
 			"grouping": 2,
 			"length": 10.0,
-			"loadType": "LIGHTING",
+			"loadType": {
+				"demandFactor": 1.0,
+				"minimumWireSection": 1.5,
+				"name": "Lighting"
+			},
 			"name": "Ilumina\u00e7\u00e3o Cozinha / Area de Servi\u00e7o / Exterior",
 			"phases": 2,
 			"power": 500,
@@ -174,7 +214,11 @@
 			"description": null,
 			"grouping": 2,
 			"length": 10.0,
-			"loadType": "LIGHTING",
+			"loadType": {
+				"demandFactor": 1.0,
+				"minimumWireSection": 1.5,
+				"name": "Lighting"
+			},
 			"name": "Ilumina\u00e7\u00e3o / Tomadas Quarto / Banheiro",
 			"phases": 2,
 			"power": 500,
@@ -191,7 +235,11 @@
 			"description": null,
 			"grouping": 2,
 			"length": 10.0,
-			"loadType": "LIGHTING",
+			"loadType": {
+				"demandFactor": 1.0,
+				"minimumWireSection": 1.5,
+				"name": "Lighting"
+			},
 			"name": "Ilumina\u00e7\u00e3o / Tomadas Sala / Quartos",
 			"phases": 2,
 			"power": 500,

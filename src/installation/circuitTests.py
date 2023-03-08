@@ -33,11 +33,12 @@ class BaseCircuitTests( TestCase ):
 		Setup for all tests.
 		'''
 		
+		self.loadType = LoadType( 'Power', 2.5, 1.0 )
 		self.wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
 		self.circuit = Circuit(
 			grouping			= 1,
 			length				= 10.0,
-			loadType			= LoadType.POWER,
+			loadType			= self.loadType,
 			name				= 'Test Circuit',
 			phases				= 1,
 			power				= 5000,
@@ -247,7 +248,11 @@ class CircuitSerializationTests( BaseCircuitTests ):
 			'description': None,
 			'grouping': 1,
 			'length': 10.0,
-			'loadType': 'POWER',
+			'loadType': {
+				'name': 'Power',
+				'minimumWireSection': 2.5,
+				'demandFactor': 1.0,
+			},
 			'name': 'Test Circuit',
 			'phases': 1,
 			'power': 5000,

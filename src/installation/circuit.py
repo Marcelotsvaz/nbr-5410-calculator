@@ -14,15 +14,17 @@ from pyjson5 import decode_io
 
 
 
-class LoadType( Enum ):
+@dataclass
+class LoadType:
 	'''
-	Load type to determine minimum wire section.
+	Load type to determine minimum wire section and demand factor.
 	
 	See NBR 5410 6.2.6.1.1.
 	'''
 	
-	LIGHTING = 'lighting'
-	POWER = 'power'
+	name: str
+	minimumWireSection: float
+	demandFactor: float
 
 
 
@@ -388,13 +390,8 @@ class Circuit:
 		
 		
 		# Wire section by minimum section.
-		if self.loadType is LoadType.LIGHTING:
-			minimumSection = 1.5
-		else:
-			minimumSection = 2.5
-		
 		wireByCriteria['minimumSection'] = min( filter(
-			lambda wire: wire.section >= minimumSection,
+			lambda wire: wire.section >= self.loadType.minimumWireSection,
 			allWires,
 		) )
 		

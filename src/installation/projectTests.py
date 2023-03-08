@@ -40,10 +40,11 @@ class ProjectTests( TestCase ):
 		Test `Project` with `Circuit`s.
 		'''
 		
+		loadType = LoadType( 'Power', 2.5, 1.0 )
 		wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
 		circuit = Circuit(
 			name				= 'Test Circuit',
-			loadType			= LoadType.POWER,
+			loadType			= loadType,
 			voltage				= 100,
 			phases				= 1,
 			grouping			= 1,
