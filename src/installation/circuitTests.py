@@ -145,6 +145,15 @@ class CircuitWireTests( BaseCircuitTests ):
 		self.assertEqual( self.circuit.wire.section, 16.0 )
 	
 	
+	def testSectionByVoltageDrop( self ) -> None:
+		'''
+		Wire section limited by voltage drop.
+		'''
+		
+		self.circuit.length = 25
+		self.assertEqual( self.circuit.wire.section, 16.0 )
+	
+	
 	def testSectionByBreaker( self ) -> None:
 		'''
 		Wire section forced larger due to available breaker capacities.
@@ -172,6 +181,20 @@ class CircuitWireTests( BaseCircuitTests ):
 		self.circuit.temperature = 40
 		self.assertEqual( self.circuit.wire.uncorrectedCapacity, 76.0 )
 		self.assertAlmostEqual( self.circuit.wire.capacity, 52.896000, 6 )
+
+
+
+class CircuitVoltageDropTests( BaseCircuitTests ):
+	'''
+	Voltage drop tests for `Circuit` class.
+	'''
+	
+	def testVoltageDrop( self ) -> None:
+		'''
+		Test voltage drop.
+		'''
+		
+		self.assertAlmostEqual( self.circuit.voltageDrop, 0.017200, 6 )
 
 
 

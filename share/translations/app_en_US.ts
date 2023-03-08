@@ -67,6 +67,10 @@
         <source>New Circuit</source>
         <translation></translation>
     </message>
+    <message>
+        <source>Voltage Drop</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>ConduitRunsModel</name>

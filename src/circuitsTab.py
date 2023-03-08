@@ -42,6 +42,7 @@ class CircuitsModel( GenericTableModel ):
 			Field( 'current',					self.tr('Current'),			False, format = ',.1f', suffix = ' A' ),
 			Field( 'breaker.current',			self.tr('Breaker'),			False, suffix = ' A' ),
 			Field( 'wire.capacity',				self.tr('Wire Capacity'),	False, format = ',.1f', suffix = ' A' ),
+			Field( 'voltageDrop',				self.tr('Voltage Drop'),	False, format = '.1%' ),
 			Field( 'wire.section',				self.tr('Wire Section'),	False, format = ',', suffix = ' mm²' ),
 		]
 		

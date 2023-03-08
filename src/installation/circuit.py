@@ -179,6 +179,17 @@ class GroupingCorrectionFactor:
 
 
 
+class VoltageDropLimit( float, Enum ):
+	'''
+	Voltage drop limits for different circuit sections.
+	
+	See NBR 5410 6.2.7.
+	'''
+	
+	TERMINAL = 0.04
+
+
+
 @dataclass
 class Wire:
 	'''
@@ -210,6 +221,19 @@ class Wire:
 		'''
 		
 		return self.uncorrectedCapacity * self.correctionFactor
+	
+	
+	@property
+	def resistancePerMeter( self ) -> float:
+		'''
+		Wire resistance in ohm/meter.
+		'''
+		
+		# Resistivity in ohm meter.
+		# TODO: Move this to WireType.
+		resistivity = 17.2E-9 if self.type.material is WireMaterial.COPPER else 26.5E-9
+		
+		return resistivity / ( self.section / 1000**2 )
 
 
 
@@ -270,6 +294,18 @@ class Circuit:
 	
 	
 	@property
+	def correctionFactor( self ) -> float:
+		'''
+		Correction factor for temperature and grouping.
+		'''
+		
+		temperatureFactor = TemperatureCorrectionFactor.forTemperature( self.temperature )
+		groupingFactor = GroupingCorrectionFactor.forGrouping( self.grouping )
+		
+		return temperatureFactor * groupingFactor
+	
+	
+	@property
 	def current( self ) -> float:
 		'''
 		Project current.
@@ -288,16 +324,26 @@ class Circuit:
 		return self.current / self.correctionFactor
 	
 	
+	def _voltageDrop( self, wire: Wire ) -> float:
+		'''
+		Voltage drop as a fraction of nominal voltage.
+		Helper function used to calculate voltage drop for different wire sizes.
+		Used in `calculate()`.
+		'''
+		
+		resistance = wire.resistancePerMeter * 2 * self.length
+		voltageDrop = self.current * resistance
+		
+		return voltageDrop / self.voltage
+	
+	
 	@property
-	def correctionFactor( self ) -> float:
+	def voltageDrop( self ) -> float:
 		'''
-		Correction factor for temperature and grouping.
+		Voltage drop as a fraction of nominal voltage.
 		'''
 		
-		temperatureFactor = TemperatureCorrectionFactor.forTemperature( self.temperature )
-		groupingFactor = GroupingCorrectionFactor.forGrouping( self.grouping )
-		
-		return temperatureFactor * groupingFactor
+		return self._voltageDrop( self.wire )
 	
 	
 	@property
@@ -356,6 +402,13 @@ class Circuit:
 		# Wire section by current capacity.
 		wireByCriteria['currentCapacity'] = min( filter(
 			lambda wire: wire.capacity >= self.current,
+			allWires,
+		) )
+		
+		
+		# Wire section by voltage drop.
+		wireByCriteria['voltageDrop'] = min( filter(
+			lambda wire: self._voltageDrop( wire ) <= VoltageDropLimit.TERMINAL,
 			allWires,
 		) )
 		

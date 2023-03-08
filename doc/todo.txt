@@ -1,24 +1,29 @@
+Make load type regular class
+Unify voltage and phases into supply class
+Add arguments with units to docstrings, including properties
 CircuitsModel parent should be table?
-Add arguments with units to docstrings
+Show thousands separator in status bar
+Qt python properties
+Refactor tests docstrings
+
 Use integer keys in json
 Interpreter env var on pyproject
 __pycache__
-Qt python properties
-Refactor tests docstrings
 Test section reason
 Ignore translations
 
 
 
 Electrical:
-	Voltage drop
+	Conduit
+	Remove correctedCurrent
 	Overload
 	Short circuit
-	Conduit
 	Buried cables
 	Grouping wire layout
 	Bare wire
 	Rename cable?
+	BUG: Test when one wireByCriteria is empty
 
 
 
