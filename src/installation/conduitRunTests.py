@@ -72,5 +72,5 @@ class ConduitRunSerializationTests( BaseConduitRunTests ):
 		Test deserialization with jsons.load.
 		'''
 		
-		conduitRun = load( self.conduitRunJsonDict, ConduitRun )
+		conduitRun = load( self.conduitRunJsonDict, ConduitRun, strict = True )
 		self.assertEqual( conduitRun, self.conduitRun )

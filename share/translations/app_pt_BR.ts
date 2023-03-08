@@ -16,14 +16,6 @@
         <translation>Tipo de Carga</translation>
     </message>
     <message>
-        <source>Voltage</source>
-        <translation>Tensão</translation>
-    </message>
-    <message>
-        <source>Phases</source>
-        <translation>Fases</translation>
-    </message>
-    <message>
         <source>Grouping</source>
         <translation>Agrupamento</translation>
     </message>
@@ -34,10 +26,6 @@
     <message>
         <source>Ref. Method</source>
         <translation>Método de Ref.</translation>
-    </message>
-    <message>
-        <source>Configuration</source>
-        <translation>Configuração</translation>
     </message>
     <message>
         <source>Wire Type</source>
@@ -70,6 +58,10 @@
     <message>
         <source>Voltage Drop</source>
         <translation>Queda de Tensão</translation>
+    </message>
+    <message>
+        <source>Supply</source>
+        <translation>Alimentação</translation>
     </message>
 </context>
 <context>

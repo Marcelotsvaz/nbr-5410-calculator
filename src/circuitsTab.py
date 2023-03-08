@@ -10,6 +10,7 @@ from PySide6.QtCore import QObject
 
 from genericTableView import Field, GenericTableModel
 from installation.circuit import (
+	Supply,
 	LoadType,
 	WireMaterial,
 	WireInsulation,
@@ -29,14 +30,12 @@ class CircuitsModel( GenericTableModel ):
 	def __init__( self, circuits: list[Circuit], parent: QObject | None = None ) -> None:
 		fields = [
 			Field( 'name',						self.tr('Name') ),
-			Field( 'power',						self.tr('Power'),			format = ',', suffix = ' VA' ),
+			Field( 'supply',					self.tr('Supply') ),
 			Field( 'loadType.name',				self.tr('Load Type'),		setter = 'loadType' ),
-			Field( 'voltage',					self.tr('Voltage'),			format = ',', suffix = ' V' ),
-			Field( 'phases',					self.tr('Phases') ),
-			Field( 'grouping',					self.tr('Grouping') ),
-			Field( 'temperature',				self.tr('Temperature'),		suffix = '°C' ),
+			Field( 'power',						self.tr('Power'),			format = ',', suffix = ' VA' ),
 			Field( 'referenceMethod.name',		self.tr('Ref. Method'),		setter = 'referenceMethod' ),
-			Field( 'wireConfiguration.value',	self.tr('Configuration'),	setter = 'wireConfiguration' ),
+			Field( 'temperature',				self.tr('Temperature'),		suffix = '°C' ),
+			Field( 'grouping',					self.tr('Grouping') ),
 			Field( 'wireType',					self.tr('Wire Type') ),
 			Field( 'length',					self.tr('Length'),			format = ',', suffix = ' m' ),
 			Field( 'current',					self.tr('Current'),			False, format = ',.1f', suffix = ' A' ),
@@ -55,19 +54,18 @@ class CircuitsModel( GenericTableModel ):
 		'''
 		
 		loadType = LoadType( 'Power', 2.5, 1.0 )
+		supply = Supply( 127, 1, WireConfiguration.TWO )
 		wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
 		circuit = Circuit(
-			name				= self.tr('New Circuit'),
-			loadType			= loadType,
-			voltage				= 127,
-			phases				= 1,
-			grouping			= 1,
-			length				= 10.0,
-			referenceMethod		= ReferenceMethod.B1,
-			wireConfiguration	= WireConfiguration.TWO,
-			wireType			= wireType,
-			temperature			= 30,
-			power				= 1000,
+			grouping		= 1,
+			length			= 10.0,
+			loadType		= loadType,
+			name			= self.tr('New Circuit'),
+			power			= 1000,
+			referenceMethod	= ReferenceMethod.B1,
+			supply			= supply,
+			temperature		= 30,
+			wireType		= wireType,
 		)
 		
 		return circuit

@@ -16,14 +16,6 @@
         <translation></translation>
     </message>
     <message>
-        <source>Voltage</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Phases</source>
-        <translation></translation>
-    </message>
-    <message>
         <source>Grouping</source>
         <translation></translation>
     </message>
@@ -33,10 +25,6 @@
     </message>
     <message>
         <source>Ref. Method</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Configuration</source>
         <translation></translation>
     </message>
     <message>
@@ -69,6 +57,10 @@
     </message>
     <message>
         <source>Voltage Drop</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Supply</source>
         <translation></translation>
     </message>
 </context>

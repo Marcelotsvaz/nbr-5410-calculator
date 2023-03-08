@@ -74,7 +74,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		
 		try:
 			with open( fileName ) as file:
-				project = loads( file.read(), Project )
+				project = loads( file.read(), Project, strict = True )
 			
 			self.setProject( project )
 		except FileNotFoundError as error:

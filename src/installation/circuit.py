@@ -28,6 +28,22 @@ class LoadType:
 
 
 
+@dataclass
+class Supply:
+	'''
+	Power supply feeding a `Circuit`. Eg.: 3 Phase 220V.
+	'''
+	
+	voltage: int
+	phases: int
+	wireConfiguration: 'WireConfiguration'
+	
+	
+	def __str__( self ) -> str:
+		return f'{self.voltage:,} V {self.phases} Phase{"s" if self.phases > 1 else ""}'
+
+
+
 class ReferenceMethod( Enum ):
 	'''
 	Reference wire installation methods used to determine wire current capacity.
@@ -283,12 +299,10 @@ class Circuit:
 	
 	power: int
 	loadType: LoadType
-	voltage: int
-	phases: int
+	supply: Supply
 	grouping: int
 	temperature: int
 	referenceMethod: ReferenceMethod
-	wireConfiguration: WireConfiguration
 	wireType: WireType
 	length: float
 	
@@ -313,7 +327,7 @@ class Circuit:
 		Project current.
 		'''
 		
-		return self.power / self.voltage
+		return self.power / self.supply.voltage
 	
 	
 	@property
@@ -336,7 +350,7 @@ class Circuit:
 		resistance = wire.resistancePerMeter * 2 * self.length
 		voltageDrop = self.current * resistance
 		
-		return voltageDrop / self.voltage
+		return voltageDrop / self.supply.voltage
 	
 	
 	@property
@@ -375,7 +389,7 @@ class Circuit:
 		wireByCriteria: dict[str, Wire] = {}
 		allWires = self.wireType.getWires(
 			self.referenceMethod,
-			self.wireConfiguration,
+			self.supply.wireConfiguration,
 			self.correctionFactor,
 		)
 		

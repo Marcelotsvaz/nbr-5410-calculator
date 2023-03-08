@@ -11,6 +11,7 @@ from unittest import TestCase
 from jsons import load, dump
 
 from .circuit import (
+	Supply,
 	LoadType,
 	WireMaterial,
 	WireInsulation,
@@ -33,20 +34,19 @@ class BaseCircuitTests( TestCase ):
 		Setup for all tests.
 		'''
 		
-		self.loadType = LoadType( 'Power', 2.5, 1.0 )
-		self.wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
+		loadType = LoadType( 'Power', 2.5, 1.0 )
+		supply = Supply( 100, 1, WireConfiguration.TWO )
+		wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
 		self.circuit = Circuit(
-			grouping			= 1,
-			length				= 10.0,
-			loadType			= self.loadType,
-			name				= 'Test Circuit',
-			phases				= 1,
-			power				= 5000,
-			referenceMethod		= ReferenceMethod.B1,
-			temperature			= 30,
-			voltage				= 100,
-			wireConfiguration	= WireConfiguration.TWO,
-			wireType			= self.wireType,
+			grouping		= 1,
+			length			= 10.0,
+			loadType		= loadType,
+			name			= 'Test Circuit',
+			power			= 5000,
+			referenceMethod	= ReferenceMethod.B1,
+			supply			= supply,
+			temperature		= 30,
+			wireType		= wireType,
 		)
 
 
@@ -249,17 +249,19 @@ class CircuitSerializationTests( BaseCircuitTests ):
 			'grouping': 1,
 			'length': 10.0,
 			'loadType': {
-				'name': 'Power',
-				'minimumWireSection': 2.5,
 				'demandFactor': 1.0,
+				'minimumWireSection': 2.5,
+				'name': 'Power',
 			},
 			'name': 'Test Circuit',
-			'phases': 1,
 			'power': 5000,
 			'referenceMethod': 'B1',
+			'supply': {
+				'voltage': 100,
+				'wireConfiguration': 'TWO',
+				'phases': 1,
+			},
 			'temperature': 30,
-			'voltage': 100,
-			'wireConfiguration': 'TWO',
 			'wireType': {
 				'insulation': 'PVC',
 				'material': 'COPPER'
@@ -281,5 +283,5 @@ class CircuitSerializationTests( BaseCircuitTests ):
 		Test deserialization with jsons.load.
 		'''
 		
-		circuit = load( self.circuitJsonDict, Circuit )
+		circuit = load( self.circuitJsonDict, Circuit, strict = True )
 		self.assertEqual( circuit, self.circuit )

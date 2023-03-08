@@ -10,6 +10,7 @@ from unittest import TestCase
 
 from .project import Project
 from .circuit import (
+	Supply,
 	LoadType,
 	WireMaterial,
 	WireInsulation,
@@ -41,19 +42,18 @@ class ProjectTests( TestCase ):
 		'''
 		
 		loadType = LoadType( 'Power', 2.5, 1.0 )
+		supply = Supply( 100, 1, WireConfiguration.TWO )
 		wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
 		circuit = Circuit(
-			name				= 'Test Circuit',
-			loadType			= loadType,
-			voltage				= 100,
-			phases				= 1,
-			grouping			= 1,
-			length				= 10.0,
-			referenceMethod		= ReferenceMethod.B1,
-			wireConfiguration	= WireConfiguration.TWO,
-			wireType			= wireType,
-			temperature			= 30,
-			power				= 5000,
+			grouping		= 1,
+			length			= 10.0,
+			loadType		= loadType,
+			name			= 'Test Circuit',
+			power			= 5000,
+			referenceMethod	= ReferenceMethod.B1,
+			supply			= supply,
+			temperature		= 30,
+			wireType		= wireType,
 		)
 		
 		Project( 'Test Project', circuits = [ circuit ] )
