@@ -19,6 +19,7 @@ from PySide6.QtCore import (
 	QMimeData,
 	Slot,
 )
+from PySide6.QtGui import QDrag
 from PySide6.QtWidgets import QWidget, QAbstractItemView, QTableView
 
 
@@ -361,6 +362,27 @@ class GenericTableView( QTableView ):
 		
 		self.setSortingEnabled( True )
 		self.setDragDropMode( QAbstractItemView.DragDropMode.InternalMove )
+	
+	
+	def startDrag( self, supportedActions: Qt.DropAction ) -> None:
+		'''
+		Starts a drag by calling drag.exec() using the given supportedActions.
+		'''
+		
+		indexes = [
+			index
+			for index in self.selectedIndexes()
+			if Qt.ItemFlag.ItemIsDragEnabled in self.model().flags( index )
+		]
+		
+		if not indexes:
+			return
+		
+		data = self.model().mimeData( indexes )
+		
+		drag = QDrag( self )
+		drag.setMimeData( data )
+		drag.exec( supportedActions )
 	
 	
 	@Slot()
