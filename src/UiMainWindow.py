@@ -16,10 +16,9 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QAbstractItemView, QApplication, QGridLayout, QHeaderView,
-    QMainWindow, QMenu, QMenuBar, QPushButton,
-    QSizePolicy, QSpacerItem, QStatusBar, QTabWidget,
-    QWidget)
+from PySide6.QtWidgets import (QApplication, QGridLayout, QHeaderView, QMainWindow,
+    QMenu, QMenuBar, QPushButton, QSizePolicy,
+    QSpacerItem, QStatusBar, QTabWidget, QWidget)
 
 from genericTableView import GenericTableView
 
@@ -107,15 +106,6 @@ class Ui_mainWindow(object):
 
         self.circuitsTableView = GenericTableView(self.circuitsTab)
         self.circuitsTableView.setObjectName(u"circuitsTableView")
-        self.circuitsTableView.setAlternatingRowColors(True)
-        self.circuitsTableView.setSelectionMode(QAbstractItemView.ExtendedSelection)
-        self.circuitsTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.circuitsTableView.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.circuitsTableView.setSortingEnabled(True)
-        self.circuitsTableView.setWordWrap(False)
-        self.circuitsTableView.horizontalHeader().setHighlightSections(False)
-        self.circuitsTableView.horizontalHeader().setProperty("showSortIndicator", True)
-        self.circuitsTableView.horizontalHeader().setStretchLastSection(True)
 
         self.gridLayout_2.addWidget(self.circuitsTableView, 1, 0, 1, 3)
 
@@ -168,15 +158,6 @@ class Ui_mainWindow(object):
 
         self.conduitsTableView = GenericTableView(self.conduitsTab)
         self.conduitsTableView.setObjectName(u"conduitsTableView")
-        self.conduitsTableView.setAlternatingRowColors(True)
-        self.conduitsTableView.setSelectionMode(QAbstractItemView.ExtendedSelection)
-        self.conduitsTableView.setSelectionBehavior(QAbstractItemView.SelectRows)
-        self.conduitsTableView.setHorizontalScrollMode(QAbstractItemView.ScrollPerPixel)
-        self.conduitsTableView.setSortingEnabled(True)
-        self.conduitsTableView.setWordWrap(False)
-        self.conduitsTableView.horizontalHeader().setHighlightSections(False)
-        self.conduitsTableView.horizontalHeader().setProperty("showSortIndicator", True)
-        self.conduitsTableView.horizontalHeader().setStretchLastSection(True)
 
         self.gridLayout_3.addWidget(self.conduitsTableView, 1, 0, 1, 3)
 

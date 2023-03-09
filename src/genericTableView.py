@@ -6,7 +6,7 @@
 
 
 
-from typing import NamedTuple, Any
+from typing import NamedTuple, Sequence, Any
 from operator import attrgetter
 from contextlib import suppress
 
@@ -16,9 +16,10 @@ from PySide6.QtCore import (
 	QAbstractTableModel,
 	QModelIndex,
 	QPersistentModelIndex,
+	QMimeData,
 	Slot,
 )
-from PySide6.QtWidgets import QTableView
+from PySide6.QtWidgets import QWidget, QAbstractItemView, QTableView
 
 
 
@@ -78,6 +79,8 @@ class GenericTableModel( QAbstractTableModel ):
 	) -> None:
 		super().__init__( parent )
 		
+		self.moveMimeType = 'application/vnd.set.row'
+		
 		self.fields = fields
 		self.datasource = datasource
 	
@@ -110,12 +113,12 @@ class GenericTableModel( QAbstractTableModel ):
 		flags = super().flags( index )
 		
 		if not index.isValid():
-			return flags
+			return flags | Qt.ItemFlag.ItemIsDropEnabled
 		
 		if self.fields[index.column()].editable:
 			flags |= Qt.ItemFlag.ItemIsEditable
 		
-		return flags
+		return flags | Qt.ItemFlag.ItemIsDragEnabled
 	
 	
 	def headerData( self, section: int, orientation: Qt.Orientation, role: int = 0 ) -> str | None:
@@ -182,7 +185,7 @@ class GenericTableModel( QAbstractTableModel ):
 	
 	def insertRows( self, row: int, count: int, parent: ModelIndex = QModelIndex() ) -> bool:
 		'''
-		Insert new item using `newItem`.
+		Insert new items using `newItem`.
 		'''
 		
 		self.beginInsertRows( parent, row, row + count - 1 )
@@ -195,13 +198,54 @@ class GenericTableModel( QAbstractTableModel ):
 	
 	def removeRows( self, row: int, count: int, parent: ModelIndex = QModelIndex() ) -> bool:
 		'''
-		Delete existing item.
+		Delete existing items.
 		'''
 		
 		self.beginRemoveRows( parent, row, row + count - 1 )
 		for _ in range( count ):
 			self.datasource.pop( row )
 		self.endRemoveRows()
+		
+		return True
+	
+	
+	def moveRows(
+		self,
+		sourceParent: ModelIndex,
+		sourceRow: int,
+		count: int,
+		destinationParent: ModelIndex,
+		destinationChild: int
+	) -> bool:
+		'''
+		Move existing items.
+		'''
+		
+		# Move to end.
+		if destinationChild == -1:
+			destinationChild = self.rowCount()
+		
+		if not self.beginMoveRows(
+			sourceParent,
+			sourceRow,
+			sourceRow + count - 1,
+			destinationParent,
+			destinationChild
+		) or destinationChild < 0 or destinationChild > self.rowCount():
+			return False
+		
+		items: list[Any] = []
+		for _ in range( count ):
+			items.append( self.datasource.pop( sourceRow ) )
+		
+		# Update destination after we removed items from the list.
+		if destinationChild > sourceRow:
+			destinationChild -= count
+		
+		for item in reversed( items ):
+			self.datasource.insert( destinationChild, item )
+			
+		self.endMoveRows()
 		
 		return True
 	
@@ -219,6 +263,74 @@ class GenericTableModel( QAbstractTableModel ):
 		self.layoutChanged.emit()	# pyright: ignore
 	
 	
+	def mimeTypes( self ) -> list[str]:
+		'''
+		Returns the list of allowed MIME types.
+		'''
+		
+		return [ self.moveMimeType ]
+	
+	
+	def mimeData( self, indexes: Sequence[QModelIndex] ) -> QMimeData:
+		'''
+		Encode a list of items into supported MIME types.
+		'''
+		
+		mimeData = QMimeData()
+		
+		# Move MIME type.
+		rowsData = ','.join( str( index.row() ) for index in indexes if index.column() == 0 )
+		mimeData.setData( self.moveMimeType, rowsData.encode() )
+		
+		return mimeData
+	
+	
+	def dropMimeData(
+		self,
+		data: QMimeData,
+		action: Qt.DropAction,
+		row: int,
+		column: int,
+		parent: ModelIndex
+	) -> bool:
+		'''
+		Handles the data supplied by a drag and drop operation.
+		'''
+		
+		if action is Qt.DropAction.IgnoreAction:
+			return True
+		
+		if action is Qt.DropAction.MoveAction and data.hasFormat( self.moveMimeType ):
+			sourceIndexes = [
+				QPersistentModelIndex( self.index( int( sourceRow ), 0 ) )
+				for sourceRow in data.data( self.moveMimeType ).toStdString().split( ',' )
+			]
+			targetIndex = QPersistentModelIndex( self.index( row, column ) )
+			
+			for sourceIndex in sourceIndexes:
+				self.moveRow( QModelIndex(), sourceIndex.row(), parent, targetIndex.row() )
+				
+			return True
+		
+		return False
+	
+	
+	def supportedDropActions( self ) -> Qt.DropAction:
+		'''
+		Return supported drop actions.
+		'''
+		
+		return Qt.DropAction.MoveAction
+	
+	
+	def supportedDragActions( self ) -> Qt.DropAction:
+		'''
+		Return supported drag actions.
+		'''
+		
+		return Qt.DropAction.MoveAction
+	
+	
 	# pylint: disable-next = useless-parent-delegation, invalid-name
 	def tr( self, *args: str ) -> str:
 		'''
@@ -234,6 +346,22 @@ class GenericTableView( QTableView ):
 	'''
 	`QTableView` for `GenericTableModel`.
 	'''
+	
+	def __init__( self, parent: QWidget | None = None ) -> None:
+		super().__init__( parent )
+		
+		self.setWordWrap( False )
+		self.setHorizontalScrollMode( QAbstractItemView.ScrollMode.ScrollPerPixel )
+		self.setAlternatingRowColors( True )
+		self.horizontalHeader().setHighlightSections( False )
+		self.horizontalHeader().setStretchLastSection( True )
+		
+		self.setSelectionBehavior( QAbstractItemView.SelectionBehavior.SelectRows )
+		self.setSelectionMode( QAbstractItemView.SelectionMode.ExtendedSelection )
+		
+		self.setSortingEnabled( True )
+		self.setDragDropMode( QAbstractItemView.DragDropMode.InternalMove )
+	
 	
 	@Slot()
 	def newItem( self ) -> None:
