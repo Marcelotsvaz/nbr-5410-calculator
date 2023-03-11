@@ -6,9 +6,9 @@
 
 
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
-from .circuit import Circuit
+from .circuit import BaseCircuit
 from .conduitRun import ConduitRun
 
 
@@ -20,16 +20,5 @@ class Project:
 	'''
 	
 	name: str
-	circuits: list[Circuit]
-	conduitRuns: list[ConduitRun]
-	
-	
-	def __init__(
-		self,
-		name:str,
-		circuits: list[Circuit] | None = None,
-		conduitRuns: list[ConduitRun] | None = None
-	) -> None:
-		self.name = name
-		self.circuits = circuits if circuits is not None else []
-		self.conduitRuns = conduitRuns if conduitRuns is not None else []
+	circuits: list[BaseCircuit] = field( default_factory = list )
+	conduitRuns: list[ConduitRun] = field( default_factory = list )

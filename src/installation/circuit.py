@@ -294,15 +294,14 @@ class Breaker:
 
 
 
-@dataclass
-class Circuit:
+@dataclass( kw_only = True )
+class BaseCircuit:
 	'''
-	Represents a single circuit in an electrical installation.
+	Abstract base class for a circuit in an electrical installation.
 	'''
 	
 	name: str
 	
-	power: int
 	loadType: LoadType
 	supply: Supply
 	grouping: int
@@ -312,6 +311,15 @@ class Circuit:
 	length: float
 	
 	description: str | None = None
+	
+	
+	@property
+	def power( self ) -> float:
+		'''
+		Apparent power consumed by this circuit.
+		'''
+		
+		raise NotImplementedError()
 	
 	
 	@property
@@ -442,6 +450,45 @@ class Circuit:
 			raise ProjectError( 'No suitable wire found.' )
 		
 		return wire, breaker
+
+
+
+@dataclass( kw_only = True )
+class Circuit( BaseCircuit ):
+	'''
+	Represents a single terminal circuit in an electrical installation.
+	'''
+	
+	power: float
+	
+	
+	@property
+	def power( self ) -> float:
+		return self._power
+	
+	
+	@power.setter
+	def power( self, value: float ) -> None:
+		self._power = value
+
+
+
+@dataclass( kw_only = True )
+class UpstreamCircuit( BaseCircuit ):
+	'''
+	Represents a circuit whose load is a group of downstream circuits.
+	'''
+	
+	circuits: list[BaseCircuit]
+	
+	
+	@property
+	def power( self ) -> float:
+		'''
+		Total power consumed by all downstream circuits, corrected by each circuit's demand factor.
+		'''
+		
+		return sum( circuit.power * circuit.loadType.demandFactor for circuit in self.circuits )
 
 
 

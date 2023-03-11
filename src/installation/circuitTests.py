@@ -18,6 +18,7 @@ from .circuit import (
 	WireType,
 	ReferenceMethod,
 	Circuit,
+	UpstreamCircuit,
 	ProjectError,
 )
 
@@ -33,19 +34,19 @@ class BaseCircuitTests( TestCase ):
 		Setup for all tests.
 		'''
 		
-		loadType = LoadType( 'Power', 2.5, 1.0 )
-		supply = Supply( 100, 1 )
-		wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
+		self.loadType = LoadType( 'Power', 2.5, 1.0 )
+		self.supply = Supply( 100, 1 )
+		self.wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
 		self.circuit = Circuit(
 			grouping		= 1,
 			length			= 10.0,
-			loadType		= loadType,
+			loadType		= self.loadType,
 			name			= 'Test Circuit',
 			power			= 5000,
 			referenceMethod	= ReferenceMethod.B1,
-			supply			= supply,
+			supply			= self.supply,
 			temperature		= 30,
-			wireType		= wireType,
+			wireType		= self.wireType,
 		)
 
 
@@ -237,10 +238,6 @@ class CircuitSerializationTests( BaseCircuitTests ):
 	'''
 	
 	def setUp( self ) -> None:
-		'''
-		Setup for all tests.
-		'''
-		
 		super().setUp()
 		
 		self.circuitJsonDict = {
@@ -283,3 +280,43 @@ class CircuitSerializationTests( BaseCircuitTests ):
 		
 		circuit = load( self.circuitJsonDict, Circuit, strict = True )
 		self.assertEqual( circuit, self.circuit )
+
+
+
+class UpstreamCircuitTests( BaseCircuitTests ):
+	'''
+	Basic tests for `UpstreamCircuit` class.
+	'''
+	
+	def setUp( self ) -> None:
+		super().setUp()
+		
+		self.upstreamCircuit = UpstreamCircuit(
+			circuits		= [ self.circuit ] * 10,
+			grouping		= 1,
+			length			= 10.0,
+			loadType		= self.loadType,
+			name			= 'Test Upstream Circuit',
+			referenceMethod	= ReferenceMethod.B1,
+			supply			= self.supply,
+			temperature		= 30,
+			wireType		= self.wireType,
+		)
+	
+	
+	def testTotalPower( self ) -> None:
+		'''
+		Total power should be the sum of the power of all downstream circuits.
+		'''
+		
+		self.assertEqual( self.upstreamCircuit.power, 50_000.0 )
+	
+	
+	def testTotalPowerWithDemandFactor( self ) -> None:
+		'''
+		Total power should be the sum of the power of all downstream circuits, corrected by each
+		circuit's demand factor.
+		'''
+		
+		self.loadType.demandFactor = 0.5
+		self.assertEqual( self.upstreamCircuit.power, 25_000.0 )
