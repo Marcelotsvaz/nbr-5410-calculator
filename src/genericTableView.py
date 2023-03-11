@@ -9,18 +9,27 @@
 from typing import NamedTuple, Sequence, Any
 from operator import attrgetter
 from contextlib import suppress
+from enum import Enum
 
 from PySide6.QtCore import (
 	Qt,
 	QObject,
+	QAbstractItemModel,
 	QAbstractTableModel,
 	QModelIndex,
 	QPersistentModelIndex,
 	QMimeData,
 	Slot,
 )
+from PySide6.QtWidgets import (
+	QWidget,
+	QAbstractItemView,
+	QTableView,
+	QStyledItemDelegate,
+	QStyleOptionViewItem,
+	QComboBox,
+)
 from PySide6.QtGui import QDrag
-from PySide6.QtWidgets import QWidget, QAbstractItemView, QTableView
 
 
 
@@ -152,7 +161,12 @@ class GenericTableModel( QAbstractTableModel ):
 		if role is Qt.ItemDataRole.EditRole:
 			return field.getFrom( item )
 		
-		return f'{field.getFrom( item ):{field.format}}{field.suffix}'
+		match value := field.getFrom( item ):
+			case Enum():
+				return value.name
+			
+			case _:
+				return f'{value:{field.format}}{field.suffix}'
 	
 	
 	def setData( self, index: ModelIndex, value: Any, role: int = 0 ) -> bool:
@@ -351,6 +365,8 @@ class GenericTableView( QTableView ):
 	def __init__( self, parent: QWidget | None = None ) -> None:
 		super().__init__( parent )
 		
+		self.setItemDelegate( EnumDelegate( self ) )
+		
 		self.setWordWrap( False )
 		self.setHorizontalScrollMode( QAbstractItemView.ScrollMode.ScrollPerPixel )
 		self.setAlternatingRowColors( True )
@@ -409,3 +425,59 @@ class GenericTableView( QTableView ):
 		
 		for index in indexes:
 			self.model().removeRow( index.row() )
+
+
+
+class EnumDelegate( QStyledItemDelegate ):
+	'''
+	`QStyledItemDelegate` with support for displaying and editing `Enum`s.
+	'''
+	
+	def createEditor(
+		self,
+		parent: QWidget,
+		option: QStyleOptionViewItem,
+		index: ModelIndex
+	) -> QWidget:
+		'''
+		Returns the editor to be used for editing the data item with the given `index`.
+		'''
+		
+		match value := index.model().data( index, Qt.ItemDataRole.EditRole ):
+			case Enum():
+				editor = QComboBox( parent )
+				
+				for enumItem in type( value ):
+					editor.addItem( enumItem.name, enumItem )
+				
+				return editor
+			
+			case _:
+				return super().createEditor( parent, option, index )
+	
+	
+	def setEditorData( self, editor: QWidget, index: ModelIndex ) -> None:
+		'''
+		Sets the contents of the given `editor` to the data for the item at the given `index`.
+		'''
+		
+		match value := index.model().data( index, Qt.ItemDataRole.EditRole ), editor:
+			case Enum(), QComboBox() as enumEditor:
+				enumEditor.setCurrentText( value.name )
+			
+			case _:
+				super().setEditorData( editor, index )
+	
+	
+	def setModelData( self, editor: QWidget, model: QAbstractItemModel, index: ModelIndex ) -> None:
+		'''
+		Sets the data for the item at the given `index` in the model to the contents of the given
+		`editor`.
+		'''
+		
+		match index.model().data( index, Qt.ItemDataRole.EditRole ), editor:
+			case Enum(), QComboBox() as enumEditor:
+				model.setData( index, enumEditor.currentData(), Qt.ItemDataRole.EditRole )
+			
+			case _:
+				super().setModelData( editor, model, index )

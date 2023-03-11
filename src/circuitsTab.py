@@ -32,7 +32,7 @@ class CircuitsModel( GenericTableModel ):
 			Field( 'supply',					self.tr('Supply') ),
 			Field( 'loadType.name',				self.tr('Load Type'),		setter = 'loadType' ),
 			Field( 'power',						self.tr('Power'),			format = ',', suffix = ' VA' ),
-			Field( 'referenceMethod.name',		self.tr('Ref. Method'),		setter = 'referenceMethod' ),
+			Field( 'referenceMethod',			self.tr('Ref. Method') ),
 			Field( 'temperature',				self.tr('Temperature'),		suffix = '°C' ),
 			Field( 'grouping',					self.tr('Grouping') ),
 			Field( 'wireType',					self.tr('Wire Type') ),
