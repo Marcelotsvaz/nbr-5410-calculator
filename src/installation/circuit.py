@@ -7,7 +7,7 @@
 
 
 from enum import Enum, auto
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from typing_extensions import Self	# TODO: Remove on Python 3.11.
 
 from pyjson5 import decode_io
@@ -481,7 +481,7 @@ class UpstreamCircuit( BaseCircuit ):
 	Represents a circuit whose load is a group of downstream circuits.
 	'''
 	
-	circuits: list[BaseCircuit]
+	circuits: list[BaseCircuit] = field( default_factory = list )
 	
 	
 	@property
