@@ -20,7 +20,7 @@ from PySide6.QtWidgets import (QApplication, QGridLayout, QHeaderView, QMainWind
     QMenu, QMenuBar, QPushButton, QSizePolicy,
     QSpacerItem, QStatusBar, QTabWidget, QWidget)
 
-from genericTableView import GenericTableView
+from genericTreeView import GenericTreeView
 
 class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
@@ -104,10 +104,10 @@ class Ui_mainWindow(object):
 
         self.gridLayout_2.addItem(self.horizontalSpacer, 0, 0, 1, 1)
 
-        self.circuitsTableView = GenericTableView(self.circuitsTab)
-        self.circuitsTableView.setObjectName(u"circuitsTableView")
+        self.circuitsTreeView = GenericTreeView(self.circuitsTab)
+        self.circuitsTreeView.setObjectName(u"circuitsTreeView")
 
-        self.gridLayout_2.addWidget(self.circuitsTableView, 1, 0, 1, 3)
+        self.gridLayout_2.addWidget(self.circuitsTreeView, 1, 0, 1, 3)
 
         self.newCircuitButton = QPushButton(self.circuitsTab)
         self.newCircuitButton.setObjectName(u"newCircuitButton")
@@ -156,10 +156,10 @@ class Ui_mainWindow(object):
 
         self.gridLayout_3.addWidget(self.deleteConduitRunButton, 0, 1, 1, 1)
 
-        self.conduitsTableView = GenericTableView(self.conduitsTab)
-        self.conduitsTableView.setObjectName(u"conduitsTableView")
+        self.conduitsTreeView = GenericTreeView(self.conduitsTab)
+        self.conduitsTreeView.setObjectName(u"conduitsTreeView")
 
-        self.gridLayout_3.addWidget(self.conduitsTableView, 1, 0, 1, 3)
+        self.gridLayout_3.addWidget(self.conduitsTreeView, 1, 0, 1, 3)
 
         self.tabWidget.addTab(self.conduitsTab, "")
 
@@ -193,13 +193,13 @@ class Ui_mainWindow(object):
         self.actionSave.triggered.connect(mainWindow.saveProject)
         self.actionOpen.triggered.connect(mainWindow.loadProject)
         self.actionSaveAs.triggered.connect(mainWindow.saveProject)
-        self.newCircuitButton.clicked.connect(self.circuitsTableView.newItem)
+        self.newCircuitButton.clicked.connect(self.circuitsTreeView.newItem)
         self.actionNew.triggered.connect(mainWindow.newProject)
         self.actionAbout.triggered.connect(mainWindow.showAbout)
         self.actionQuit.triggered.connect(mainWindow.close)
-        self.deleteCircuitButton.clicked.connect(self.circuitsTableView.deleteSelectedItems)
-        self.newConduitRunButton.clicked.connect(self.conduitsTableView.newItem)
-        self.deleteConduitRunButton.clicked.connect(self.conduitsTableView.deleteSelectedItems)
+        self.deleteCircuitButton.clicked.connect(self.circuitsTreeView.deleteSelectedItems)
+        self.newConduitRunButton.clicked.connect(self.conduitsTreeView.newItem)
+        self.deleteConduitRunButton.clicked.connect(self.conduitsTreeView.deleteSelectedItems)
 
         self.tabWidget.setCurrentIndex(1)
 

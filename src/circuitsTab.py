@@ -8,7 +8,7 @@
 
 from PySide6.QtCore import QObject
 
-from genericTableView import Field, GenericTableModel
+from genericTreeView import Field, GenericModel
 from installation.circuit import (
 	Supply,
 	LoadType,
@@ -16,17 +16,18 @@ from installation.circuit import (
 	WireInsulation,
 	WireType,
 	ReferenceMethod,
+	BaseCircuit,
 	Circuit,
 )
 
 
 
-class CircuitsModel( GenericTableModel ):
+class CircuitsModel( GenericModel ):
 	'''
 	Map a list of `Circuit`s to a QTableView.
 	'''
 	
-	def __init__( self, circuits: list[Circuit], parent: QObject | None = None ) -> None:
+	def __init__( self, circuits: list[BaseCircuit], parent: QObject | None = None ) -> None:
 		fields = [
 			Field( 'name',						self.tr('Name') ),
 			Field( 'supply',					self.tr('Supply') ),
@@ -43,11 +44,12 @@ class CircuitsModel( GenericTableModel ):
 			Field( 'voltageDrop',				self.tr('Voltage Drop'),	False, format = '.1%' ),
 			Field( 'wire.section',				self.tr('Wire Section'),	False, format = ',', suffix = ' mm²' ),
 		]
+		childListName = 'circuits'
 		
-		super().__init__( fields, circuits, parent )
+		super().__init__( fields, circuits, childListName, parent )
 	
 	
-	def newItem( self ) -> Circuit:
+	def newItem( self ) -> BaseCircuit:
 		'''
 		Return a new `Circuit` to be used with `insertRows`.
 		'''

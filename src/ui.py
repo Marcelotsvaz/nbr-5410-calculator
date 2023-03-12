@@ -36,11 +36,13 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		
 		self.project = project	# pylint: disable = attribute-defined-outside-init
 		
-		self.circuitsTableView.setModel( CircuitsModel( project.circuits, self ) )
-		self.circuitsTableView.resizeColumnsToContents()
+		self.circuitsTreeView.setModel( CircuitsModel( project.circuits, self ) )
+		self.circuitsTreeView.expandAll()
+		self.circuitsTreeView.resizeColumnsToContents()
 		
-		self.conduitsTableView.setModel( ConduitRunsModel( project.conduitRuns, self ) )
-		self.conduitsTableView.resizeColumnsToContents()
+		self.conduitsTreeView.setModel( ConduitRunsModel( project.conduitRuns, self ) )
+		self.conduitsTreeView.expandAll()
+		self.conduitsTreeView.resizeColumnsToContents()
 	
 	
 	@Slot()
@@ -50,11 +52,13 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		'''
 		
 		self.setProject( Project( self.tr('New Project') ) )
-		self.circuitsTableView.newItem()
-		self.circuitsTableView.resizeColumnsToContents()
+		self.circuitsTreeView.newItem()
+		self.circuitsTreeView.expandAll()
+		self.circuitsTreeView.resizeColumnsToContents()
 		
-		self.conduitsTableView.newItem()
-		self.conduitsTableView.resizeColumnsToContents()
+		self.conduitsTreeView.newItem()
+		self.conduitsTreeView.expandAll()
+		self.conduitsTreeView.resizeColumnsToContents()
 	
 	
 	@Slot()

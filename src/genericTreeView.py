@@ -15,7 +15,6 @@ from PySide6.QtCore import (
 	Qt,
 	QObject,
 	QAbstractItemModel,
-	QAbstractTableModel,
 	QModelIndex,
 	QPersistentModelIndex,
 	QMimeData,
@@ -24,7 +23,7 @@ from PySide6.QtCore import (
 from PySide6.QtWidgets import (
 	QWidget,
 	QAbstractItemView,
-	QTableView,
+	QTreeView,
 	QStyledItemDelegate,
 	QStyleOptionViewItem,
 	QComboBox,
@@ -76,15 +75,16 @@ class Field( NamedTuple ):
 
 
 
-class GenericTableModel( QAbstractTableModel ):
+class GenericModel( QAbstractItemModel ):
 	'''
-	Maps a list of generic objects to a QTableView.
+	Maps a list of generic objects to a `QAbstractItemView`.
 	'''
 	
 	def __init__(
 		self,
 		fields: list[Field],
 		datasource: list[Any],
+		childListName: str = '',
 		parent: QObject | None = None,
 	) -> None:
 		super().__init__( parent )
@@ -93,11 +93,60 @@ class GenericTableModel( QAbstractTableModel ):
 		
 		self.fields = fields
 		self.datasource = datasource
+		self.childListName = childListName
+	
+	
+	def childList( self, item: Any ) -> list[Any]:
+		'''
+		Return the list of children for an `item` in the model.
+		'''
+		
+		return getattr( item, self.childListName )
+	
+	
+	def index( self, row: int, column: int, parent: ModelIndex = QModelIndex() ) -> QModelIndex:
+		'''
+		Return the index of the item in the model specified by the given `row`, `column` and
+		`parent` index.
+		'''
+		
+		# Top-level item.
+		if not parent.isValid():
+			try:
+				return self.createIndex( row, column, self.datasource[row] )
+			except IndexError:
+				# Empty model.
+				return QModelIndex()
+		
+		# Sub-item.
+		parentItem: Any = parent.internalPointer()
+		childItem = self.childList( parentItem )[row]
+		
+		return self.createIndex( row, column, childItem )
+	
+	
+	def parent( self, index: QModelIndex = QModelIndex() ) -> QModelIndex:
+		'''
+		Return the parent of the model item with the given `index`.
+		'''
+		
+		# Top-level items have no parent.
+		item = index.internalPointer()
+		if item in self.datasource:
+			return QModelIndex()
+		
+		# TODO: Fix this.
+		for row, parentItem in enumerate( self.datasource ):
+			with suppress( AttributeError ):
+				if item in self.childList( parentItem ):
+					return self.createIndex( row, 0, parentItem )
+		
+		raise AttributeError( 'Item has no parent' )
 	
 	
 	def columnCount( self, parent: ModelIndex = QModelIndex() ) -> int:
 		'''
-		Return number of columns in table.
+		Return the number of columns (`Field`s) in the model.
 		'''
 		
 		_ = parent	# Unused.
@@ -107,12 +156,18 @@ class GenericTableModel( QAbstractTableModel ):
 	
 	def rowCount( self, parent: ModelIndex = QModelIndex() ) -> int:
 		'''
-		Return number of rows in table.
+		Return the number of rows under the given `parent`.
+		An invalid `parent` returns the number of top-level rows.
 		'''
 		
-		_ = parent	# Unused.
+		# Top-level items.
+		if not parent.isValid():
+			return len( self.datasource )
 		
-		return len( self.datasource )
+		with suppress( AttributeError ):
+			return len( self.childList( parent.internalPointer() ) )
+		
+		return 0
 	
 	
 	def flags( self, index: ModelIndex ) -> Qt.ItemFlag:
@@ -156,7 +211,7 @@ class GenericTableModel( QAbstractTableModel ):
 			return None
 		
 		field = self.fields[index.column()]
-		item = self.datasource[index.row()]
+		item = index.internalPointer()
 		
 		if role is Qt.ItemDataRole.EditRole:
 			return field.getFrom( item )
@@ -179,7 +234,7 @@ class GenericTableModel( QAbstractTableModel ):
 			return False
 		
 		field = self.fields[index.column()]
-		item = self.datasource[index.row()]
+		item = index.internalPointer()
 		
 		with suppress( ValueError ):
 			field.setIn( item, value )
@@ -357,9 +412,9 @@ class GenericTableModel( QAbstractTableModel ):
 
 
 
-class GenericTableView( QTableView ):
+class GenericTreeView( QTreeView ):
 	'''
-	`QTableView` for `GenericTableModel`.
+	`QTreeView` for `GenericModel`.
 	'''
 	
 	def __init__( self, parent: QWidget | None = None ) -> None:
@@ -367,17 +422,23 @@ class GenericTableView( QTableView ):
 		
 		self.setItemDelegate( EnumDelegate( self ) )
 		
-		self.setWordWrap( False )
-		self.setHorizontalScrollMode( QAbstractItemView.ScrollMode.ScrollPerPixel )
+		self.setUniformRowHeights( True )
+		self.setAllColumnsShowFocus( True )
 		self.setAlternatingRowColors( True )
-		self.horizontalHeader().setHighlightSections( False )
-		self.horizontalHeader().setStretchLastSection( True )
+		self.setAnimated( True )
 		
-		self.setSelectionBehavior( QAbstractItemView.SelectionBehavior.SelectRows )
 		self.setSelectionMode( QAbstractItemView.SelectionMode.ExtendedSelection )
-		
-		self.setSortingEnabled( True )
 		self.setDragDropMode( QAbstractItemView.DragDropMode.InternalMove )
+		self.setSortingEnabled( True )
+	
+	
+	def resizeColumnsToContents( self ) -> None:
+		'''
+		Resizes all columns given the size of their contents.
+		'''
+		
+		for index in range( self.model().columnCount() ):
+			self.resizeColumnToContents( index )
 	
 	
 	def startDrag( self, supportedActions: Qt.DropAction ) -> None:

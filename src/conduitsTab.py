@@ -8,12 +8,12 @@
 
 from PySide6.QtCore import QObject
 
-from genericTableView import Field, GenericTableModel
+from genericTreeView import Field, GenericModel
 from installation.conduitRun import ConduitRun
 
 
 
-class ConduitRunsModel( GenericTableModel ):
+class ConduitRunsModel( GenericModel ):
 	'''
 	Map a list of `ConduitRun`s to a QTableView.
 	'''
@@ -25,7 +25,7 @@ class ConduitRunsModel( GenericTableModel ):
 			Field( 'length',	self.tr('Length'),		format = ',', suffix = ' m' ),
 		]
 		
-		super().__init__( fields, conduitRuns, parent )
+		super().__init__( fields, conduitRuns, parent = parent )
 	
 	
 	def newItem( self ) -> ConduitRun:

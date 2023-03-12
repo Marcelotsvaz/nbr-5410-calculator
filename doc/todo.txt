@@ -1,3 +1,6 @@
+Remove long fields from repr
+Remove ItemIsSelectable
+Make itemmodel generic
 Add arguments with units to docstrings, including properties
 CircuitsModel parent should be table?
 Show thousands separator in status bar
