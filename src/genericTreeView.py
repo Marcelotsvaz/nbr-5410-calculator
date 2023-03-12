@@ -6,7 +6,7 @@
 
 
 
-from typing import NamedTuple, Sequence, Any
+from typing import TypeVar, NamedTuple, Generic, Sequence, Any, cast
 from operator import attrgetter
 from contextlib import suppress
 from enum import Enum
@@ -33,6 +33,7 @@ from PySide6.QtGui import QDrag
 
 
 # Type aliases.
+T = TypeVar('T')
 ModelIndex = QModelIndex | QPersistentModelIndex
 
 
@@ -75,7 +76,7 @@ class Field( NamedTuple ):
 
 
 
-class GenericModel( QAbstractItemModel ):
+class GenericItemModel( Generic[T], QAbstractItemModel ):
 	'''
 	Maps a list of generic objects to a `QAbstractItemView`.
 	'''
@@ -83,7 +84,7 @@ class GenericModel( QAbstractItemModel ):
 	def __init__(
 		self,
 		fields: list[Field],
-		datasource: list[Any],
+		datasource: list[T],
 		childListName: str = '',
 		parent: QObject | None = None,
 	) -> None:
@@ -96,7 +97,15 @@ class GenericModel( QAbstractItemModel ):
 		self.childListName = childListName
 	
 	
-	def childList( self, item: Any ) -> list[Any]:
+	def itemFromIndex( self, index: ModelIndex ) -> T:
+		'''
+		Return the item associated with the given `index`.
+		'''
+		
+		return cast( T, index.internalPointer() )
+	
+	
+	def childList( self, item: T ) -> list[T]:
 		'''
 		Return the list of children for an `item` in the model.
 		'''
@@ -119,7 +128,7 @@ class GenericModel( QAbstractItemModel ):
 				return QModelIndex()
 		
 		# Sub-item.
-		parentItem: Any = parent.internalPointer()
+		parentItem = self.itemFromIndex( parent )
 		childItem = self.childList( parentItem )[row]
 		
 		return self.createIndex( row, column, childItem )
@@ -131,7 +140,7 @@ class GenericModel( QAbstractItemModel ):
 		'''
 		
 		# Top-level items have no parent.
-		item = index.internalPointer()
+		item = self.itemFromIndex( index )
 		if item in self.datasource:
 			return QModelIndex()
 		
@@ -165,7 +174,7 @@ class GenericModel( QAbstractItemModel ):
 			return len( self.datasource )
 		
 		with suppress( AttributeError ):
-			return len( self.childList( parent.internalPointer() ) )
+			return len( self.childList( self.itemFromIndex( parent ) ) )
 		
 		return 0
 	
@@ -211,7 +220,7 @@ class GenericModel( QAbstractItemModel ):
 			return None
 		
 		field = self.fields[index.column()]
-		item = index.internalPointer()
+		item = self.itemFromIndex( index )
 		
 		if role is Qt.ItemDataRole.EditRole:
 			return field.getFrom( item )
@@ -234,7 +243,7 @@ class GenericModel( QAbstractItemModel ):
 			return False
 		
 		field = self.fields[index.column()]
-		item = index.internalPointer()
+		item = self.itemFromIndex( index )
 		
 		with suppress( ValueError ):
 			field.setIn( item, value )
@@ -245,7 +254,7 @@ class GenericModel( QAbstractItemModel ):
 		return False
 	
 	
-	def newItem( self ) -> Any:
+	def newItem( self ) -> T:
 		'''
 		Return a new item to be used with `insertRows`.
 		'''
@@ -304,7 +313,7 @@ class GenericModel( QAbstractItemModel ):
 		) or destinationChild < 0 or destinationChild > self.rowCount():
 			return False
 		
-		items: list[Any] = []
+		items: list[T] = []
 		for _ in range( count ):
 			items.append( self.datasource.pop( sourceRow ) )
 		
@@ -414,7 +423,7 @@ class GenericModel( QAbstractItemModel ):
 
 class GenericTreeView( QTreeView ):
 	'''
-	`QTreeView` for `GenericModel`.
+	`QTreeView` for `GenericItemModel`.
 	'''
 	
 	def __init__( self, parent: QWidget | None = None ) -> None:

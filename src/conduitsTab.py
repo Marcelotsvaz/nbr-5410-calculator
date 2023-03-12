@@ -8,12 +8,12 @@
 
 from PySide6.QtCore import QObject
 
-from genericTreeView import Field, GenericModel
+from genericTreeView import Field, GenericItemModel
 from installation.conduitRun import ConduitRun
 
 
 
-class ConduitRunsModel( GenericModel ):
+class ConduitRunsModel( GenericItemModel[ConduitRun] ):
 	'''
 	Map a list of `ConduitRun`s to a QTableView.
 	'''

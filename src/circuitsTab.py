@@ -8,7 +8,7 @@
 
 from PySide6.QtCore import QObject
 
-from genericTreeView import Field, GenericModel
+from genericTreeView import Field, GenericItemModel
 from installation.circuit import (
 	Supply,
 	LoadType,
@@ -22,7 +22,7 @@ from installation.circuit import (
 
 
 
-class CircuitsModel( GenericModel ):
+class CircuitsModel( GenericItemModel[BaseCircuit] ):
 	'''
 	Map a list of `Circuit`s to a QTableView.
 	'''
