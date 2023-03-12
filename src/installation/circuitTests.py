@@ -8,8 +8,6 @@
 
 from unittest import TestCase
 
-from jsons import load, dump
-
 from .circuit import (
 	Supply,
 	LoadType,
@@ -42,7 +40,7 @@ class BaseCircuitTests( TestCase ):
 			length			= 10.0,
 			loadType		= self.loadType,
 			name			= 'Test Circuit',
-			power			= 5000,
+			loadPower		= 5000,
 			referenceMethod	= ReferenceMethod.B1,
 			supply			= self.supply,
 			temperature		= 30,
@@ -250,7 +248,7 @@ class CircuitSerializationTests( BaseCircuitTests ):
 				'name': 'Power',
 			},
 			'name': 'Test Circuit',
-			'power': 5000,
+			'loadPower': 5000,
 			'referenceMethod': 'B1',
 			'supply': {
 				'voltage': 100,
@@ -269,8 +267,7 @@ class CircuitSerializationTests( BaseCircuitTests ):
 		Test serialization with jsons.dump.
 		'''
 		
-		circuitJsonDict = dump( self.circuit, strip_properties = True, strip_privates = True )
-		self.assertEqual( circuitJsonDict, self.circuitJsonDict )
+		self.assertEqual( self.circuit.dump(), self.circuitJsonDict )
 	
 	
 	def testDeserializeCircuit( self ) -> None:
@@ -278,8 +275,7 @@ class CircuitSerializationTests( BaseCircuitTests ):
 		Test deserialization with jsons.load.
 		'''
 		
-		circuit = load( self.circuitJsonDict, Circuit, strict = True )
-		self.assertEqual( circuit, self.circuit )
+		self.assertEqual( Circuit.load( self.circuitJsonDict ), self.circuit )
 
 
 

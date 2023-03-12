@@ -10,11 +10,12 @@ from dataclasses import dataclass, field
 
 from .circuit import BaseCircuit
 from .conduitRun import ConduitRun
+from .util import CustomJsonSerializable
 
 
 
 @dataclass
-class Project:
+class Project( CustomJsonSerializable ):
 	'''
 	Electrical installation project.
 	'''

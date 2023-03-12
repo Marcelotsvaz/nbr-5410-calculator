@@ -8,10 +8,12 @@
 
 from dataclasses import dataclass
 
+from .util import CustomJsonSerializable
+
 
 
 @dataclass
-class ConduitRun:
+class ConduitRun( CustomJsonSerializable ):
 	'''
 	Represents a conduit run containing multiple circuits.
 	'''

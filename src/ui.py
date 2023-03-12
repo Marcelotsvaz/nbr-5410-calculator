@@ -8,7 +8,7 @@
 
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QWidget, QMainWindow, QFileDialog, QMessageBox
-from jsons import loads, dumps
+from jsons import Verbosity
 
 from UiMainWindow import Ui_mainWindow as UiMainWindow
 from installation.project import Project
@@ -74,7 +74,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		
 		try:
 			with open( fileName ) as file:
-				project = loads( file.read(), Project, strict = True )
+				project = Project.loads( file.read() )
 			
 			self.setProject( project )
 		except FileNotFoundError as error:
@@ -98,11 +98,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		
 		try:
 			with open( fileName, 'w' ) as file:
-				jsonOptions: dict[str, object] = {
-					'indent': '\t',
-					'sort_keys': True,
-				}
-				file.write( dumps( self.project, strip_properties = True, strip_privates = True, jdkwargs = jsonOptions ) )
+				file.write( self.project.dumps( verbose = Verbosity.WITH_CLASS_INFO ) )
 		except PermissionError as error:
 			QMessageBox.critical( self, self.tr('Error'), str( error ) )
 	

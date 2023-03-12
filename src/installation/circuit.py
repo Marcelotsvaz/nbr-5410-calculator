@@ -12,6 +12,8 @@ from typing_extensions import Self	# TODO: Remove on Python 3.11.
 
 from pyjson5 import decode_io
 
+from .util import CustomJsonSerializable
+
 
 
 @dataclass
@@ -295,7 +297,7 @@ class Breaker:
 
 
 @dataclass( kw_only = True )
-class BaseCircuit:
+class BaseCircuit( CustomJsonSerializable ):
 	'''
 	Abstract base class for a circuit in an electrical installation.
 	'''
@@ -459,17 +461,17 @@ class Circuit( BaseCircuit ):
 	Represents a single terminal circuit in an electrical installation.
 	'''
 	
-	power: float
+	loadPower: float
 	
 	
 	@property
 	def power( self ) -> float:
-		return self._power
+		return self.loadPower
 	
 	
 	@power.setter
 	def power( self, value: float ) -> None:
-		self._power = value
+		self.loadPower = value
 
 
 

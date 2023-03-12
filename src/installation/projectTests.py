@@ -48,7 +48,7 @@ class ProjectTests( TestCase ):
 			length			= 10.0,
 			loadType		= loadType,
 			name			= 'Test Circuit',
-			power			= 5000,
+			loadPower		= 5000,
 			referenceMethod	= ReferenceMethod.B1,
 			supply			= supply,
 			temperature		= 30,

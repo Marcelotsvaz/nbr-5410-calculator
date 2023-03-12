@@ -16,3 +16,5 @@ from jsons._load_impl import (
 	loadb as loadb,
 	loads as loads,
 )
+from jsons.classes.json_serializable import JsonSerializable as JsonSerializable
+from jsons.classes.verbosity import Verbosity as Verbosity

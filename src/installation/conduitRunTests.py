@@ -8,8 +8,6 @@
 
 from unittest import TestCase
 
-from jsons import load, dump
-
 from .conduitRun import ConduitRun
 
 
@@ -63,8 +61,7 @@ class ConduitRunSerializationTests( BaseConduitRunTests ):
 		Test serialization with jsons.dump.
 		'''
 		
-		conduitRunJsonDict = dump( self.conduitRun, strip_properties = True, strip_privates = True )
-		self.assertEqual( conduitRunJsonDict, self.conduitRunJsonDict )
+		self.assertEqual( self.conduitRun.dump(), self.conduitRunJsonDict )
 	
 	
 	def testDeserializeConduitRun( self ) -> None:
@@ -72,5 +69,4 @@ class ConduitRunSerializationTests( BaseConduitRunTests ):
 		Test deserialization with jsons.load.
 		'''
 		
-		conduitRun = load( self.conduitRunJsonDict, ConduitRun, strict = True )
-		self.assertEqual( conduitRun, self.conduitRun )
+		self.assertEqual( ConduitRun.load( self.conduitRunJsonDict ), self.conduitRun )

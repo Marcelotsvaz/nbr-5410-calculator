@@ -60,7 +60,7 @@ class CircuitsModel( GenericTableModel ):
 			length			= 10.0,
 			loadType		= loadType,
 			name			= self.tr('New Circuit'),
-			power			= 1000,
+			loadPower		= 1000,
 			referenceMethod	= ReferenceMethod.B1,
 			supply			= supply,
 			temperature		= 30,
