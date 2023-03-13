@@ -21,6 +21,7 @@ reportUnnecessaryTypeIgnoreComment = true
 	
 	[tool.pylint.format]
 	indent-string = '	'
+	good-names = [ '_', 'x', 'y', 'i', 'j', 'k', 'id' ]
 	
 	
 	[tool.pylint.'messages control']

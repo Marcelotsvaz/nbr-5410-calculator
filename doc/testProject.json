@@ -8,352 +8,383 @@
 		{
 			"-meta": {
 				"classes": {
-					"/": "installation.circuit.Circuit",
+					"/": "installation.circuit.UpstreamCircuit",
 					"/loadType": "installation.circuit.LoadType",
 					"/supply": "installation.circuit.Supply",
 					"/wireType": "installation.circuit.WireType"
 				}
 			},
+			"circuits": [
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"grouping": 1,
+					"id": "cd894c83-7da1-45be-b290-e493e348542e",
+					"length": 10.0,
+					"loadPower": 8000.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 2.5,
+						"name": "Power"
+					},
+					"name": "Chuveiro",
+					"referenceMethod": "B1",
+					"supply": {
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				},
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"grouping": 1,
+					"id": "03b2ba30-d905-4c95-b71d-e8221a4a59d0",
+					"length": 10.0,
+					"loadPower": 6000.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 2.5,
+						"name": "Power"
+					},
+					"name": "Torneira El\u00e9trica Cozinha",
+					"referenceMethod": "B1",
+					"supply": {
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				},
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"grouping": 1,
+					"id": "e2e0b488-ba61-421c-8bab-34de21568e7d",
+					"length": 10.0,
+					"loadPower": 3000.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 2.5,
+						"name": "Power"
+					},
+					"name": "Lavadora/Secadora de Roupas",
+					"referenceMethod": "B1",
+					"supply": {
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				},
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"grouping": 1,
+					"id": "ea02b351-b764-4889-a673-9e9f0c5d1d5b",
+					"length": 10.0,
+					"loadPower": 3000.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 2.5,
+						"name": "Power"
+					},
+					"name": "Microondas/Forno El\u00e9trico",
+					"referenceMethod": "B1",
+					"supply": {
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				},
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"grouping": 1,
+					"id": "9757926c-200a-4417-ad51-6602d2fed7a5",
+					"length": 10.0,
+					"loadPower": 1500.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 2.5,
+						"name": "Power"
+					},
+					"name": "Lava-Lou\u00e7as",
+					"referenceMethod": "B1",
+					"supply": {
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				},
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"grouping": 1,
+					"id": "17d43b15-c6c2-4c2e-a78e-583177aad6b8",
+					"length": 10.0,
+					"loadPower": 1000.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 2.5,
+						"name": "Power"
+					},
+					"name": "Ar Condicionado 1",
+					"referenceMethod": "B1",
+					"supply": {
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				},
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"grouping": 1,
+					"id": "4bf77dfa-6bf4-496e-a355-057a697442b8",
+					"length": 10.0,
+					"loadPower": 1000.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 2.5,
+						"name": "Power"
+					},
+					"name": "Ar Condicionado 2",
+					"referenceMethod": "B1",
+					"supply": {
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				},
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"grouping": 1,
+					"id": "49eb5e68-8f0e-4fcf-8b1e-9d5d0d6a6210",
+					"length": 10.0,
+					"loadPower": 1000.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 2.5,
+						"name": "Power"
+					},
+					"name": "Ar Condicionado 3",
+					"referenceMethod": "B1",
+					"supply": {
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				},
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"grouping": 1,
+					"id": "d69dea2d-4327-4cdc-86ec-97bd9dab39ff",
+					"length": 10.0,
+					"loadPower": 1500.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 2.5,
+						"name": "Power"
+					},
+					"name": "Tomadas Cozinha / Area de Servi\u00e7o",
+					"referenceMethod": "B1",
+					"supply": {
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				},
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"grouping": 2,
+					"id": "6cf3e268-dd02-48fe-9a80-4935b210d8f2",
+					"length": 10.0,
+					"loadPower": 500.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 1.5,
+						"name": "Lighting"
+					},
+					"name": "Ilumina\u00e7\u00e3o Cozinha / Area de Servi\u00e7o / Exterior",
+					"referenceMethod": "B1",
+					"supply": {
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				},
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"grouping": 2,
+					"id": "d780247f-e128-4d82-9610-d34b2d02c05b",
+					"length": 10.0,
+					"loadPower": 500.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 1.5,
+						"name": "Lighting"
+					},
+					"name": "Ilumina\u00e7\u00e3o / Tomadas Quarto / Banheiro",
+					"referenceMethod": "B1",
+					"supply": {
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				},
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"grouping": 2,
+					"id": "94a67ad1-83ae-41cf-9a43-5b811dd648f1",
+					"length": 10.0,
+					"loadPower": 500.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 1.5,
+						"name": "Lighting"
+					},
+					"name": "Ilumina\u00e7\u00e3o / Tomadas Sala / Quartos",
+					"referenceMethod": "B1",
+					"supply": {
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				}
+			],
 			"grouping": 1,
 			"id": "cd894c83-7da1-45be-b290-e493e348542e",
 			"length": 10.0,
-			"loadPower": 8000.0,
 			"loadType": {
 				"demandFactor": 1.0,
 				"minimumWireSection": 2.5,
 				"name": "Power"
 			},
-			"name": "Chuveiro",
-			"referenceMethod": "B1",
-			"supply": {
-				"phases": 2,
-				"voltage": 220
-			},
-			"temperature": 30,
-			"wireType": {
-				"insulation": "PVC",
-				"material": "COPPER"
-			}
-		},
-		{
-			"-meta": {
-				"classes": {
-					"/": "installation.circuit.Circuit",
-					"/loadType": "installation.circuit.LoadType",
-					"/supply": "installation.circuit.Supply",
-					"/wireType": "installation.circuit.WireType"
-				}
-			},
-			"grouping": 1,
-			"id": "03b2ba30-d905-4c95-b71d-e8221a4a59d0",
-			"length": 10.0,
-			"loadPower": 6000.0,
-			"loadType": {
-				"demandFactor": 1.0,
-				"minimumWireSection": 2.5,
-				"name": "Power"
-			},
-			"name": "Torneira El\u00e9trica Cozinha",
-			"referenceMethod": "B1",
-			"supply": {
-				"phases": 2,
-				"voltage": 220
-			},
-			"temperature": 30,
-			"wireType": {
-				"insulation": "PVC",
-				"material": "COPPER"
-			}
-		},
-		{
-			"-meta": {
-				"classes": {
-					"/": "installation.circuit.Circuit",
-					"/loadType": "installation.circuit.LoadType",
-					"/supply": "installation.circuit.Supply",
-					"/wireType": "installation.circuit.WireType"
-				}
-			},
-			"grouping": 1,
-			"id": "e2e0b488-ba61-421c-8bab-34de21568e7d",
-			"length": 10.0,
-			"loadPower": 3000.0,
-			"loadType": {
-				"demandFactor": 1.0,
-				"minimumWireSection": 2.5,
-				"name": "Power"
-			},
-			"name": "Lavadora/Secadora de Roupas",
-			"referenceMethod": "B1",
-			"supply": {
-				"phases": 2,
-				"voltage": 220
-			},
-			"temperature": 30,
-			"wireType": {
-				"insulation": "PVC",
-				"material": "COPPER"
-			}
-		},
-		{
-			"-meta": {
-				"classes": {
-					"/": "installation.circuit.Circuit",
-					"/loadType": "installation.circuit.LoadType",
-					"/supply": "installation.circuit.Supply",
-					"/wireType": "installation.circuit.WireType"
-				}
-			},
-			"grouping": 1,
-			"id": "ea02b351-b764-4889-a673-9e9f0c5d1d5b",
-			"length": 10.0,
-			"loadPower": 3000.0,
-			"loadType": {
-				"demandFactor": 1.0,
-				"minimumWireSection": 2.5,
-				"name": "Power"
-			},
-			"name": "Microondas/Forno El\u00e9trico",
-			"referenceMethod": "B1",
-			"supply": {
-				"phases": 2,
-				"voltage": 220
-			},
-			"temperature": 30,
-			"wireType": {
-				"insulation": "PVC",
-				"material": "COPPER"
-			}
-		},
-		{
-			"-meta": {
-				"classes": {
-					"/": "installation.circuit.Circuit",
-					"/loadType": "installation.circuit.LoadType",
-					"/supply": "installation.circuit.Supply",
-					"/wireType": "installation.circuit.WireType"
-				}
-			},
-			"grouping": 1,
-			"id": "9757926c-200a-4417-ad51-6602d2fed7a5",
-			"length": 10.0,
-			"loadPower": 1500.0,
-			"loadType": {
-				"demandFactor": 1.0,
-				"minimumWireSection": 2.5,
-				"name": "Power"
-			},
-			"name": "Lava-Lou\u00e7as",
-			"referenceMethod": "B1",
-			"supply": {
-				"phases": 2,
-				"voltage": 220
-			},
-			"temperature": 30,
-			"wireType": {
-				"insulation": "PVC",
-				"material": "COPPER"
-			}
-		},
-		{
-			"-meta": {
-				"classes": {
-					"/": "installation.circuit.Circuit",
-					"/loadType": "installation.circuit.LoadType",
-					"/supply": "installation.circuit.Supply",
-					"/wireType": "installation.circuit.WireType"
-				}
-			},
-			"grouping": 1,
-			"id": "17d43b15-c6c2-4c2e-a78e-583177aad6b8",
-			"length": 10.0,
-			"loadPower": 1000.0,
-			"loadType": {
-				"demandFactor": 1.0,
-				"minimumWireSection": 2.5,
-				"name": "Power"
-			},
-			"name": "Ar Condicionado 1",
-			"referenceMethod": "B1",
-			"supply": {
-				"phases": 2,
-				"voltage": 220
-			},
-			"temperature": 30,
-			"wireType": {
-				"insulation": "PVC",
-				"material": "COPPER"
-			}
-		},
-		{
-			"-meta": {
-				"classes": {
-					"/": "installation.circuit.Circuit",
-					"/loadType": "installation.circuit.LoadType",
-					"/supply": "installation.circuit.Supply",
-					"/wireType": "installation.circuit.WireType"
-				}
-			},
-			"grouping": 1,
-			"id": "4bf77dfa-6bf4-496e-a355-057a697442b8",
-			"length": 10.0,
-			"loadPower": 1000.0,
-			"loadType": {
-				"demandFactor": 1.0,
-				"minimumWireSection": 2.5,
-				"name": "Power"
-			},
-			"name": "Ar Condicionado 2",
-			"referenceMethod": "B1",
-			"supply": {
-				"phases": 2,
-				"voltage": 220
-			},
-			"temperature": 30,
-			"wireType": {
-				"insulation": "PVC",
-				"material": "COPPER"
-			}
-		},
-		{
-			"-meta": {
-				"classes": {
-					"/": "installation.circuit.Circuit",
-					"/loadType": "installation.circuit.LoadType",
-					"/supply": "installation.circuit.Supply",
-					"/wireType": "installation.circuit.WireType"
-				}
-			},
-			"grouping": 1,
-			"id": "49eb5e68-8f0e-4fcf-8b1e-9d5d0d6a6210",
-			"length": 10.0,
-			"loadPower": 1000.0,
-			"loadType": {
-				"demandFactor": 1.0,
-				"minimumWireSection": 2.5,
-				"name": "Power"
-			},
-			"name": "Ar Condicionado 3",
-			"referenceMethod": "B1",
-			"supply": {
-				"phases": 2,
-				"voltage": 220
-			},
-			"temperature": 30,
-			"wireType": {
-				"insulation": "PVC",
-				"material": "COPPER"
-			}
-		},
-		{
-			"-meta": {
-				"classes": {
-					"/": "installation.circuit.Circuit",
-					"/loadType": "installation.circuit.LoadType",
-					"/supply": "installation.circuit.Supply",
-					"/wireType": "installation.circuit.WireType"
-				}
-			},
-			"grouping": 1,
-			"id": "d69dea2d-4327-4cdc-86ec-97bd9dab39ff",
-			"length": 10.0,
-			"loadPower": 1500.0,
-			"loadType": {
-				"demandFactor": 1.0,
-				"minimumWireSection": 2.5,
-				"name": "Power"
-			},
-			"name": "Tomadas Cozinha / Area de Servi\u00e7o",
-			"referenceMethod": "B1",
-			"supply": {
-				"phases": 2,
-				"voltage": 220
-			},
-			"temperature": 30,
-			"wireType": {
-				"insulation": "PVC",
-				"material": "COPPER"
-			}
-		},
-		{
-			"-meta": {
-				"classes": {
-					"/": "installation.circuit.Circuit",
-					"/loadType": "installation.circuit.LoadType",
-					"/supply": "installation.circuit.Supply",
-					"/wireType": "installation.circuit.WireType"
-				}
-			},
-			"grouping": 2,
-			"id": "6cf3e268-dd02-48fe-9a80-4935b210d8f2",
-			"length": 10.0,
-			"loadPower": 500.0,
-			"loadType": {
-				"demandFactor": 1.0,
-				"minimumWireSection": 1.5,
-				"name": "Lighting"
-			},
-			"name": "Ilumina\u00e7\u00e3o Cozinha / Area de Servi\u00e7o / Exterior",
-			"referenceMethod": "B1",
-			"supply": {
-				"phases": 2,
-				"voltage": 220
-			},
-			"temperature": 30,
-			"wireType": {
-				"insulation": "PVC",
-				"material": "COPPER"
-			}
-		},
-		{
-			"-meta": {
-				"classes": {
-					"/": "installation.circuit.Circuit",
-					"/loadType": "installation.circuit.LoadType",
-					"/supply": "installation.circuit.Supply",
-					"/wireType": "installation.circuit.WireType"
-				}
-			},
-			"grouping": 2,
-			"id": "d780247f-e128-4d82-9610-d34b2d02c05b",
-			"length": 10.0,
-			"loadPower": 500.0,
-			"loadType": {
-				"demandFactor": 1.0,
-				"minimumWireSection": 1.5,
-				"name": "Lighting"
-			},
-			"name": "Ilumina\u00e7\u00e3o / Tomadas Quarto / Banheiro",
-			"referenceMethod": "B1",
-			"supply": {
-				"phases": 2,
-				"voltage": 220
-			},
-			"temperature": 30,
-			"wireType": {
-				"insulation": "PVC",
-				"material": "COPPER"
-			}
-		},
-		{
-			"-meta": {
-				"classes": {
-					"/": "installation.circuit.Circuit",
-					"/loadType": "installation.circuit.LoadType",
-					"/supply": "installation.circuit.Supply",
-					"/wireType": "installation.circuit.WireType"
-				}
-			},
-			"grouping": 2,
-			"id": "94a67ad1-83ae-41cf-9a43-5b811dd648f1",
-			"length": 10.0,
-			"loadPower": 500.0,
-			"loadType": {
-				"demandFactor": 1.0,
-				"minimumWireSection": 1.5,
-				"name": "Lighting"
-			},
-			"name": "Ilumina\u00e7\u00e3o / Tomadas Sala / Quartos",
+			"name": "Entrada",
 			"referenceMethod": "B1",
 			"supply": {
 				"phases": 2,
