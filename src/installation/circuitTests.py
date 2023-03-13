@@ -7,6 +7,8 @@
 
 
 from unittest import TestCase
+from uuid import UUID
+from typing import Any
 
 from .circuit import (
 	Supply,
@@ -22,6 +24,63 @@ from .circuit import (
 
 
 
+def createCircuit() -> Circuit:
+	'''
+	Create instance of `Circuit`.
+	'''
+	
+	loadType = LoadType( 'Power', 2.5, 1.0 )
+	supply = Supply( 100, 1 )
+	wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
+	circuit = Circuit(
+		grouping		= 1,
+		id				= UUID( 'e3f9a216-774e-46ee-986a-190abdb37b32' ),
+		length			= 10.0,
+		loadPower		= 5000,
+		loadType		= loadType,
+		name			= 'Test Circuit',
+		referenceMethod	= ReferenceMethod.B1,
+		supply			= supply,
+		temperature		= 30,
+		wireType		= wireType,
+	)
+	
+	return circuit
+
+
+
+def createCircuitJsonDict() -> dict[str, Any]:
+	'''
+	Create JSON dict for `Circuit`.
+	'''
+	
+	circuitJsonDict = {
+		'grouping': 1,
+		'id': 'e3f9a216-774e-46ee-986a-190abdb37b32',
+		'length': 10.0,
+		'loadPower': 5000,
+		'loadType': {
+			'demandFactor': 1.0,
+			'minimumWireSection': 2.5,
+			'name': 'Power',
+		},
+		'name': 'Test Circuit',
+		'referenceMethod': 'B1',
+		'supply': {
+			'voltage': 100,
+			'phases': 1,
+		},
+		'temperature': 30,
+		'wireType': {
+			'insulation': 'PVC',
+			'material': 'COPPER',
+		},
+	}
+	
+	return circuitJsonDict
+
+
+
 class BaseCircuitTests( TestCase ):
 	'''
 	Base class for all `Circuit` tests.
@@ -32,20 +91,7 @@ class BaseCircuitTests( TestCase ):
 		Setup for all tests.
 		'''
 		
-		self.loadType = LoadType( 'Power', 2.5, 1.0 )
-		self.supply = Supply( 100, 1 )
-		self.wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
-		self.circuit = Circuit(
-			grouping		= 1,
-			length			= 10.0,
-			loadType		= self.loadType,
-			name			= 'Test Circuit',
-			loadPower		= 5000,
-			referenceMethod	= ReferenceMethod.B1,
-			supply			= self.supply,
-			temperature		= 30,
-			wireType		= self.wireType,
-		)
+		self.circuit = createCircuit()
 
 
 
@@ -235,47 +281,20 @@ class CircuitSerializationTests( BaseCircuitTests ):
 	Tests for `Circuit` serialization with jsons.
 	'''
 	
-	def setUp( self ) -> None:
-		super().setUp()
-		
-		self.circuitJsonDict = {
-			'description': None,
-			'grouping': 1,
-			'length': 10.0,
-			'loadType': {
-				'demandFactor': 1.0,
-				'minimumWireSection': 2.5,
-				'name': 'Power',
-			},
-			'name': 'Test Circuit',
-			'loadPower': 5000,
-			'referenceMethod': 'B1',
-			'supply': {
-				'voltage': 100,
-				'phases': 1,
-			},
-			'temperature': 30,
-			'wireType': {
-				'insulation': 'PVC',
-				'material': 'COPPER',
-			},
-		}
-	
-	
-	def testSerializeCircuit( self ) -> None:
+	def testSerialize( self ) -> None:
 		'''
 		Test serialization with jsons.dump.
 		'''
 		
-		self.assertEqual( self.circuit.dump(), self.circuitJsonDict )
+		self.assertEqual( self.circuit.dump(), createCircuitJsonDict() )
 	
 	
-	def testDeserializeCircuit( self ) -> None:
+	def testDeserialize( self ) -> None:
 		'''
 		Test deserialization with jsons.load.
 		'''
 		
-		self.assertEqual( Circuit.load( self.circuitJsonDict ), self.circuit )
+		self.assertEqual( Circuit.load( createCircuitJsonDict() ), self.circuit )
 
 
 
@@ -291,12 +310,12 @@ class UpstreamCircuitTests( BaseCircuitTests ):
 			circuits		= [ self.circuit ] * 10,
 			grouping		= 1,
 			length			= 10.0,
-			loadType		= self.loadType,
+			loadType		= self.circuit.loadType,
 			name			= 'Test Upstream Circuit',
 			referenceMethod	= ReferenceMethod.B1,
-			supply			= self.supply,
+			supply			= self.circuit.supply,
 			temperature		= 30,
-			wireType		= self.wireType,
+			wireType		= self.circuit.wireType,
 		)
 	
 	
@@ -314,5 +333,5 @@ class UpstreamCircuitTests( BaseCircuitTests ):
 		circuit's demand factor.
 		'''
 		
-		self.loadType.demandFactor = 0.5
+		self.circuit.loadType.demandFactor = 0.5
 		self.assertEqual( self.upstreamCircuit.power, 25_000.0 )

@@ -7,12 +7,16 @@
 
 
 from typing import Any
+from dataclasses import dataclass, field
+from uuid import UUID, uuid4
+
 from typing_extensions import Self
 
 from jsons import JsonSerializable
 
 
 
+@dataclass( kw_only = True )
 class CustomJsonSerializable( JsonSerializable ):
 	'''
 	Sub-class of `JsonSerializable` with defaults for dump and load methods.
@@ -23,6 +27,7 @@ class CustomJsonSerializable( JsonSerializable ):
 	}
 	
 	_dumpKwargs = {
+		'strip_class_variables': True,
 		'strip_properties': True,
 		'strip_privates': True,
 	}
@@ -33,6 +38,10 @@ class CustomJsonSerializable( JsonSerializable ):
 			'sort_keys': True,
 		}
 	}
+	
+	
+	# Instance variables.
+	id: UUID = field( default_factory = uuid4 )
 	
 	
 	@classmethod

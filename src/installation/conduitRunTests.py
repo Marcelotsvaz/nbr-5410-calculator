@@ -7,8 +7,42 @@
 
 
 from unittest import TestCase
+from uuid import UUID
+from typing import Any
 
 from .conduitRun import ConduitRun
+
+
+
+def createConduitRun() -> ConduitRun:
+	'''
+	Create instance of `ConduitRun`.
+	'''
+	
+	conduitRun = ConduitRun(
+		diameter = 10.0,
+		id = UUID( 'e3f9a216-774e-46ee-986a-190abdb37b32' ),
+		length = 10.0,
+		name = 'Test Conduit Run',
+	)
+	
+	return conduitRun
+
+
+
+def createConduitRunJsonDict() -> dict[str, Any]:
+	'''
+	Create JSON dict for `ConduitRun`.
+	'''
+	
+	conduitRunJsonDict = {
+		'diameter': 10.0,
+		'id': 'e3f9a216-774e-46ee-986a-190abdb37b32',
+		'length': 10.0,
+		'name': 'Test Conduit Run',
+	}
+	
+	return conduitRunJsonDict
 
 
 
@@ -22,11 +56,7 @@ class BaseConduitRunTests( TestCase ):
 		Setup for all tests.
 		'''
 		
-		self.conduitRun = ConduitRun(
-			name = 'Test Conduit Run',
-			diameter = 10.0,
-			length = 10.0,
-		)
+		self.conduitRun = createConduitRun()
 
 
 
@@ -42,31 +72,17 @@ class ConduitRunSerializationTests( BaseConduitRunTests ):
 	Tests for `ConduitRun` serialization with jsons.
 	'''
 	
-	def setUp( self ) -> None:
-		'''
-		Setup for all tests.
-		'''
-		
-		super().setUp()
-		
-		self.conduitRunJsonDict = {
-			'name': 'Test Conduit Run',
-			'diameter': 10.0,
-			'length': 10.0,
-		}
-	
-	
-	def testSerializeConduitRun( self ) -> None:
+	def testSerialize( self ) -> None:
 		'''
 		Test serialization with jsons.dump.
 		'''
 		
-		self.assertEqual( self.conduitRun.dump(), self.conduitRunJsonDict )
+		self.assertEqual( self.conduitRun.dump(), createConduitRunJsonDict() )
 	
 	
-	def testDeserializeConduitRun( self ) -> None:
+	def testDeserialize( self ) -> None:
 		'''
 		Test deserialization with jsons.load.
 		'''
 		
-		self.assertEqual( ConduitRun.load( self.conduitRunJsonDict ), self.conduitRun )
+		self.assertEqual( ConduitRun.load( createConduitRunJsonDict() ), self.conduitRun )

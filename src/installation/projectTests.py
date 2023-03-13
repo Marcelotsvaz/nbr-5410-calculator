@@ -7,22 +7,62 @@
 
 
 from unittest import TestCase
+from uuid import UUID
+from typing import Any
 
 from .project import Project
-from .circuit import (
-	Supply,
-	LoadType,
-	WireMaterial,
-	WireInsulation,
-	WireType,
-	ReferenceMethod,
-	Circuit,
-)
-from .conduitRun import ConduitRun
+from .circuitTests import createCircuit, createCircuitJsonDict
+from .conduitRunTests import createConduitRun, createConduitRunJsonDict
 
 
 
-class ProjectTests( TestCase ):
+def createProject() -> Project:
+	'''
+	Create instance of `Project`.
+	'''
+	
+	project = Project(
+		circuits = [ createCircuit(), createCircuit(), createCircuit() ],
+		conduitRuns = [ createConduitRun(), createConduitRun(), createConduitRun() ],
+		id = UUID( 'e3f9a216-774e-46ee-986a-190abdb37b32' ),
+		name = 'Test Project',
+	)
+	
+	return project
+
+
+
+def createProjectJsonDict() -> dict[str, Any]:
+	'''
+	Create JSON dict for `Project`.
+	'''
+	
+	projectJsonDict = {
+		'circuits': [ createCircuitJsonDict() ] * 3,
+		'conduitRuns': [ createConduitRunJsonDict() ] * 3,
+		'id': 'e3f9a216-774e-46ee-986a-190abdb37b32',
+		'name': 'Test Project',
+	}
+	
+	return projectJsonDict
+
+
+
+class BaseProjectTests( TestCase ):
+	'''
+	Base class for all `Project` tests.
+	'''
+	
+	def setUp( self ) -> None:
+		'''
+		Setup for all tests.
+		'''
+		
+		self.project = createProject()
+
+
+
+class ProjectTests( BaseProjectTests ):
 	'''
 	Tests for `Project` class.
 	'''
@@ -33,40 +73,31 @@ class ProjectTests( TestCase ):
 		'''
 		
 		Project( 'Test Project' )
+
+
+
+class ProjectSerializationTests( BaseProjectTests ):
+	'''
+	Tests for `Project` serialization with jsons.
+	'''
 	
-	
-	def testProjectWithCircuits( self ) -> None:
+	def testSerialize( self ) -> None:
 		'''
-		Test `Project` with `Circuit`s.
-		'''
-		
-		loadType = LoadType( 'Power', 2.5, 1.0 )
-		supply = Supply( 100, 1 )
-		wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
-		circuit = Circuit(
-			grouping		= 1,
-			length			= 10.0,
-			loadType		= loadType,
-			name			= 'Test Circuit',
-			loadPower		= 5000,
-			referenceMethod	= ReferenceMethod.B1,
-			supply			= supply,
-			temperature		= 30,
-			wireType		= wireType,
-		)
-		
-		Project( 'Test Project', circuits = [ circuit ] )
-	
-	
-	def testProjectWithConduitRuns( self ) -> None:
-		'''
-		Test `Project` with `ConduitRun`s.
+		Test serialization with jsons.dump.
 		'''
 		
-		conduitRun = ConduitRun(
-			name = 'Test Conduit Run',
-			diameter = 10.0,
-			length = 10.0,
-		)
+		self.assertEqual( self.project.dump(), createProjectJsonDict() )
+	
+	
+	def testDeserialize( self ) -> None:
+		'''
+		Test deserialization with jsons.load.
+		'''
 		
-		Project( 'Test Project', conduitRuns = [ conduitRun ] )
+		projectJsonDict = createProjectJsonDict()
+		for circuitJsonDict in projectJsonDict['circuits']:
+			circuitJsonDict['-meta'] = {
+				'classes': { '/': 'installation.circuit.Circuit' }
+			}
+		
+		self.assertEqual( Project.load( projectJsonDict ), self.project )

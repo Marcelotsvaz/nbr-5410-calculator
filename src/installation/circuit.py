@@ -8,8 +8,8 @@
 
 from enum import Enum, auto
 from dataclasses import dataclass, field
-from typing_extensions import Self	# TODO: Remove on Python 3.11.
 
+from typing_extensions import Self	# TODO: Remove on Python 3.11.
 from pyjson5 import decode_io
 
 from .util import CustomJsonSerializable
@@ -303,6 +303,7 @@ class BaseCircuit( CustomJsonSerializable ):
 	'''
 	
 	name: str
+	description: str = ''
 	
 	loadType: LoadType
 	supply: Supply
@@ -311,8 +312,6 @@ class BaseCircuit( CustomJsonSerializable ):
 	referenceMethod: ReferenceMethod
 	wireType: WireType
 	length: float
-	
-	description: str | None = None
 	
 	
 	@property
@@ -455,7 +454,7 @@ class BaseCircuit( CustomJsonSerializable ):
 
 
 
-@dataclass( kw_only = True )
+@dataclass
 class Circuit( BaseCircuit ):
 	'''
 	Represents a single terminal circuit in an electrical installation.
@@ -475,7 +474,7 @@ class Circuit( BaseCircuit ):
 
 
 
-@dataclass( kw_only = True )
+@dataclass
 class UpstreamCircuit( BaseCircuit ):
 	'''
 	Represents a circuit whose load is a group of downstream circuits.
