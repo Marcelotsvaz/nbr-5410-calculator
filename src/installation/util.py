@@ -27,7 +27,6 @@ class CustomJsonSerializable( JsonSerializable ):
 	}
 	
 	_dumpKwargs = {
-		'strip_class_variables': True,
 		'strip_properties': True,
 		'strip_privates': True,
 	}

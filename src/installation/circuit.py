@@ -23,11 +23,33 @@ class Supply:
 	'''
 	
 	voltage: int
-	phases: int
+	phases: int = 1
+	hasNeutral: bool = True
+	hasGround: bool = True
 	
 	
 	def __str__( self ) -> str:
-		return f'{self.voltage:,} V {self.phases} Phase{"s" if self.phases > 1 else ""}'
+		neutral = '+N' if self.hasNeutral else ''
+		
+		return f'{self.voltage:,} V {self.phases}P{neutral}'
+	
+	
+	@property
+	def loadedWireCount( self ) -> int:
+		'''
+		Number of current carrying wires.
+		'''
+		
+		return self.phases if not self.hasNeutral else self.phases + 1
+	
+	
+	@property
+	def wireCount( self ) -> int:
+		'''
+		Number of wires.
+		'''
+		
+		return self.phases + self.hasNeutral + self.hasGround
 
 
 
@@ -134,7 +156,7 @@ class WireType:
 	def getWires(
 		self,
 		referenceMethod: ReferenceMethod,
-		phases: int,
+		loadedWireCount: int,
 		correctionFactor: float,
 	) -> list['Wire']:
 		'''
@@ -143,7 +165,7 @@ class WireType:
 		See NBR 5410 tables 36~39.
 		'''
 		
-		capacities = self._referenceMethods[referenceMethod.name][str( phases + 1 )]
+		capacities = self._referenceMethods[referenceMethod.name][str( loadedWireCount )]
 		
 		return [
 			Wire( self, section, capacity, correctionFactor )
@@ -403,7 +425,7 @@ class BaseCircuit( CustomJsonSerializable ):
 		wireByCriteria: dict[str, Wire] = {}
 		allWires = self.wireType.getWires(
 			self.referenceMethod,
-			self.supply.phases,
+			self.supply.loadedWireCount,
 			self.correctionFactor,
 		)
 		

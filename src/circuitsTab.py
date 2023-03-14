@@ -55,7 +55,7 @@ class CircuitsModel( GenericItemModel[BaseCircuit] ):
 		'''
 		
 		loadType = LoadType( 'Power', 2.5, 1.0 )
-		supply = Supply( 127, 1 )
+		supply = Supply( 127 )
 		wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
 		circuit = Circuit(
 			grouping		= 1,

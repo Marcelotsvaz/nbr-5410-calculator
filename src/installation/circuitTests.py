@@ -30,7 +30,7 @@ def createCircuit() -> Circuit:
 	'''
 	
 	loadType = LoadType( 'Power', 2.5, 1.0 )
-	supply = Supply( 100, 1 )
+	supply = Supply( 100 )
 	wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
 	circuit = Circuit(
 		grouping		= 1,
@@ -55,6 +55,7 @@ def createCircuitJsonDict() -> dict[str, Any]:
 	'''
 	
 	circuitJsonDict = {
+		'description': '',
 		'grouping': 1,
 		'id': 'e3f9a216-774e-46ee-986a-190abdb37b32',
 		'length': 10.0,
@@ -67,8 +68,10 @@ def createCircuitJsonDict() -> dict[str, Any]:
 		'name': 'Test Circuit',
 		'referenceMethod': 'B1',
 		'supply': {
-			'voltage': 100,
+			'hasGround': True,
+			'hasNeutral': True,
 			'phases': 1,
+			'voltage': 100,
 		},
 		'temperature': 30,
 		'wireType': {
