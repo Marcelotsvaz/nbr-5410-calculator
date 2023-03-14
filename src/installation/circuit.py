@@ -366,16 +366,6 @@ class BaseCircuit( CustomJsonSerializable ):
 		return self.power / self.supply.voltage
 	
 	
-	@property
-	def correctedCurrent( self ) -> float:
-		'''
-		Project current corrected for temperature and grouping.
-		Used only for calculating wire section by current capacity.
-		'''
-		
-		return self.current / self.correctionFactor
-	
-	
 	def _voltageDrop( self, wire: Wire ) -> float:
 		'''
 		Voltage drop as a fraction of nominal voltage.

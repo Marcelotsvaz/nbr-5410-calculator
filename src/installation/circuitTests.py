@@ -109,15 +109,13 @@ class CircuitBasicTests( BaseCircuitTests ):
 		'''
 		
 		self.assertEqual( self.circuit.current, 50.0 )
-	
-	
-	def testCorrectedCurrent( self ) -> None:
-		'''
-		Test `correctedCurrent` property.
-		'''
-		
-		self.assertEqual( self.circuit.correctedCurrent, 50.0 )
-	
+
+
+
+class CircuitCorrectionFactorTests( BaseCircuitTests ):
+	'''
+	Test `Circuit` correction factor by temperature and grouping.
+	'''
 	
 	def testTemperatureCorrection( self ) -> None:
 		'''
@@ -126,7 +124,7 @@ class CircuitBasicTests( BaseCircuitTests ):
 		
 		self.circuit.temperature = 55
 		
-		self.assertAlmostEqual( self.circuit.correctedCurrent, 81.967213, 6 )
+		self.assertEqual( self.circuit.correctionFactor, 0.61 )
 	
 	
 	def testTemperatureCorrectionInterpolation( self ) -> None:
@@ -136,7 +134,7 @@ class CircuitBasicTests( BaseCircuitTests ):
 		
 		self.circuit.temperature = 58
 		
-		self.assertAlmostEqual( self.circuit.correctedCurrent, 91.911765, 6 )
+		self.assertEqual( self.circuit.correctionFactor, 0.544 )
 	
 	
 	def testTemperatureCorrectionBelowMinimum( self ) -> None:
@@ -146,7 +144,7 @@ class CircuitBasicTests( BaseCircuitTests ):
 		
 		self.circuit.temperature = -10
 		
-		self.assertAlmostEqual( self.circuit.correctedCurrent, 40.983607, 6 )
+		self.assertEqual( self.circuit.correctionFactor, 1.22 )
 	
 	
 	def testTemperatureCorrectionAboveMaximum( self ) -> None:
@@ -157,7 +155,7 @@ class CircuitBasicTests( BaseCircuitTests ):
 		self.circuit.temperature = 70
 		
 		with self.assertRaises( ProjectError ):
-			_ = self.circuit.correctedCurrent
+			_ = self.circuit.correctionFactor
 
 
 
