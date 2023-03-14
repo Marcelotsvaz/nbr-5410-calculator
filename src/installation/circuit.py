@@ -123,9 +123,9 @@ class WireType:
 	material: WireMaterial
 	insulation: WireInsulation
 	
-	_resistivity: float
-	_sections: list[float]
-	_referenceMethods: dict[str, dict[str, list[float]]]
+	_resistivity: float = field( repr = False )
+	_sections: list[float] = field( repr = False )
+	_referenceMethods: dict[str, dict[str, list[float]]] = field( repr = False )
 	
 	
 	def __init__( self, material: WireMaterial, insulation: WireInsulation ):
