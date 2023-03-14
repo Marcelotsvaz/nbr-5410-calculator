@@ -11,7 +11,9 @@
 	resistivity: 26.5E-9,
 	insulation: 'pvc',
 	
-	wireSections: [ 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300, 400, 500, 630, 800, 1000 ],
+	conductorSections: [ 16, 25, 35, 50, 70, 95, 120, 150, 185, 240, 300, 400, 500, 630, 800, 1000 ],
+	// conductorDiameters: [ 5.0, 6.5, 7.5, 9.0, 10.6, 12.2, 14.2, 15.8, 17.0, 20.0, 23.1, null, null, null, null, null ],
+	// externalDiameters: [ 7.0, 8.8, 9.9, 11.8, 13.7, 16.2, 17.6, 19.9, 22.3, 24.7, 27.9, null, null, null, null, null ],
 	
 	referenceMethods: {
 		A1: {

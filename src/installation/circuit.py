@@ -8,6 +8,7 @@
 
 from enum import Enum, auto
 from dataclasses import dataclass, field
+from math import pi
 
 from typing_extensions import Self	# TODO: Remove on Python 3.11.
 from pyjson5 import decode_io
@@ -124,7 +125,9 @@ class WireType:
 	insulation: WireInsulation
 	
 	_resistivity: float = field( repr = False )
-	_sections: list[float] = field( repr = False )
+	_conductorSections: list[float] = field( repr = False )
+	_conductorDiameters: list[float] = field( repr = False )
+	_externalDiameters: list[float] = field( repr = False )
 	_referenceMethods: dict[str, dict[str, list[float]]] = field( repr = False )
 	
 	
@@ -136,7 +139,9 @@ class WireType:
 		self.insulation = insulation
 		
 		self._resistivity = jsonData['resistivity']
-		self._sections = jsonData['wireSections']
+		self._conductorSections = jsonData['conductorSections']
+		self._conductorDiameters = jsonData['conductorDiameters']
+		self._externalDiameters = jsonData['externalDiameters']
 		self._referenceMethods = jsonData['referenceMethods']
 	
 	
@@ -168,8 +173,13 @@ class WireType:
 		capacities = self._referenceMethods[referenceMethod.name][str( loadedWireCount )]
 		
 		return [
-			Wire( self, section, capacity, correctionFactor )
-			for section, capacity in zip( self._sections, capacities )
+			Wire( self, *parameters, correctionFactor )
+			for parameters in zip(
+				self._conductorSections,
+				capacities,
+				self._conductorDiameters,
+				self._externalDiameters,
+			)
 		]
 
 
@@ -251,6 +261,8 @@ class Wire:
 	type: WireType
 	section: float
 	uncorrectedCapacity: float
+	conductorDiameter: float
+	externalDiameter: float
 	correctionFactor: float = 1.0
 	
 	
@@ -281,6 +293,15 @@ class Wire:
 		'''
 		
 		return self.type.resistivity / ( self.section / 1000**2 )
+	
+	
+	@property
+	def externalSection( self ) -> float:
+		'''
+		Wire external section in mm².
+		'''
+		
+		return pi * ( self.externalDiameter / 2 ) ** 2
 
 
 

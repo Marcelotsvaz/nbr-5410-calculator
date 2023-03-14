@@ -164,6 +164,22 @@ class CircuitWireTests( BaseCircuitTests ):
 	Wire related tests for `Circuit` class.
 	'''
 	
+	def testResistancePerMeter( self ) -> None:
+		'''
+		Calculate resistance per meter from section and resistivity.
+		'''
+		
+		self.assertAlmostEqual( self.circuit.wire.resistancePerMeter, 0.001720, 6 )
+	
+	
+	def testExternalSection( self ) -> None:
+		'''
+		Calculate external section from external diameter.
+		'''
+		
+		self.assertAlmostEqual( self.circuit.wire.externalSection, 27.339710, 6 )
+	
+	
 	def testSectionByMinimumSection( self ) -> None:
 		'''
 		Minimum wire section given load type.
