@@ -7,6 +7,7 @@
 
 
 from unittest import TestCase
+from typing import Any
 from dataclasses import dataclass
 from uuid import UUID
 
@@ -21,8 +22,8 @@ class TestClass( UniqueSerializable ):
 	Regular sub-class of `uniqueSerializable`.
 	'''
 	
-	def __init__( self, name: str, uuid: UUID | None = None ) -> None:
-		super().__init__( uuid = uuid )
+	def __init__( self, name: str, **kwargs: Any ) -> None:
+		super().__init__( **kwargs )
 		
 		self.name = name
 	
@@ -100,6 +101,19 @@ class UniqueSerializableClassSerializationTests( BaseUniqueSerializableTests ):
 		self.assertEqual( TestClass.load( self.testClassJsonDict ), self.testClass )
 	
 	
+	def testDeserializeWithoutUuid( self ) -> None:
+		'''
+		Test deserialization without UUID.
+		'''
+		
+		self.testClassJsonDict.pop( 'uuid' )
+		testClass = TestClass.load( self.testClassJsonDict )
+		self.testClass.uuid = testClass.uuid
+		
+		self.assertIsNotNone( testClass.uuid )
+		self.assertEqual( testClass, self.testClass )
+	
+	
 	def testDeserializeDuplicated( self ) -> None:
 		'''
 		Test deserialization of two items with the same UUID.
@@ -131,6 +145,19 @@ class UniqueSerializableDataclassSerializationTests( BaseUniqueSerializableTests
 		'''
 		
 		self.assertEqual( TestDataclass.load( self.testClassJsonDict ), self.testDataclass )
+	
+	
+	def testDeserializeWithoutUuid( self ) -> None:
+		'''
+		Test deserialization without UUID.
+		'''
+		
+		self.testClassJsonDict.pop( 'uuid' )
+		testDataclass = TestDataclass.load( self.testClassJsonDict )
+		self.testDataclass.uuid = testDataclass.uuid
+		
+		self.assertIsNotNone( testDataclass.uuid )
+		self.assertEqual( testDataclass, self.testDataclass )
 	
 	
 	def testDeserializeDuplicated( self ) -> None:

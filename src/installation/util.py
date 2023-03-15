@@ -57,9 +57,10 @@ class UniqueSerializable( JsonSerializable ):
 		Deserialize an object, objects previously deserialized are returned from a cache instead.
 		'''
 		
-		uuid = UUID( jsonDict['uuid'] )
-		if uuid in cls._instances:
-			return cls._instances[uuid]
+		if 'uuid' in jsonDict:
+			uuid = UUID( jsonDict['uuid'] )
+			if uuid in cls._instances:
+				return cls._instances[uuid]
 		
 		instance = cast( targetClass, default_object_deserializer( jsonDict, targetClass, **kwargs ) )
 		cls._instances[instance.uuid] = instance
