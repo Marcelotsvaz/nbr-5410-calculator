@@ -45,8 +45,9 @@ class CircuitsModel( GenericItemModel[BaseCircuit] ):
 			Field( 'wire.section',				self.tr('Wire Section'),	False, format = ',', suffix = ' mm²' ),
 		]
 		childListName = 'circuits'
+		childFields = fields
 		
-		super().__init__( fields, circuits, childListName, parent )
+		super().__init__( fields, circuits, childListName, childFields, parent )
 	
 	
 	def newItem( self ) -> BaseCircuit:

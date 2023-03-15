@@ -6,9 +6,10 @@
 
 
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 from .util import UniqueSerializable
+from .circuit import BaseCircuit
 
 
 
@@ -19,5 +20,14 @@ class ConduitRun( UniqueSerializable ):
 	'''
 	
 	name: str
-	diameter: float
 	length: float
+	circuits: list[BaseCircuit] = field( default_factory = list )
+	
+	
+	@property
+	def diameter( self ):
+		'''
+		TODO
+		'''
+		
+		return 25.4

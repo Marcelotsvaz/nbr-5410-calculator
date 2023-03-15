@@ -429,7 +429,7 @@
 				"voltage": 220
 			},
 			"temperature": 30,
-			"uuid": "cd894c83-7da1-45be-b290-e493e348542e",
+			"uuid": "ae56c13b-5fca-4f59-a879-9be55f0083c3",
 			"wireType": {
 				"insulation": "PVC",
 				"material": "COPPER"
@@ -443,7 +443,41 @@
 					"/": "installation.conduitRun.ConduitRun"
 				}
 			},
-			"diameter": 25.0,
+			"circuits": [
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"description": "",
+					"grouping": 1,
+					"length": 10.0,
+					"loadPower": 8000.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 2.5,
+						"name": "Power"
+					},
+					"name": "Chuveiro",
+					"referenceMethod": "B1",
+					"supply": {
+						"hasGround": true,
+						"hasNeutral": false,
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"uuid": "cd894c83-7da1-45be-b290-e493e348542e",
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				}
+			],
 			"length": 10.0,
 			"name": "Entrada",
 			"uuid": "37c68ed7-ddc2-4782-946e-67f08afc0894"

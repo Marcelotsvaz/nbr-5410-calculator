@@ -21,11 +21,17 @@ class ConduitRunsModel( GenericItemModel[ConduitRun] ):
 	def __init__( self, conduitRuns: list[ConduitRun], parent: QObject | None = None ) -> None:
 		fields = [
 			Field( 'name',		self.tr('Name') ),
-			Field( 'diameter',	self.tr('Diameter'),	format = ',', suffix = ' mm' ),
-			Field( 'length',	self.tr('Length'),		format = ',', suffix = ' m' ),
+			Field( 'length',	self.tr('Length'),				format = ',', suffix = ' m' ),
+			Field( 'diameter',	self.tr('Diameter'),	False,	format = ',', suffix = ' mm' ),
+		]
+		childListName = 'circuits'
+		childFields = [
+			Field( 'name',		self.tr('Name') ),
+			Field( 'length',	self.tr('Length'),				format = ',', suffix = ' m' ),
+			None,
 		]
 		
-		super().__init__( fields, conduitRuns, parent = parent )
+		super().__init__( fields, conduitRuns, childListName, childFields, parent )
 	
 	
 	def newItem( self ) -> ConduitRun:
@@ -35,7 +41,6 @@ class ConduitRunsModel( GenericItemModel[ConduitRun] ):
 		
 		conduitRun = ConduitRun(
 			name = self.tr('New Conduit Run'),
-			diameter = 25.0,
 			length = 10.0,
 		)
 		

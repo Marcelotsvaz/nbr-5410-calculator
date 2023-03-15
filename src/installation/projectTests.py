@@ -94,6 +94,7 @@ class ProjectSerializationTests( BaseProjectTests ):
 		Test deserialization with jsons.load.
 		'''
 		
+		# FIXME
 		projectJsonDict = createProjectJsonDict()
 		for circuitJsonDict in projectJsonDict['circuits']:
 			circuitJsonDict['-meta'] = {

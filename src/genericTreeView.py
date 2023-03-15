@@ -83,9 +83,10 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 	
 	def __init__(
 		self,
-		fields: list[Field],
+		fields: list[Field] | list[Field | None],
 		datasource: list[T],
 		childListName: str = '',
+		childFields: list[Field] | list[Field | None] | None = None,
 		parent: QObject | None = None,
 	) -> None:
 		super().__init__( parent )
@@ -95,6 +96,20 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		self.fields = fields
 		self.datasource = datasource
 		self.childListName = childListName
+		self.childFields = childFields if childFields is not None else []
+	
+	
+	def fieldFromIndex( self, index: ModelIndex ) -> Field | None:
+		'''
+		Return the `Field` associated with the given `index`.
+		'''
+		
+		# Top-level item.
+		if not index.parent().isValid():
+			return self.fields[index.column()]
+		
+		# Sub-item.
+		return self.childFields[index.column()]
 	
 	
 	def itemFromIndex( self, index: ModelIndex ) -> T:
@@ -189,7 +204,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		if not index.isValid():
 			return flags | Qt.ItemFlag.ItemIsDropEnabled
 		
-		if self.fields[index.column()].editable:
+		if ( field := self.fieldFromIndex( index ) ) and field.editable:
 			flags |= Qt.ItemFlag.ItemIsEditable
 		
 		return flags | Qt.ItemFlag.ItemIsDragEnabled
@@ -204,10 +219,13 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		if role is not Qt.ItemDataRole.DisplayRole:
 			return None
 		
-		if orientation is Qt.Orientation.Horizontal:
-			return self.fields[section].label
+		if orientation is Qt.Orientation.Vertical:	# TODO: Remove this?
+			return f'{section + 1}'
 		
-		return f'{section + 1}'
+		field = self.fields[section] or self.childFields[section]
+		assert field is not None
+		
+		return field.label
 	
 	
 	def data( self, index: ModelIndex, role: int = 0 ) -> Any | None:
@@ -219,12 +237,18 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		if role not in { Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.EditRole } or not index.isValid():
 			return None
 		
-		field = self.fields[index.column()]
+		field = self.fieldFromIndex( index )
 		item = self.itemFromIndex( index )
 		
+		# This column is only valid for a parent or child of this item.
+		if not field:
+			return None
+		
+		# Edit role.
 		if role is Qt.ItemDataRole.EditRole:
 			return field.getFrom( item )
 		
+		# Display role.
 		match value := field.getFrom( item ):
 			case Enum():
 				return value.name
@@ -242,8 +266,9 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		if role is not Qt.ItemDataRole.EditRole or not index.isValid():
 			return False
 		
-		field = self.fields[index.column()]
+		field = self.fieldFromIndex( index )
 		item = self.itemFromIndex( index )
+		assert field is not None
 		
 		with suppress( ValueError ):
 			field.setIn( item, value )
@@ -335,7 +360,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		'''
 		
 		reverse = order is not Qt.SortOrder.AscendingOrder
-		key = attrgetter( self.fields[column].name )
+		key = attrgetter( self.fields[column].name )	# TODO: Fix for sub-items.
 		
 		self.layoutAboutToBeChanged.emit()	# pyright: ignore
 		self.datasource = sorted( self.datasource, key = key, reverse = reverse )
