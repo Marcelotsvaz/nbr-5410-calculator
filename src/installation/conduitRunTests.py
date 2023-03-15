@@ -21,9 +21,9 @@ def createConduitRun() -> ConduitRun:
 	
 	conduitRun = ConduitRun(
 		diameter = 10.0,
-		id = UUID( 'e3f9a216-774e-46ee-986a-190abdb37b32' ),
 		length = 10.0,
 		name = 'Test Conduit Run',
+		uuid = UUID( 'f4f3bd7c-c818-4ffc-a776-212469d8ba16' ),
 	)
 	
 	return conduitRun
@@ -37,9 +37,9 @@ def createConduitRunJsonDict() -> dict[str, Any]:
 	
 	conduitRunJsonDict = {
 		'diameter': 10.0,
-		'id': 'e3f9a216-774e-46ee-986a-190abdb37b32',
 		'length': 10.0,
 		'name': 'Test Conduit Run',
+		'uuid': 'f4f3bd7c-c818-4ffc-a776-212469d8ba16',
 	}
 	
 	return conduitRunJsonDict

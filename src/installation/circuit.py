@@ -13,7 +13,7 @@ from math import pi
 from typing_extensions import Self	# TODO: Remove on Python 3.11.
 from pyjson5 import decode_io
 
-from .util import CustomJsonSerializable
+from .util import UniqueSerializable
 
 
 
@@ -340,7 +340,7 @@ class Breaker:
 
 
 @dataclass( kw_only = True )
-class BaseCircuit( CustomJsonSerializable ):
+class BaseCircuit( UniqueSerializable ):
 	'''
 	Abstract base class for a circuit in an electrical installation.
 	'''

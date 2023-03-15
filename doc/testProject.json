@@ -26,7 +26,6 @@
 					},
 					"description": "",
 					"grouping": 1,
-					"id": "cd894c83-7da1-45be-b290-e493e348542e",
 					"length": 10.0,
 					"loadPower": 8000.0,
 					"loadType": {
@@ -43,6 +42,7 @@
 						"voltage": 220
 					},
 					"temperature": 30,
+					"uuid": "cd894c83-7da1-45be-b290-e493e348542e",
 					"wireType": {
 						"insulation": "PVC",
 						"material": "COPPER"
@@ -59,7 +59,6 @@
 					},
 					"description": "",
 					"grouping": 1,
-					"id": "03b2ba30-d905-4c95-b71d-e8221a4a59d0",
 					"length": 10.0,
 					"loadPower": 6000.0,
 					"loadType": {
@@ -76,6 +75,7 @@
 						"voltage": 220
 					},
 					"temperature": 30,
+					"uuid": "03b2ba30-d905-4c95-b71d-e8221a4a59d0",
 					"wireType": {
 						"insulation": "PVC",
 						"material": "COPPER"
@@ -92,7 +92,6 @@
 					},
 					"description": "",
 					"grouping": 1,
-					"id": "e2e0b488-ba61-421c-8bab-34de21568e7d",
 					"length": 10.0,
 					"loadPower": 3000.0,
 					"loadType": {
@@ -109,6 +108,7 @@
 						"voltage": 220
 					},
 					"temperature": 30,
+					"uuid": "e2e0b488-ba61-421c-8bab-34de21568e7d",
 					"wireType": {
 						"insulation": "PVC",
 						"material": "COPPER"
@@ -125,7 +125,6 @@
 					},
 					"description": "",
 					"grouping": 1,
-					"id": "ea02b351-b764-4889-a673-9e9f0c5d1d5b",
 					"length": 10.0,
 					"loadPower": 3000.0,
 					"loadType": {
@@ -142,6 +141,7 @@
 						"voltage": 220
 					},
 					"temperature": 30,
+					"uuid": "ea02b351-b764-4889-a673-9e9f0c5d1d5b",
 					"wireType": {
 						"insulation": "PVC",
 						"material": "COPPER"
@@ -158,7 +158,6 @@
 					},
 					"description": "",
 					"grouping": 1,
-					"id": "9757926c-200a-4417-ad51-6602d2fed7a5",
 					"length": 10.0,
 					"loadPower": 1500.0,
 					"loadType": {
@@ -175,6 +174,7 @@
 						"voltage": 220
 					},
 					"temperature": 30,
+					"uuid": "9757926c-200a-4417-ad51-6602d2fed7a5",
 					"wireType": {
 						"insulation": "PVC",
 						"material": "COPPER"
@@ -191,7 +191,6 @@
 					},
 					"description": "",
 					"grouping": 1,
-					"id": "17d43b15-c6c2-4c2e-a78e-583177aad6b8",
 					"length": 10.0,
 					"loadPower": 1000.0,
 					"loadType": {
@@ -208,6 +207,7 @@
 						"voltage": 220
 					},
 					"temperature": 30,
+					"uuid": "17d43b15-c6c2-4c2e-a78e-583177aad6b8",
 					"wireType": {
 						"insulation": "PVC",
 						"material": "COPPER"
@@ -224,7 +224,6 @@
 					},
 					"description": "",
 					"grouping": 1,
-					"id": "4bf77dfa-6bf4-496e-a355-057a697442b8",
 					"length": 10.0,
 					"loadPower": 1000.0,
 					"loadType": {
@@ -241,6 +240,7 @@
 						"voltage": 220
 					},
 					"temperature": 30,
+					"uuid": "4bf77dfa-6bf4-496e-a355-057a697442b8",
 					"wireType": {
 						"insulation": "PVC",
 						"material": "COPPER"
@@ -257,7 +257,6 @@
 					},
 					"description": "",
 					"grouping": 1,
-					"id": "49eb5e68-8f0e-4fcf-8b1e-9d5d0d6a6210",
 					"length": 10.0,
 					"loadPower": 1000.0,
 					"loadType": {
@@ -274,6 +273,7 @@
 						"voltage": 220
 					},
 					"temperature": 30,
+					"uuid": "49eb5e68-8f0e-4fcf-8b1e-9d5d0d6a6210",
 					"wireType": {
 						"insulation": "PVC",
 						"material": "COPPER"
@@ -290,7 +290,6 @@
 					},
 					"description": "",
 					"grouping": 1,
-					"id": "d69dea2d-4327-4cdc-86ec-97bd9dab39ff",
 					"length": 10.0,
 					"loadPower": 1500.0,
 					"loadType": {
@@ -307,6 +306,7 @@
 						"voltage": 220
 					},
 					"temperature": 30,
+					"uuid": "d69dea2d-4327-4cdc-86ec-97bd9dab39ff",
 					"wireType": {
 						"insulation": "PVC",
 						"material": "COPPER"
@@ -323,7 +323,6 @@
 					},
 					"description": "",
 					"grouping": 2,
-					"id": "6cf3e268-dd02-48fe-9a80-4935b210d8f2",
 					"length": 10.0,
 					"loadPower": 500.0,
 					"loadType": {
@@ -340,6 +339,7 @@
 						"voltage": 220
 					},
 					"temperature": 30,
+					"uuid": "6cf3e268-dd02-48fe-9a80-4935b210d8f2",
 					"wireType": {
 						"insulation": "PVC",
 						"material": "COPPER"
@@ -356,7 +356,6 @@
 					},
 					"description": "",
 					"grouping": 2,
-					"id": "d780247f-e128-4d82-9610-d34b2d02c05b",
 					"length": 10.0,
 					"loadPower": 500.0,
 					"loadType": {
@@ -373,6 +372,7 @@
 						"voltage": 220
 					},
 					"temperature": 30,
+					"uuid": "d780247f-e128-4d82-9610-d34b2d02c05b",
 					"wireType": {
 						"insulation": "PVC",
 						"material": "COPPER"
@@ -389,7 +389,6 @@
 					},
 					"description": "",
 					"grouping": 2,
-					"id": "94a67ad1-83ae-41cf-9a43-5b811dd648f1",
 					"length": 10.0,
 					"loadPower": 500.0,
 					"loadType": {
@@ -406,6 +405,7 @@
 						"voltage": 220
 					},
 					"temperature": 30,
+					"uuid": "94a67ad1-83ae-41cf-9a43-5b811dd648f1",
 					"wireType": {
 						"insulation": "PVC",
 						"material": "COPPER"
@@ -414,7 +414,6 @@
 			],
 			"description": "",
 			"grouping": 1,
-			"id": "cd894c83-7da1-45be-b290-e493e348542e",
 			"length": 10.0,
 			"loadType": {
 				"demandFactor": 1.0,
@@ -430,6 +429,7 @@
 				"voltage": 220
 			},
 			"temperature": 30,
+			"uuid": "cd894c83-7da1-45be-b290-e493e348542e",
 			"wireType": {
 				"insulation": "PVC",
 				"material": "COPPER"
@@ -444,11 +444,11 @@
 				}
 			},
 			"diameter": 25.0,
-			"id": "37c68ed7-ddc2-4782-946e-67f08afc0894",
 			"length": 10.0,
-			"name": "Entrada"
+			"name": "Entrada",
+			"uuid": "37c68ed7-ddc2-4782-946e-67f08afc0894"
 		}
 	],
-	"id": "79849a2e-45dd-4648-8d53-eabb0c608599",
-	"name": "Test Project"
+	"name": "Test Project",
+	"uuid": "79849a2e-45dd-4648-8d53-eabb0c608599"
 }

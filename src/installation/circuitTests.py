@@ -34,7 +34,6 @@ def createCircuit() -> Circuit:
 	wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
 	circuit = Circuit(
 		grouping		= 1,
-		id				= UUID( 'e3f9a216-774e-46ee-986a-190abdb37b32' ),
 		length			= 10.0,
 		loadPower		= 5000,
 		loadType		= loadType,
@@ -42,6 +41,7 @@ def createCircuit() -> Circuit:
 		referenceMethod	= ReferenceMethod.B1,
 		supply			= supply,
 		temperature		= 30,
+		uuid			= UUID( 'e3f9a216-774e-46ee-986a-190abdb37b32' ),
 		wireType		= wireType,
 	)
 	
@@ -57,7 +57,6 @@ def createCircuitJsonDict() -> dict[str, Any]:
 	circuitJsonDict = {
 		'description': '',
 		'grouping': 1,
-		'id': 'e3f9a216-774e-46ee-986a-190abdb37b32',
 		'length': 10.0,
 		'loadPower': 5000,
 		'loadType': {
@@ -74,6 +73,7 @@ def createCircuitJsonDict() -> dict[str, Any]:
 			'voltage': 100,
 		},
 		'temperature': 30,
+		'uuid': 'e3f9a216-774e-46ee-986a-190abdb37b32',
 		'wireType': {
 			'insulation': 'PVC',
 			'material': 'COPPER',

@@ -6,18 +6,17 @@
 
 
 
-from typing import Any
+from typing import Any, ClassVar, cast
 from dataclasses import dataclass, field
 from uuid import UUID, uuid4
 
 from typing_extensions import Self
-
-from jsons import JsonSerializable
+from jsons import JsonSerializable, set_deserializer, default_object_deserializer
 
 
 
 @dataclass( kw_only = True )
-class CustomJsonSerializable( JsonSerializable ):
+class UniqueSerializable( JsonSerializable ):
 	'''
 	Sub-class of `JsonSerializable` with defaults for dump and load methods.
 	'''
@@ -39,8 +38,33 @@ class CustomJsonSerializable( JsonSerializable ):
 	}
 	
 	
+	# Class variables.
+	_instances: ClassVar[dict[UUID, Self]] = {}
+	
+	
 	# Instance variables.
-	id: UUID = field( default_factory = uuid4 )
+	uuid: UUID = field( default_factory = uuid4 )
+	
+	
+	@classmethod
+	def uniqueObjectDeserializer(
+		cls,
+		jsonDict: dict[str, Any],
+		targetClass: type[Self],
+		**kwargs: Any
+	) -> Self:
+		'''
+		Deserialize an object, objects previously deserialized are returned from a cache instead.
+		'''
+		
+		uuid = UUID( jsonDict['uuid'] )
+		if uuid in cls._instances:
+			return cls._instances[uuid]
+		
+		instance = cast( targetClass, default_object_deserializer( jsonDict, targetClass, **kwargs ) )
+		cls._instances[instance.uuid] = instance
+		
+		return instance
 	
 	
 	@classmethod
@@ -67,3 +91,11 @@ class CustomJsonSerializable( JsonSerializable ):
 		kwargs = self._dumpKwargs | self._dumpsKwargs | kwargs
 		
 		return super().dumps( **kwargs )
+
+
+
+set_deserializer(
+	UniqueSerializable.uniqueObjectDeserializer,
+	UniqueSerializable,
+	fork_inst = UniqueSerializable,
+)

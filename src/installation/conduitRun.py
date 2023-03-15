@@ -8,12 +8,12 @@
 
 from dataclasses import dataclass
 
-from .util import CustomJsonSerializable
+from .util import UniqueSerializable
 
 
 
 @dataclass
-class ConduitRun( CustomJsonSerializable ):
+class ConduitRun( UniqueSerializable ):
 	'''
 	Represents a conduit run containing multiple circuits.
 	'''

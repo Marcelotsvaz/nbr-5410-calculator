@@ -24,8 +24,8 @@ def createProject() -> Project:
 	project = Project(
 		circuits = [ createCircuit(), createCircuit(), createCircuit() ],
 		conduitRuns = [ createConduitRun(), createConduitRun(), createConduitRun() ],
-		id = UUID( 'e3f9a216-774e-46ee-986a-190abdb37b32' ),
 		name = 'Test Project',
+		uuid = UUID( 'd1019f95-f48d-4a66-b1c3-681c802d396a' ),
 	)
 	
 	return project
@@ -40,8 +40,8 @@ def createProjectJsonDict() -> dict[str, Any]:
 	projectJsonDict = {
 		'circuits': [ createCircuitJsonDict() ] * 3,
 		'conduitRuns': [ createConduitRunJsonDict() ] * 3,
-		'id': 'e3f9a216-774e-46ee-986a-190abdb37b32',
 		'name': 'Test Project',
+		'uuid': 'd1019f95-f48d-4a66-b1c3-681c802d396a',
 	}
 	
 	return projectJsonDict
