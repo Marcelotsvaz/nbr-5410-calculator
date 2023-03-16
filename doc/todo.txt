@@ -1,4 +1,3 @@
-Calculate conduit
 Fix drag and drop
 Fix sort
 
@@ -8,6 +7,7 @@ Show thousands separator in status bar
 Qt python properties
 Refactor tests docstrings
 
+Mock tests?
 Use integer keys in json
 Interpreter env var on pyproject
 __pycache__

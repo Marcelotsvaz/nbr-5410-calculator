@@ -1,0 +1,16 @@
+// 
+// NBR 5410 Calculator
+// 
+// 
+// Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
+
+
+
+{
+	brand: 'Tigre',
+	model: 'Eletroduto de PVC Rígido Roscável',
+	conduitType: 'rigid',
+	nominalDiameters: [ '1/2"', '3/4"', '1"', '1.1/4"', '1.1/2"', '2"', '2.1/2"', '3"', '4"' ],
+	externalDiameters: [ 20.8, 25.9, 32.9, 41.9, 47.4, 59.0, 74.7, 87.6, 113.1 ],
+	internalDiameters: [ 16.4, 21.3, 27.5, 36.1, 41.4, 52.8, 67.1, 79.6, 103.1 ],
+}

@@ -20,14 +20,16 @@ class ConduitRunsModel( GenericItemModel[ConduitRun] ):
 	
 	def __init__( self, conduitRuns: list[ConduitRun], parent: QObject | None = None ) -> None:
 		fields = [
-			Field( 'name',		self.tr('Name') ),
-			Field( 'length',	self.tr('Length'),				format = ',', suffix = ' m' ),
-			Field( 'diameter',	self.tr('Diameter'),	False,	format = ',', suffix = ' mm' ),
+			Field( 'name',						self.tr('Name') ),
+			Field( 'length',					self.tr('Length'),				format = ',', suffix = ' m' ),
+			Field( 'conduit.nominalDiameter',	self.tr('Diameter'),	False ),
+			Field( 'fillFactor',				self.tr('Fill Factor'),	False,	format = '.1%' ),
 		]
 		childListName = 'circuits'
 		childFields = [
-			Field( 'name',		self.tr('Name') ),
-			Field( 'length',	self.tr('Length'),				format = ',', suffix = ' m' ),
+			Field( 'name',						self.tr('Name') ),
+			Field( 'length',					self.tr('Length'),				format = ',', suffix = ' m' ),
+			None,
 			None,
 		]
 		

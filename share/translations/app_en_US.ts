@@ -82,6 +82,10 @@
         <source>New Conduit Run</source>
         <translation></translation>
     </message>
+    <message>
+        <source>Fill Factor</source>
+        <translation></translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>

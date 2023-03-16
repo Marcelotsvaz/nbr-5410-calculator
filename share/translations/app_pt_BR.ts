@@ -82,6 +82,10 @@
         <source>New Conduit Run</source>
         <translation>Nova Passagem de Conduítes</translation>
     </message>
+    <message>
+        <source>Fill Factor</source>
+        <translation>Taxa de Ocupação</translation>
+    </message>
 </context>
 <context>
     <name>MainWindow</name>

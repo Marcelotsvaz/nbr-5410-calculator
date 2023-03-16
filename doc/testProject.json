@@ -443,6 +443,17 @@
 					"/": "installation.conduitRun.ConduitRun"
 				}
 			},
+			"circuits": [],
+			"length": 10.0,
+			"name": "Alimenta\u00e7\u00e3o",
+			"uuid": "942bab0e-bed5-45ff-ad06-a5a8e66dc75c"
+		},
+		{
+			"-meta": {
+				"classes": {
+					"/": "installation.conduitRun.ConduitRun"
+				}
+			},
 			"circuits": [
 				{
 					"-meta": {
@@ -479,8 +490,275 @@
 				}
 			],
 			"length": 10.0,
-			"name": "Entrada",
-			"uuid": "37c68ed7-ddc2-4782-946e-67f08afc0894"
+			"name": "Chuveiro",
+			"uuid": "8c1669b1-eeba-40b7-843e-0c78376ea872"
+		},
+		{
+			"-meta": {
+				"classes": {
+					"/": "installation.conduitRun.ConduitRun"
+				}
+			},
+			"circuits": [
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"description": "",
+					"grouping": 1,
+					"length": 10.0,
+					"loadPower": 6000.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 2.5,
+						"name": "Power"
+					},
+					"name": "Torneira El\u00e9trica Cozinha",
+					"referenceMethod": "B1",
+					"supply": {
+						"hasGround": true,
+						"hasNeutral": false,
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"uuid": "03b2ba30-d905-4c95-b71d-e8221a4a59d0",
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				},
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"description": "",
+					"grouping": 1,
+					"length": 10.0,
+					"loadPower": 1500.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 2.5,
+						"name": "Power"
+					},
+					"name": "Tomadas Cozinha / Area de Servi\u00e7o",
+					"referenceMethod": "B1",
+					"supply": {
+						"hasGround": true,
+						"hasNeutral": false,
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"uuid": "d69dea2d-4327-4cdc-86ec-97bd9dab39ff",
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				},
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"description": "",
+					"grouping": 2,
+					"length": 10.0,
+					"loadPower": 500.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 1.5,
+						"name": "Lighting"
+					},
+					"name": "Ilumina\u00e7\u00e3o Cozinha / Area de Servi\u00e7o / Exterior",
+					"referenceMethod": "B1",
+					"supply": {
+						"hasGround": true,
+						"hasNeutral": false,
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"uuid": "6cf3e268-dd02-48fe-9a80-4935b210d8f2",
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				}
+			],
+			"length": 10.0,
+			"name": "Cozinha",
+			"uuid": "9dcb0bb8-219c-499c-8278-b0f4bb33cc0f"
+		},
+		{
+			"-meta": {
+				"classes": {
+					"/": "installation.conduitRun.ConduitRun"
+				}
+			},
+			"circuits": [
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"description": "",
+					"grouping": 1,
+					"length": 10.0,
+					"loadPower": 1000.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 2.5,
+						"name": "Power"
+					},
+					"name": "Ar Condicionado 1",
+					"referenceMethod": "B1",
+					"supply": {
+						"hasGround": true,
+						"hasNeutral": false,
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"uuid": "17d43b15-c6c2-4c2e-a78e-583177aad6b8",
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				},
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"description": "",
+					"grouping": 2,
+					"length": 10.0,
+					"loadPower": 500.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 1.5,
+						"name": "Lighting"
+					},
+					"name": "Ilumina\u00e7\u00e3o / Tomadas Sala / Quartos",
+					"referenceMethod": "B1",
+					"supply": {
+						"hasGround": true,
+						"hasNeutral": false,
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"uuid": "94a67ad1-83ae-41cf-9a43-5b811dd648f1",
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				}
+			],
+			"length": 10.0,
+			"name": "Sala / Quartos",
+			"uuid": "b2a760b7-d9b4-4360-9341-dcdfebbc2ca8"
+		},
+		{
+			"-meta": {
+				"classes": {
+					"/": "installation.conduitRun.ConduitRun"
+				}
+			},
+			"circuits": [
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"description": "",
+					"grouping": 1,
+					"length": 10.0,
+					"loadPower": 1000.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 2.5,
+						"name": "Power"
+					},
+					"name": "Ar Condicionado 2",
+					"referenceMethod": "B1",
+					"supply": {
+						"hasGround": true,
+						"hasNeutral": false,
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"uuid": "4bf77dfa-6bf4-496e-a355-057a697442b8",
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				},
+				{
+					"-meta": {
+						"classes": {
+							"/": "installation.circuit.Circuit",
+							"/loadType": "installation.circuit.LoadType",
+							"/supply": "installation.circuit.Supply",
+							"/wireType": "installation.circuit.WireType"
+						}
+					},
+					"description": "",
+					"grouping": 2,
+					"length": 10.0,
+					"loadPower": 500.0,
+					"loadType": {
+						"demandFactor": 1.0,
+						"minimumWireSection": 1.5,
+						"name": "Lighting"
+					},
+					"name": "Ilumina\u00e7\u00e3o / Tomadas Quarto / Banheiro",
+					"referenceMethod": "B1",
+					"supply": {
+						"hasGround": true,
+						"hasNeutral": false,
+						"phases": 2,
+						"voltage": 220
+					},
+					"temperature": 30,
+					"uuid": "d780247f-e128-4d82-9610-d34b2d02c05b",
+					"wireType": {
+						"insulation": "PVC",
+						"material": "COPPER"
+					}
+				}
+			],
+			"length": 10.0,
+			"name": "Banheiro / Quartos",
+			"uuid": "124e528f-3aea-4fdc-9861-a7d0b644facf"
 		}
 	],
 	"name": "Test Project",
