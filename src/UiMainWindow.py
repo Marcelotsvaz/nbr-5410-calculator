@@ -16,11 +16,12 @@ from PySide6.QtGui import (QAction, QBrush, QColor, QConicalGradient,
     QIcon, QImage, QKeySequence, QLinearGradient,
     QPainter, QPalette, QPixmap, QRadialGradient,
     QTransform)
-from PySide6.QtWidgets import (QApplication, QGridLayout, QHeaderView, QMainWindow,
-    QMenu, QMenuBar, QPushButton, QSizePolicy,
-    QSpacerItem, QStatusBar, QTabWidget, QWidget)
+from PySide6.QtWidgets import (QApplication, QGridLayout, QHeaderView, QLabel,
+    QMainWindow, QMenu, QMenuBar, QPushButton,
+    QSizePolicy, QSpacerItem, QStatusBar, QTabWidget,
+    QWidget)
 
-from genericTreeView import GenericTreeView
+from genericViews import (GenericListView, GenericTreeView)
 
 class Ui_mainWindow(object):
     def setupUi(self, mainWindow):
@@ -93,9 +94,41 @@ class Ui_mainWindow(object):
         self.gridLayout.setObjectName(u"gridLayout")
         self.tabWidget = QTabWidget(self.centralWidget)
         self.tabWidget.setObjectName(u"tabWidget")
-        self.panelTab = QWidget()
-        self.panelTab.setObjectName(u"panelTab")
-        self.tabWidget.addTab(self.panelTab, "")
+        self.projectTab = QWidget()
+        self.projectTab.setObjectName(u"projectTab")
+        self.gridLayout_4 = QGridLayout(self.projectTab)
+        self.gridLayout_4.setObjectName(u"gridLayout_4")
+        self.suppliesListView = GenericListView(self.projectTab)
+        self.suppliesListView.setObjectName(u"suppliesListView")
+
+        self.gridLayout_4.addWidget(self.suppliesListView, 1, 0, 1, 1)
+
+        self.loadTypesListView = GenericListView(self.projectTab)
+        self.loadTypesListView.setObjectName(u"loadTypesListView")
+
+        self.gridLayout_4.addWidget(self.loadTypesListView, 1, 1, 1, 1)
+
+        self.wireTypesListView = GenericListView(self.projectTab)
+        self.wireTypesListView.setObjectName(u"wireTypesListView")
+
+        self.gridLayout_4.addWidget(self.wireTypesListView, 1, 2, 1, 1)
+
+        self.suppliesLabel = QLabel(self.projectTab)
+        self.suppliesLabel.setObjectName(u"suppliesLabel")
+
+        self.gridLayout_4.addWidget(self.suppliesLabel, 0, 0, 1, 1)
+
+        self.loadTypesLabel = QLabel(self.projectTab)
+        self.loadTypesLabel.setObjectName(u"loadTypesLabel")
+
+        self.gridLayout_4.addWidget(self.loadTypesLabel, 0, 1, 1, 1)
+
+        self.wireTypesLabel = QLabel(self.projectTab)
+        self.wireTypesLabel.setObjectName(u"wireTypesLabel")
+
+        self.gridLayout_4.addWidget(self.wireTypesLabel, 0, 2, 1, 1)
+
+        self.tabWidget.addTab(self.projectTab, "")
         self.circuitsTab = QWidget()
         self.circuitsTab.setObjectName(u"circuitsTab")
         self.gridLayout_2 = QGridLayout(self.circuitsTab)
@@ -230,7 +263,10 @@ class Ui_mainWindow(object):
         self.actionQuit.setShortcut(QCoreApplication.translate("mainWindow", u"Ctrl+Q", None))
 #endif // QT_CONFIG(shortcut)
         self.actionAbout.setText(QCoreApplication.translate("mainWindow", u"&About", None))
-        self.tabWidget.setTabText(self.tabWidget.indexOf(self.panelTab), QCoreApplication.translate("mainWindow", u"Panel", None))
+        self.suppliesLabel.setText(QCoreApplication.translate("mainWindow", u"Supplies", None))
+        self.loadTypesLabel.setText(QCoreApplication.translate("mainWindow", u"Load Types", None))
+        self.wireTypesLabel.setText(QCoreApplication.translate("mainWindow", u"Wire Types", None))
+        self.tabWidget.setTabText(self.tabWidget.indexOf(self.projectTab), QCoreApplication.translate("mainWindow", u"Project", None))
         self.newCircuitButton.setText(QCoreApplication.translate("mainWindow", u"New circuit", None))
         self.deleteCircuitButton.setText(QCoreApplication.translate("mainWindow", u"Delete circuit", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.circuitsTab), QCoreApplication.translate("mainWindow", u"Circuits", None))

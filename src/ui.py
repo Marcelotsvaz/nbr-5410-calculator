@@ -12,6 +12,7 @@ from jsons import Verbosity
 
 from UiMainWindow import Ui_mainWindow as UiMainWindow
 from installation.project import Project
+from projectTab import SupplyModel, LoadTypeModel, WireTypeModel
 from circuitsTab import CircuitsModel
 from conduitsTab import ConduitRunsModel
 
@@ -36,6 +37,10 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		
 		self.project = project	# pylint: disable = attribute-defined-outside-init
 		
+		self.suppliesListView.setModel( SupplyModel( project.supplies, self ) )
+		self.loadTypesListView.setModel( LoadTypeModel( project.loadTypes, self ) )
+		self.wireTypesListView.setModel( WireTypeModel( project.wireTypes, self ) )
+		
 		self.circuitsTreeView.setModel( CircuitsModel( project.circuits, self ) )
 		self.circuitsTreeView.expandAll()
 		self.circuitsTreeView.resizeColumnsToContents()
@@ -52,6 +57,11 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		'''
 		
 		self.setProject( Project( self.tr('New Project') ) )
+		
+		self.suppliesListView.newItem()
+		self.loadTypesListView.newItem()
+		self.wireTypesListView.newItem()
+		
 		self.circuitsTreeView.newItem()
 		self.circuitsTreeView.expandAll()
 		self.circuitsTreeView.resizeColumnsToContents()

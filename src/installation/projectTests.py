@@ -40,8 +40,11 @@ def createProjectJsonDict() -> dict[str, Any]:
 	projectJsonDict = {
 		'circuits': [ createCircuitJsonDict() ] * 3,
 		'conduitRuns': [ createConduitRunJsonDict() ] * 3,
+		'loadTypes': [],
 		'name': 'Test Project',
+		'supplies': [],
 		'uuid': 'd1019f95-f48d-4a66-b1c3-681c802d396a',
+		'wireTypes': [],
 	}
 	
 	return projectJsonDict

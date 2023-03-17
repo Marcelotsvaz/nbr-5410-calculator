@@ -23,6 +23,7 @@ from PySide6.QtCore import (
 from PySide6.QtWidgets import (
 	QWidget,
 	QAbstractItemView,
+	QListView,
 	QTreeView,
 	QStyledItemDelegate,
 	QStyleOptionViewItem,
@@ -443,6 +444,42 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		'''
 		
 		return super().tr( *args )	# pyright: ignore
+
+
+
+class GenericListView( QListView ):
+	'''
+	`QListView` for `GenericItemModel`.
+	'''
+	
+	def __init__( self, parent: QWidget | None = None ) -> None:
+		super().__init__( parent )
+	
+	
+	@Slot()
+	def newItem( self ) -> None:
+		'''
+		Insert new item at end of table.
+		'''
+		
+		itemCount = self.model().rowCount()
+		self.model().insertRow( itemCount )
+	
+	
+	@Slot()
+	def deleteSelectedItems( self ) -> None:
+		'''
+		Delete selected items from table.
+		'''
+		
+		indexes = {
+			QPersistentModelIndex( index )
+			for index in self.selectedIndexes()
+			if index.column() == 0
+		}
+		
+		for index in indexes:
+			self.model().removeRow( index.row() )
 
 
 

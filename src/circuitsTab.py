@@ -8,7 +8,7 @@
 
 from PySide6.QtCore import QObject
 
-from genericTreeView import Field, GenericItemModel
+from genericViews import Field, GenericItemModel
 from installation.circuit import (
 	Supply,
 	LoadType,

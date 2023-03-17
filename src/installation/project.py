@@ -8,7 +8,7 @@
 
 from dataclasses import dataclass, field
 
-from .circuit import BaseCircuit
+from .circuit import Supply, LoadType, WireType, BaseCircuit
 from .conduitRun import ConduitRun
 from .util import UniqueSerializable
 
@@ -21,5 +21,8 @@ class Project( UniqueSerializable ):
 	'''
 	
 	name: str
+	supplies: list[Supply] = field( default_factory = list )
+	loadTypes: list[LoadType] = field( default_factory = list )
+	wireTypes: list[WireType] = field( default_factory = list )
 	circuits: list[BaseCircuit] = field( default_factory = list )
 	conduitRuns: list[ConduitRun] = field( default_factory = list )

@@ -88,6 +88,13 @@
     </message>
 </context>
 <context>
+    <name>LoadTypeModel</name>
+    <message>
+        <source>Name</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <source>New Project</source>
@@ -119,13 +126,23 @@
     </message>
 </context>
 <context>
+    <name>SupplyModel</name>
+    <message>
+        <source>Voltage</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
+    <name>WireTypeModel</name>
+    <message>
+        <source>Material</source>
+        <translation></translation>
+    </message>
+</context>
+<context>
     <name>mainWindow</name>
     <message>
         <source>NBR 5410 Calculator</source>
-        <translation></translation>
-    </message>
-    <message>
-        <source>Panel</source>
         <translation></translation>
     </message>
     <message>
@@ -202,6 +219,22 @@
     </message>
     <message>
         <source>Delete conduit run</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Project</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Supplies</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Load Types</source>
+        <translation></translation>
+    </message>
+    <message>
+        <source>Wire Types</source>
         <translation></translation>
     </message>
 </context>

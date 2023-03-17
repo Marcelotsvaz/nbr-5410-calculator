@@ -88,6 +88,13 @@
     </message>
 </context>
 <context>
+    <name>LoadTypeModel</name>
+    <message>
+        <source>Name</source>
+        <translation>Nome</translation>
+    </message>
+</context>
+<context>
     <name>MainWindow</name>
     <message>
         <source>New Project</source>
@@ -119,14 +126,24 @@
     </message>
 </context>
 <context>
+    <name>SupplyModel</name>
+    <message>
+        <source>Voltage</source>
+        <translation>Tensão</translation>
+    </message>
+</context>
+<context>
+    <name>WireTypeModel</name>
+    <message>
+        <source>Material</source>
+        <translation>Material</translation>
+    </message>
+</context>
+<context>
     <name>mainWindow</name>
     <message>
         <source>NBR 5410 Calculator</source>
         <translation>Calculadora NBR 5410</translation>
-    </message>
-    <message>
-        <source>Panel</source>
-        <translation>Painel</translation>
     </message>
     <message>
         <source>Circuits</source>
@@ -203,6 +220,22 @@
     <message>
         <source>Delete conduit run</source>
         <translation>Deletar passagem de conduítes</translation>
+    </message>
+    <message>
+        <source>Project</source>
+        <translation>Projeto</translation>
+    </message>
+    <message>
+        <source>Supplies</source>
+        <translation>Alimentação</translation>
+    </message>
+    <message>
+        <source>Load Types</source>
+        <translation>Tipos de Carga</translation>
+    </message>
+    <message>
+        <source>Wire Types</source>
+        <translation>Tipos de Fio</translation>
     </message>
 </context>
 </TS>
