@@ -1,4 +1,3 @@
-Use integer keys in json
 Fix drag and drop for children
 Fix sort for children
 Show thousands separator in status bar
