@@ -1,29 +1,28 @@
-Fix drag and drop
-Fix sort
+Use integer keys in json
+Fix drag and drop for children
+Fix sort for children
+Show thousands separator in status bar
+Qt python properties
+
+
 
 Search # TODO FIXME
 Add arguments with units to docstrings, including properties
-Show thousands separator in status bar
-Qt python properties
 Refactor tests docstrings
-
 Mock tests?
-Use integer keys in json
-Interpreter env var on pyproject
-__pycache__
-Test section reason
-Ignore translations
+Fix __pycache__ location
 
 
 
 Electrical:
+	Accumulate errors in property
+	BUG: Test when one wireByCriteria is empty
+	Grouping wire layout
+	Buried cables
+	Bare wire
 	Overload
 	Short circuit
-	Buried cables
-	Grouping wire layout
-	Bare wire
 	Rename cable?
-	BUG: Test when one wireByCriteria is empty
 
 
 

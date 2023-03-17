@@ -30,7 +30,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		self.newProject()
 	
 	
-	def setProject( self, project: Project ):
+	def setProject( self, project: Project ) -> None:
 		'''
 		Set the current project, cascading changes to all models and views.
 		'''

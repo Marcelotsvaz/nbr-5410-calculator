@@ -131,7 +131,7 @@ class WireType:
 	_referenceMethods: dict[str, dict[str, list[float]]] = field( repr = False )
 	
 	
-	def __init__( self, material: WireMaterial, insulation: WireInsulation ):
+	def __init__( self, material: WireMaterial, insulation: WireInsulation ) -> None:
 		with open( f'share/data/wireTypes/{material.value}-{insulation.value}.json5' ) as file:
 			jsonData = decode_io( file )
 		
@@ -150,7 +150,7 @@ class WireType:
 	
 	
 	@property
-	def resistivity( self ):
+	def resistivity( self ) -> float:
 		'''
 		Resistivity in ohm meter.
 		'''
