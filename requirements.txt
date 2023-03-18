@@ -6,7 +6,7 @@
 
 
 
-jsons==1.6.3
+jsons @ git+https://gitlab.com/marcelotsvaz/jsons.git@0fe4c64a643a46fb44d1d3e87da915899ee4f8e9
 pyjson5==1.6.2
 PySide6-Essentials==6.4.2
 typing_extensions==4.5.0
