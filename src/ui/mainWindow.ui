@@ -257,7 +257,7 @@
   <customwidget>
    <class>GenericTreeView</class>
    <extends>QTreeView</extends>
-   <header>genericViews</header>
+   <header>genericModelViews.views</header>
    <slots>
     <slot>newItem()</slot>
     <slot>deleteSelectedItems()</slot>
@@ -266,7 +266,7 @@
   <customwidget>
    <class>GenericListView</class>
    <extends>QListView</extends>
-   <header>genericViews</header>
+   <header>genericModelViews.views</header>
    <slots>
     <slot>newItem()</slot>
     <slot>deleteSelectedItems()</slot>

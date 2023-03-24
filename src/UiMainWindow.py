@@ -21,7 +21,7 @@ from PySide6.QtWidgets import (QApplication, QGridLayout, QHeaderView, QLabel,
     QSizePolicy, QSpacerItem, QStatusBar, QTabWidget,
     QWidget)
 
-from genericViews import (GenericListView, GenericTreeView)
+from genericModelViews.views import (GenericListView, GenericTreeView)
 
 class Ui_mainWindow(object):
     def setupUi(self, mainWindow):

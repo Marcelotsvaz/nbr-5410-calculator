@@ -8,7 +8,7 @@
 
 from PySide6.QtCore import QObject
 
-from genericViews import Field, GenericItemModel
+from genericModelViews.models import Field, GenericItemModel
 from installation.conduitRun import ConduitRun
 
 
