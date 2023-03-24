@@ -262,7 +262,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		
 		with suppress( ValueError ):
 			field.setIn( item, value )
-			self.dataChanged.emit( index, index, [ role ] )	# pyright: ignore
+			self.dataChanged.emit( index, index, [ role ] )
 			
 			return True
 		
@@ -352,9 +352,9 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		reverse = order is not Qt.SortOrder.AscendingOrder
 		key = attrgetter( self.fields[column].name )	# TODO: Fix for sub-items.
 		
-		self.layoutAboutToBeChanged.emit()	# pyright: ignore
+		self.layoutAboutToBeChanged.emit()
 		self.datasource = sorted( self.datasource, key = key, reverse = reverse )
-		self.layoutChanged.emit()	# pyright: ignore
+		self.layoutChanged.emit()
 	
 	
 	def mimeTypes( self ) -> list[str]:
