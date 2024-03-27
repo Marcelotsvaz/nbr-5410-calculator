@@ -10,11 +10,11 @@ from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QWidget, QMainWindow, QFileDialog, QMessageBox
 from jsons import Verbosity
 
-from UiMainWindow import Ui_mainWindow as UiMainWindow
-from installation.project import Project
-from projectTab import SupplyModel, LoadTypeModel, WireTypeModel
-from circuitsTab import CircuitsModel
-from conduitsTab import ConduitRunsModel
+from nbr_5410_calculator.UiMainWindow import Ui_mainWindow as UiMainWindow
+from nbr_5410_calculator.installation.project import Project
+from nbr_5410_calculator.projectTab import SupplyModel, LoadTypeModel, WireTypeModel
+from nbr_5410_calculator.circuitsTab import CircuitsModel
+from nbr_5410_calculator.conduitsTab import ConduitRunsModel
 
 
 

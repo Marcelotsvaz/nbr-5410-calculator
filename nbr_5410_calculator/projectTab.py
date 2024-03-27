@@ -8,8 +8,8 @@
 
 from PySide6.QtCore import QObject
 
-from genericModelViews.models import Field, GenericItemModel
-from installation.circuit import Supply, LoadType, WireMaterial, WireInsulation, WireType
+from nbr_5410_calculator.generic_model_views.models import Field, GenericItemModel
+from nbr_5410_calculator.installation.circuit import Supply, LoadType, WireMaterial, WireInsulation, WireType
 
 
 

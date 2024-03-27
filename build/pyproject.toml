@@ -1,0 +1,22 @@
+[project]
+	name = 'marcelotsvaz-python-project-template-build-tools'
+	dynamic = [ 'version' ]
+	
+	
+	[project.entry-points]
+		pdm.custom_dirs = 'pdm_plugins.frontend:customDirs'
+		'pdm.build.hook'.backend_hooks = 'pdm_plugins.backend:Hooks'
+
+
+
+# 
+# Building.
+#-------------------------------------------------------------------------------
+[build-system]
+	build-backend = 'pdm.backend'
+	requires = [ 'pdm-backend' ]
+
+
+
+[tool.pdm]
+	version.source = 'scm'

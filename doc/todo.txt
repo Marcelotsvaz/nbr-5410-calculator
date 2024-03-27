@@ -1,5 +1,7 @@
-Fix drag and drop for children
+Insert and remove children
+Fix sort for fields without __gt__
 Fix sort for children
+Fix drag and drop for children
 Show thousands separator in status bar
 Qt python properties
 

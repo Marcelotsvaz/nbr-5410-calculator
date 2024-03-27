@@ -11,11 +11,15 @@ import sys
 from PySide6.QtWidgets import QApplication
 from PySide6.QtCore import QTranslator, QLibraryInfo, QLocale
 
-from ui import MainWindow
+from nbr_5410_calculator.ui import MainWindow
 
 
 
-if __name__ == '__main__':
+def main() -> None:
+	'''
+	Entry point.
+	'''
+	
 	app = QApplication( sys.argv )
 	
 	# Qt translations.
@@ -33,3 +37,8 @@ if __name__ == '__main__':
 	window.show()
 
 	sys.exit( app.exec() )
+
+
+
+if __name__ == '__main__':
+	main()

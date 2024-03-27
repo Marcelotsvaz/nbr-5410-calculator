@@ -1,54 +1,82 @@
-// 
-// NBR 5410 Calculator
-// 
-// 
-// Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
-
-
-
 {
 	"version": "2.0.0",
 	
-	
 	"tasks": [
 		{
-			"label": "Compile UI",
+			"label": "PDM",
 			"type": "shell",
-			"command": "deployment/env/bin/pyside6-uic src/ui/mainWindow.ui -o src/UiMainWindow.py",
+			"command": "pdm ${input:pdm}",
 			"icon": {
-				"id": "combine",
-				"color": "terminal.ansiGreen",
-			},
-			"presentation": { "close": true },
-			"problemMatcher": [],
-		},
-		{
-			"label": "Update Translations",
-			"type": "shell",
-			"command": "deployment/env/bin/pyside6-lupdate $(find src -regextype posix-extended -regex '.*\\.(py|ui)$') -no-obsolete -locations none -ts share/translations/app_{en_US,pt_BR}.ts",
-			"icon": {
-				"id": "symbol-type-parameter",
-				"color": "terminal.ansiGreen",
+				"id": "symbol-function",
+				"color": "terminal.ansiMagenta"
 			},
 			"problemMatcher": [],
 		},
+		
+		// {
+		// 	"label": "Compile UI",
+		// 	"type": "shell",
+		// 	"command": "deployment/env/bin/pyside6-uic src/ui/mainWindow.ui -o src/UiMainWindow.py",
+		// 	"icon": {
+		// 		"id": "combine",
+		// 		"color": "terminal.ansiGreen",
+		// 	},
+		// 	"presentation": { "close": true },
+		// 	"problemMatcher": [],
+		// },
+		// {
+		// 	"label": "Update Translations",
+		// 	"type": "shell",
+		// 	"command": "deployment/env/bin/pyside6-lupdate $(find src -regextype posix-extended -regex '.*\\.(py|ui)$') -no-obsolete -locations none -ts share/translations/app_{en_US,pt_BR}.ts",
+		// 	"icon": {
+		// 		"id": "symbol-type-parameter",
+		// 		"color": "terminal.ansiGreen",
+		// 	},
+		// 	"problemMatcher": [],
+		// },
+		// {
+		// 	"label": "Compile Translations",
+		// 	"type": "shell",
+		// 	"command": "deployment/env/bin/pyside6-lrelease share/translations/app_{en_US,pt_BR}.ts",
+		// 	"icon": {
+		// 		"id": "symbol-type-parameter",
+		// 		"color": "terminal.ansiGreen",
+		// 	},
+		// 	"problemMatcher": [],
+		// },
+		// {
+		// 	"label": "Build",
+		// 	"dependsOn": [
+		// 		"Compile UI",
+		// 		"Compile Translations",
+		// 	],
+		// 	"problemMatcher": [],
+		// },
+	],
+	
+	"inputs": [
 		{
-			"label": "Compile Translations",
-			"type": "shell",
-			"command": "deployment/env/bin/pyside6-lrelease share/translations/app_{en_US,pt_BR}.ts",
-			"icon": {
-				"id": "symbol-type-parameter",
-				"color": "terminal.ansiGreen",
-			},
-			"problemMatcher": [],
-		},
-		{
-			"label": "Build",
-			"dependsOn": [
-				"Compile UI",
-				"Compile Translations",
+			"id": "pdm",
+			"type": "pickString",
+			"description": "Select command",
+			"options": [
+				{
+					"label": "⬇️ Install (dev)",
+					"value": "install --dev",
+				},
+				{
+					"label": "🧪 Test",
+					"value": "run test",
+				},
+				{
+					"label": "🛠️ Build",
+					"value": "build",
+				},
+				{
+					"label": "⬆️ Publish",
+					"value": "publish",
+				},
 			],
-			"problemMatcher": [],
 		},
-	]
+	],
 }

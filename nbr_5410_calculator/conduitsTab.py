@@ -8,8 +8,8 @@
 
 from PySide6.QtCore import QObject
 
-from genericModelViews.models import Field, GenericItemModel
-from installation.conduitRun import ConduitRun
+from nbr_5410_calculator.generic_model_views.models import Field, GenericItemModel
+from nbr_5410_calculator.installation.conduitRun import ConduitRun
 
 
 

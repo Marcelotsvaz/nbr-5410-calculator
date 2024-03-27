@@ -1,52 +1,152 @@
-# 
-# NBR 5410 Calculator
-# 
-# 
-# Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
+[project]
+	name = 'nbr-5410-calculator'
+	dynamic = [ 'version' ]
+	description = 'Calculator for electrical installations following the NBR 5410 standard.'
+	readme = 'readme.md'
+	license = { file = 'unlicense.txt' }
+	
+	authors = [
+		{ name = 'Marcelo Vaz', email = 'marcelotsvaz@gmail.com' },
+	]
+	
+	classifiers = [
+		'Programming Language :: Python :: 3',
+		'Operating System :: OS Independent',
+		'License :: OSI Approved :: The Unlicense (Unlicense)',
+	]
+	
+	requires-python = '>= 3.11, < 3.12' # TODO
+	dependencies = [
+		'jsons @ git+https://gitlab.com/marcelotsvaz/jsons.git@0fe4c64a643a46fb44d1d3e87da915899ee4f8e9',
+		'pyjson5 == 1.6.2',
+		'pyside6-essentials == 6.4.3',
+		'typing_extensions == 4.5.0',
+	]
+	
+	
+	[project.scripts]
+		nbr-5410-calculator = 'nbr_5410_calculator.main:main'
+	
+	
+	[project.urls]
+		# homepage = 'https://marcelotsvaz.gitlab.io/nbr-5410-calculator/'
+		# documentation = 'https://marcelotsvaz.gitlab.io/nbr-5410-calculator/'
+		# changelog = ''
+		issues = 'https://gitlab.com/marcelotsvaz/nbr-5410-calculator/-/issues'
+		source = 'https://gitlab.com/marcelotsvaz/nbr-5410-calculator'
+		# donate = ''
 
 
 
+# 
+# Building.
+#-------------------------------------------------------------------------------
+[build-system]
+	build-backend = 'pdm.backend'
+	requires = [
+		'pdm-backend',
+		'./build',
+	]
+
+
+
+[tool.pdm]
+	version.source = 'scm'
+	plugins = [ '-e ./build' ]
+	
+	[tool.pdm.dev-dependencies]
+		dev = [
+			'coverage == 7.3.2',
+			'pdm-backend == 2.1.7',
+			'pylint == 2.17.7',
+		]
+		
+	# 	docs = [
+	# 		'mkdocs-material[imaging]==9.4.7',
+	# 	]
+	
+	
+	[tool.pdm.scripts]
+		test.shell = 'build/test.fish'
+		test.help = 'Run tests with code coverage.'
+		
+		# docs.shell = 'cd docs/ && mkdocs build'
+		# docs.help = 'Build documentation with MkDocs.'
+
+
+
+# 
+# Tools.
+#-------------------------------------------------------------------------------
 [tool.pyright]
-typeCheckingMode = 'strict'
-stubPath = 'src/typings/'
-ignore = [ 'src/typings/', 'src/UiMainWindow.py' ]
-reportUnnecessaryTypeIgnoreComment = true
+	# ignore = [ 'src/typings/', 'src/UiMainWindow.py' ]
+	typeCheckingMode = 'strict'
+	# stubPath = 'src/typings/'
+	reportMissingTypeStubs = 'none'
+	reportUnnecessaryTypeIgnoreComment = 'error'
+	reportMissingSuperCall = 'warning'
+	reportUnknownLambdaType = 'none'
 
 
 
 [tool.pylint]
-	[tool.pylint.main]
-	init-hook = 'import sys; sys.path.append( "deployment/env/lib/python3.10/site-packages" )'
-	ignore-paths = [ '.*/src/typings/.*', '.*/src/UiMainWindow.py' ]
-	
-	[tool.pylint.format]
+	# init-hook = 'import sys; sys.path.append( "deployment/env/lib/python3.10/site-packages" )'
+	# ignore-paths = [ '.*/src/typings/.*', '.*/src/UiMainWindow.py' ]
 	indent-string = '	'
-	good-names = [ '_', 'x', 'y', 'i', 'j', 'k', 'id' ]
+	check-quote-consistency = true
+	# good-names = [ '_', 'x', 'y', 'i', 'j', 'k', 'id' ]
+	# Ignore if line contains URL longer than ~90 characters.
+	ignore-long-lines = 'https?://\S{82,}|# pyright: ignore'
 	
+	load-plugins = [
+		'pylint.extensions.docparams',
+		'pylint.extensions.overlapping_exceptions',
+	]
 	
-	[tool.pylint.'messages control']
+	enable = [
+		'useless-suppression',
+	]
+	
 	disable = [
-		'fixme',
+		# 'fixme',
 		'trailing-whitespace',
 		'missing-final-newline',
 		'logging-fstring-interpolation',
-		'too-many-instance-attributes',
-		'unspecified-encoding',
-		'no-name-in-module',	# Fix PyLint bug?
+		'too-few-public-methods',
+		# 'too-many-instance-attributes',
+		# 'unspecified-encoding',
+		# 'no-name-in-module',	# Fix PyLint bug?
 	]
 	
-	
-	[tool.pylint.basic]
-	module-naming-style = 'camelCase'
-	const-naming-style = 'UPPER_CASE'
-	
-	function-naming-style = 'camelCase'
-	argument-naming-style = 'camelCase'
+	# Naming.
 	variable-naming-style = 'camelCase'
 	inlinevar-naming-style = 'camelCase'
-	
-	class-naming-style = 'PascalCase'
-	class-const-naming-style = 'UPPER_CASE'
-	class-attribute-naming-style = 'camelCase'
+	function-naming-style = 'camelCase'
+	argument-naming-style = 'camelCase'
 	method-naming-style = 'camelCase'
+	class-attribute-naming-style = 'camelCase'
 	attr-naming-style = 'camelCase'
+	
+	# Naming (unchanged).
+	module-naming-style = 'snake_case'
+	class-naming-style = 'PascalCase'
+	const-naming-style = 'UPPER_CASE'
+	class-const-naming-style = 'UPPER_CASE'
+	
+	# Exceptions for tests.
+	no-docstring-rgx = '^__|.+Tests$|^test|^[Ff]oo$|^[Bb]ar$'
+	dummy-variables-rgx = '^(_|[Ff]oo|[Bb]ar)$'
+	bad-names = []
+
+
+
+[tool.coverage]
+	run.source_pkgs = [ 'project_template' ]
+	run.data_file = '.staging/coverage'
+	run.branch = true
+	
+	report.precision = 2
+	report.skip_covered = true
+	report.show_missing = true
+	
+	xml.output = '.staging/coverage.xml'

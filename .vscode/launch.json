@@ -1,25 +1,31 @@
-// 
-// NBR 5410 Calculator
-// 
-// 
-// Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
-
-
-
 {
 	"version": "0.2.0",
 	
-	
 	"configurations": [
 		{
-			"name": "Launch Program",
-			"type": "python",
-			"preLaunchTask": "Build",
+			"name": "Package entry point",
+			"type": "debugpy",
 			"request": "launch",
-			"program": "src/main.py",
-			"console": "integratedTerminal",
-			"justMyCode": true,
+			"module": "nbr_5410_calculator",
 			"env": { "LANGUAGE": "pt-BR" },
-		}
-	]
+			"justMyCode": false,
+			"variablePresentation": {
+				"class": "inline",
+				"function": "inline",
+			},
+		},
+		
+		{
+			"name": "Tests",
+			"type": "debugpy",
+			"request": "launch",
+			"purpose": [ "debug-test" ],
+			"justMyCode": false,
+			"presentation": { "hidden": true },
+			"variablePresentation": {
+				"class": "inline",
+				"function": "inline",
+			},
+		},
+	],
 }
