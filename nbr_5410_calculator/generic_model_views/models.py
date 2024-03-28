@@ -300,9 +300,14 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		Delete existing items.
 		'''
 		
+		if parent.isValid():
+			datasource = getattr( self.itemFromIndex( parent ), self.childListName )
+		else:
+			datasource = self.datasource
+		
 		self.beginRemoveRows( parent, row, row + count - 1 )
 		for _ in range( count ):
-			self.datasource.pop( row )
+			datasource.pop( row )
 		self.endRemoveRows()
 		
 		return True

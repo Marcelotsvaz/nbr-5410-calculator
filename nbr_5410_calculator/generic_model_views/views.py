@@ -149,7 +149,7 @@ class GenericTreeView( QTreeView ):
 		}
 		
 		for index in indexes:
-			self.model().removeRow( index.row() )
+			self.model().removeRow( index.row(), index.parent() )
 
 
 
