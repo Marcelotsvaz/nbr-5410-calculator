@@ -9,19 +9,20 @@
 from enum import Enum
 
 from PySide6.QtCore import (
-	Qt,
 	QAbstractItemModel,
+	QModelIndex,
 	QPersistentModelIndex,
+	Qt,
 	Slot,
 )
 from PySide6.QtWidgets import (
-	QWidget,
 	QAbstractItemView,
+	QComboBox,
 	QListView,
-	QTreeView,
 	QStyledItemDelegate,
 	QStyleOptionViewItem,
-	QComboBox,
+	QTreeView,
+	QWidget,
 )
 from PySide6.QtGui import QDrag
 
@@ -121,8 +122,18 @@ class GenericTreeView( QTreeView ):
 		Insert new item at end of table.
 		'''
 		
-		itemCount = self.model().rowCount()
-		self.model().insertRow( itemCount )
+		if selected := self.selectedIndexes():
+			lastSelected = max( selected, key = lambda index: index.row() )
+			
+			if lastSelected.parent().isValid():
+				parent = lastSelected.parent()
+			else:
+				parent = QModelIndex()
+		else:
+			parent = QModelIndex()
+		
+		itemCount = self.model().rowCount( parent )
+		self.model().insertRow( itemCount, parent )
 	
 	
 	@Slot()

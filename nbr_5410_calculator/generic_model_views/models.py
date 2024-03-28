@@ -282,9 +282,14 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		Insert new items using `newItem`.
 		'''
 		
+		if parent.isValid():
+			datasource = getattr( self.itemFromIndex( parent ), self.childListName )
+		else:
+			datasource = self.datasource
+		
 		self.beginInsertRows( parent, row, row + count - 1 )
 		for index in range( row, row + count ):
-			self.datasource.insert( index, self.newItem() )
+			datasource.insert( index, self.newItem() )
 		self.endInsertRows()
 		
 		return True
