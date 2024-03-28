@@ -141,7 +141,7 @@
 
 
 [tool.coverage]
-	run.source_pkgs = [ 'project_template' ]
+	run.source_pkgs = [ 'nbr_5410_calculator' ]
 	run.data_file = '.staging/coverage'
 	run.branch = true
 	

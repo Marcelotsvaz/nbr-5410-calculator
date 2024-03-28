@@ -6,12 +6,15 @@ Show thousands separator in status bar
 Qt python properties
 
 
-
+from typing_extensions import Self
 Search # TODO FIXME
 Add arguments with units to docstrings, including properties
 Refactor tests docstrings
 Mock tests?
 Fix __pycache__ location
+UniqueSerializable:
+	Use Pydantic
+	_instance thread safety
 
 
 

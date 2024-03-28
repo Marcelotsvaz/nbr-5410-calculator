@@ -10,9 +10,9 @@ from unittest import TestCase
 from uuid import UUID
 from typing import Any
 
-from .project import Project
-from .circuitTests import createCircuit, createCircuitJsonDict
-from .conduitRunTests import createConduitRun, createConduitRunJsonDict
+from nbr_5410_calculator.installation.project import Project
+from tests.installation.circuit_tests import createCircuit, createCircuitJsonDict
+from tests.installation.conduit_run_tests import createConduitRun, createConduitRunJsonDict
 
 
 
@@ -101,7 +101,7 @@ class ProjectSerializationTests( BaseProjectTests ):
 		projectJsonDict = createProjectJsonDict()
 		for circuitJsonDict in projectJsonDict['circuits']:
 			circuitJsonDict['-meta'] = {
-				'classes': { '/': 'installation.circuit.Circuit' }
+				'classes': { '/': 'nbr_5410_calculator.installation.circuit.Circuit' }
 			}
 		
 		self.assertEqual( Project.load( projectJsonDict ), self.project )

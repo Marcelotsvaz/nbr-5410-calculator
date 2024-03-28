@@ -10,8 +10,8 @@ from unittest import TestCase
 from uuid import UUID
 from typing import Any
 
-from .conduitRun import ConduitType, Conduit, ConduitRun
-from .circuitTests import createCircuit, createCircuitJsonDict
+from nbr_5410_calculator.installation.conduitRun import ConduitType, Conduit, ConduitRun
+from tests.installation.circuit_tests import createCircuit, createCircuitJsonDict
 
 
 
@@ -145,7 +145,7 @@ class ConduitRunSerializationTests( BaseConduitRunTests ):
 		conduitRunJsonDict = createConduitRunJsonDict()
 		for circuitJsonDict in conduitRunJsonDict['circuits']:
 			circuitJsonDict['-meta'] = {
-				'classes': { '/': 'installation.circuit.Circuit' }
+				'classes': { '/': 'nbr_5410_calculator.installation.circuit.Circuit' }
 			}
 		
 		self.assertEqual( ConduitRun.load( conduitRunJsonDict ), self.conduitRun )

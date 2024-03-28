@@ -10,16 +10,16 @@ from unittest import TestCase
 from uuid import UUID
 from typing import Any
 
-from .circuit import (
-	Supply,
-	LoadType,
-	WireMaterial,
-	WireInsulation,
-	WireType,
-	ReferenceMethod,
+from nbr_5410_calculator.installation.circuit import (
 	Circuit,
-	UpstreamCircuit,
+	LoadType,
 	ProjectError,
+	ReferenceMethod,
+	Supply,
+	UpstreamCircuit,
+	WireInsulation,
+	WireMaterial,
+	WireType,
 )
 
 
