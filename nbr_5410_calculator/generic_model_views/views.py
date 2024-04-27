@@ -10,7 +10,6 @@ from enum import Enum
 
 from PySide6.QtCore import (
 	QAbstractItemModel,
-	QModelIndex,
 	QPersistentModelIndex,
 	Qt,
 	Slot,
@@ -42,11 +41,11 @@ class GenericListView( QListView ):
 	@Slot()
 	def newItem( self ) -> None:
 		'''
-		Insert new item at end of table.
+		Insert new item.
 		'''
 		
-		itemCount = self.model().rowCount()
-		self.model().insertRow( itemCount )
+		# After last item.
+		self.model().insertRow( self.model().rowCount() + 1 )
 	
 	
 	@Slot()
@@ -74,7 +73,7 @@ class GenericTreeView( QTreeView ):
 	def __init__( self, parent: QWidget | None = None ) -> None:
 		super().__init__( parent )
 		
-		self.setItemDelegate( EnumDelegate( self ) )
+		# self.setItemDelegate( EnumDelegate( self ) ) # TODO: Proper delegate. 1
 		
 		self.setUniformRowHeights( True )
 		self.setAllColumnsShowFocus( True )
@@ -119,21 +118,16 @@ class GenericTreeView( QTreeView ):
 	@Slot()
 	def newItem( self ) -> None:
 		'''
-		Insert new item at end of table.
+		Insert new item.
 		'''
 		
-		if selected := self.selectedIndexes():
-			lastSelected = max( selected, key = lambda index: index.row() )
-			
-			if lastSelected.parent().isValid():
-				parent = lastSelected.parent()
-			else:
-				parent = QModelIndex()
+		if selectedIndexes := self.selectedIndexes():
+			# After last selected item.
+			lastSelectedIndex = max( selectedIndexes, key = lambda index: index.row() )
+			self.model().insertRow( lastSelectedIndex.row() + 1, lastSelectedIndex.parent() )
 		else:
-			parent = QModelIndex()
-		
-		itemCount = self.model().rowCount( parent )
-		self.model().insertRow( itemCount, parent )
+			# After last item.
+			self.model().insertRow( self.model().rowCount() + 1 )
 	
 	
 	@Slot()
