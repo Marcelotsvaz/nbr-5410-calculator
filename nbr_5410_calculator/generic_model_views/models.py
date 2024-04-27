@@ -203,8 +203,12 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		if not index.isValid():
 			return flags | Qt.ItemFlag.ItemIsDropEnabled
 		
-		if ( field := self.fieldFromIndex( index ) ) and field.editable:
+		field = self.fieldFromIndex( index )
+		if field and field.editable:
 			flags |= Qt.ItemFlag.ItemIsEditable
+		
+		if hasattr( self.itemFromIndex( index ), self.childListName ):
+			flags |= Qt.ItemFlag.ItemIsDropEnabled
 		
 		return flags | Qt.ItemFlag.ItemIsDragEnabled
 	
