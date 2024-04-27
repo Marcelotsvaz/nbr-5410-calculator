@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 from math import pi
 
 from typing_extensions import Self	# TODO: Remove on Python 3.11.
-from pyjson5 import decode_io
+from pyjson5 import decode_buffer
 
 from .util import UniqueSerializable
 
@@ -132,8 +132,8 @@ class WireType:
 	
 	
 	def __init__( self, material: WireMaterial, insulation: WireInsulation ) -> None:
-		with open( f'share/data/wireTypes/{material.value}-{insulation.value}.json5' ) as file:
-			jsonData = decode_io( file )
+		with open( f'share/data/wireTypes/{material.value}-{insulation.value}.json5', 'rb' ) as file:
+			jsonData = decode_buffer( file.read() )
 		
 		self.material = material
 		self.insulation = insulation
@@ -197,8 +197,8 @@ class TemperatureCorrectionFactor:
 		Return the interpolated correction factor for a given temperature.
 		'''
 		
-		with open( 'share/data/temperatureCorrectionFactor.json5' ) as file:
-			factors = decode_io( file )
+		with open( 'share/data/temperatureCorrectionFactor.json5', 'rb' ) as file:
+			factors = decode_buffer( file.read() )
 		
 		if temperature <= factors[0]['temperature']:
 			return factors[0]['value']
@@ -229,8 +229,8 @@ class GroupingCorrectionFactor:
 		Return the correction factor for a given circuit grouping.
 		'''
 		
-		with open( 'share/data/groupingCorrectionFactor.json5' ) as file:
-			factors = decode_io( file )
+		with open( 'share/data/groupingCorrectionFactor.json5', 'rb' ) as file:
+			factors = decode_buffer( file.read() )
 		
 		last = max( factors.keys() )
 		if grouping > int( last ):
@@ -321,10 +321,10 @@ class Breaker:
 		Return breakers by curve.
 		'''
 		
-		with open( 'share/data/breakers.json5' ) as file:
-			breakers = decode_io( file )
+		with open( 'share/data/breakers.json5', 'rb' ) as file:
+			breakers = decode_buffer( file.read() )
 		
-		return [ Breaker( current, curve ) for current in breakers[curve] ]
+		return [ cls( current, curve ) for current in breakers[curve] ]
 	
 	
 	def __str__( self ) -> str:

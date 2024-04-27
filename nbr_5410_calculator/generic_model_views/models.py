@@ -433,13 +433,3 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		'''
 		
 		return Qt.DropAction.MoveAction
-	
-	
-	# pylint: disable-next = useless-parent-delegation, invalid-name
-	def tr( self, *args: str ) -> str:
-		'''
-		Translate string.
-		Temporary fix for missing `tr` method in `QObject`.
-		'''
-		
-		return super().tr( *args )	# pyright: ignore

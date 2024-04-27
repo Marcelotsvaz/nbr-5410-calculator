@@ -1,13 +1,13 @@
-Insert and remove children
+self.get_datasource(index)
 Fix sort for fields without __gt__
 Fix sort for children
 Fix drag and drop for children
 Show thousands separator in status bar
 Qt python properties
 
-
 from typing_extensions import Self
 Search # TODO FIXME
+Use >= dependencies
 Add arguments with units to docstrings, including properties
 Refactor tests docstrings
 Mock tests?

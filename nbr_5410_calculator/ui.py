@@ -23,6 +23,9 @@ class MainWindow( QMainWindow, UiMainWindow ):
 	Main application window.
 	'''
 	
+	project: Project
+	
+	
 	def __init__( self, parent: QWidget | None = None ) -> None:
 		super().__init__( parent )
 		self.setupUi( self )	# pyright: ignore [reportUnknownMemberType]
@@ -35,7 +38,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Set the current project, cascading changes to all models and views.
 		'''
 		
-		self.project = project	# pylint: disable = attribute-defined-outside-init
+		self.project = project
 		
 		self.suppliesListView.setModel( SupplyModel( project.supplies, self ) )
 		self.loadTypesListView.setModel( LoadTypeModel( project.loadTypes, self ) )
@@ -77,7 +80,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Load a project from a file in JSON format.
 		'''
 		
-		fileName: str = QFileDialog().getOpenFileName(	# pyright: ignore [ reportUnknownMemberType ]
+		fileName = QFileDialog().getOpenFileName(
 			self,
 			filter = self.tr('Project files (*.json)'),
 			caption = self.tr('Open Project'),
@@ -87,8 +90,8 @@ class MainWindow( QMainWindow, UiMainWindow ):
 			return
 		
 		try:
-			with open( fileName ) as file:
-				project = Project.loads( file.read() )
+			with open( fileName, 'rb' ) as file:
+				project = Project.loadb( file.read() )
 			
 			self.setProject( project )
 		except FileNotFoundError as error:
@@ -101,7 +104,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Save project to a file in JSON format.
 		'''
 		
-		fileName: str = QFileDialog().getSaveFileName(	# pyright: ignore [ reportUnknownMemberType ]
+		fileName = QFileDialog().getSaveFileName(
 			self,
 			filter = self.tr('Project files (*.json)'),
 			caption = self.tr('Save Project As'),
@@ -111,8 +114,8 @@ class MainWindow( QMainWindow, UiMainWindow ):
 			return
 		
 		try:
-			with open( fileName, 'w' ) as file:
-				file.write( self.project.dumps( verbose = Verbosity.WITH_CLASS_INFO ) )
+			with open( fileName, 'wb' ) as file:
+				file.write( self.project.dumpb( verbose = Verbosity.WITH_CLASS_INFO ) )
 		except PermissionError as error:
 			QMessageBox.critical( self, self.tr('Error'), str( error ) )
 	
@@ -128,13 +131,3 @@ class MainWindow( QMainWindow, UiMainWindow ):
 			self.tr('About NBR 5410 Calculator'),
 			self.tr('Version {0}.').format( '0.1.0' )
 		)
-	
-	
-	# pylint: disable-next = useless-parent-delegation, invalid-name
-	def tr( self, *args: str ) -> str:
-		'''
-		Translate string.
-		Temporary fix for missing `tr` method in `QObject`.
-		'''
-		
-		return super().tr( *args )	# pyright: ignore

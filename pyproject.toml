@@ -15,12 +15,12 @@
 		'License :: OSI Approved :: The Unlicense (Unlicense)',
 	]
 	
-	requires-python = '>= 3.11, < 3.12' # TODO
+	requires-python = '>= 3.11, < 3.12'
 	dependencies = [
 		'jsons @ git+https://gitlab.com/marcelotsvaz/jsons.git@0fe4c64a643a46fb44d1d3e87da915899ee4f8e9',
 		'pyjson5 == 1.6.2',
-		'pyside6-essentials == 6.4.3',
-		'typing_extensions == 4.5.0',
+		'pyside6-essentials >= 6.4.3',
+		'typing_extensions >= 4.5.0',
 	]
 	
 	
@@ -79,9 +79,8 @@
 # Tools.
 #-------------------------------------------------------------------------------
 [tool.pyright]
-	# ignore = [ 'src/typings/', 'src/UiMainWindow.py' ]
+	ignore = [ '*/UiMainWindow.py' ]
 	typeCheckingMode = 'strict'
-	# stubPath = 'src/typings/'
 	reportMissingTypeStubs = 'none'
 	reportUnnecessaryTypeIgnoreComment = 'error'
 	reportMissingSuperCall = 'warning'
@@ -90,11 +89,10 @@
 
 
 [tool.pylint]
-	# init-hook = 'import sys; sys.path.append( "deployment/env/lib/python3.10/site-packages" )'
-	# ignore-paths = [ '.*/src/typings/.*', '.*/src/UiMainWindow.py' ]
+	extension-pkg-allow-list = [ 'PySide6', 'pyjson5' ]
+	ignore-paths = [ '.*/UiMainWindow.py' ]
 	indent-string = '	'
 	check-quote-consistency = true
-	# good-names = [ '_', 'x', 'y', 'i', 'j', 'k', 'id' ]
 	# Ignore if line contains URL longer than ~90 characters.
 	ignore-long-lines = 'https?://\S{82,}|# pyright: ignore'
 	

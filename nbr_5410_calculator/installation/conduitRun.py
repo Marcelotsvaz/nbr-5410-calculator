@@ -11,7 +11,7 @@ from dataclasses import dataclass, field
 from math import pi
 
 from typing_extensions import Self
-from pyjson5 import decode_io
+from pyjson5 import decode_buffer
 
 from .util import UniqueSerializable
 from .circuit import BaseCircuit
@@ -49,8 +49,8 @@ class Conduit:
 		Return all available sizes of this model of conduit.
 		'''
 		
-		with open( 'share/data/conduit/rigid.json5' ) as file:
-			jsonData = decode_io( file )
+		with open( 'share/data/conduit/rigid.json5', 'rb' ) as file:
+			jsonData = decode_buffer( file.read() )
 		
 		conduitType = ConduitType( jsonData['conduitType'] )
 		nominalDiameters = jsonData['nominalDiameters']
@@ -61,7 +61,7 @@ class Conduit:
 		model = jsonData['model']
 		
 		conduits = [
-			Conduit( conduitType, *args, brand, model )
+			cls( conduitType, *args, brand, model )
 			for args in zip( nominalDiameters, externalDiameters, internalDiameters )
 		]
 		

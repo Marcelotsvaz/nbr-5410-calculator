@@ -82,6 +82,13 @@ class UniqueSerializable( JsonSerializable ):
 		return super().loads( json_obj, **kwargs )
 	
 	
+	@classmethod
+	def loadb( cls: type[Self], json_obj: bytes, **kwargs: Any ) -> Self:
+		kwargs = cls._loadKwargs | kwargs
+		
+		return super().loadb( json_obj, **kwargs )
+	
+	
 	def dump( self, **kwargs: Any ) -> object:
 		kwargs = self._dumpKwargs | kwargs
 		
@@ -92,6 +99,12 @@ class UniqueSerializable( JsonSerializable ):
 		kwargs = self._dumpKwargs | self._dumpsKwargs | kwargs
 		
 		return super().dumps( **kwargs )
+	
+	
+	def dumpb( self, **kwargs: Any ) -> bytes:
+		kwargs = self._dumpKwargs | self._dumpsKwargs | kwargs
+		
+		return super().dumpb( **kwargs )
 
 
 
