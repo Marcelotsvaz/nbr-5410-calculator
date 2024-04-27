@@ -446,7 +446,7 @@ class BaseCircuit( UniqueSerializable ):
 			lambda breaker: breaker.current >= self.current,
 			Breaker.getBreakers( 'C' ),
 		) )
-		if not breaker:
+		if not breaker:	# TODO: This check is wrong. filter raises.
 			raise ProjectError( 'No suitable breaker found.' )
 		
 		

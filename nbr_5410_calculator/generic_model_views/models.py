@@ -6,7 +6,7 @@
 
 
 
-from typing import TypeVar, NamedTuple, Generic, Sequence, Any, cast
+from typing import TypeVar, NamedTuple, Generic, Sequence, Any, cast, overload
 from operator import attrgetter
 from contextlib import suppress
 from enum import Enum
@@ -139,23 +139,32 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return self.createIndex( row, column, childItem )
 	
 	
-	def parent( self, index: QModelIndex = QModelIndex() ) -> QModelIndex:
+	@overload
+	def parent( self ) -> QObject: ...
+	
+	@overload
+	def parent( self, child: ModelIndex ) -> QModelIndex: ...
+	
+	def parent( self, child: ModelIndex | None = None ) -> QModelIndex | QObject:
 		'''
 		Return the parent of the model item with the given `index`.
 		'''
 		
-		# Top-level items have no parent.
-		item = self.itemFromIndex( index )
-		if item in self.datasource:
-			return QModelIndex()
+		# This is actually calling `QObject.parent()`, and not the virtual
+		# `QAbstractItemModel.parent( child: ModelIndex )`.
+		if child is None:
+			return super().parent()
 		
-		# TODO: Fix this.
-		for row, parentItem in enumerate( self.datasource ):
-			with suppress( AttributeError ):
-				if item in self.childList( parentItem ):
+		# Iterate all children of top-level items.
+		if self.childListName:
+			item = self.itemFromIndex( child )
+			
+			for row, parentItem in enumerate( self.datasource ):
+				if hasattr( parentItem, self.childListName ) and item in self.childList( parentItem ):
 					return self.createIndex( row, 0, parentItem )
 		
-		raise AttributeError( 'Item has no parent' )
+		# Top-level items have no parent.
+		return QModelIndex()
 	
 	
 	def columnCount( self, parent: ModelIndex = QModelIndex() ) -> int:
