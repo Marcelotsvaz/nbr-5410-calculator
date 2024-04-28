@@ -4,6 +4,10 @@ Python:
 	from typing_extensions import Self
 	@override
 	Use StrEnumsz
+UniqueSerializable
+	Just use UUID references with weakref fields and master field in project
+	Do not share _instance among classes
+	Update field when loading already existing item
 self.get_datasource(index)
 Search # TODO FIXME
 Fix sort for fields without __gt__

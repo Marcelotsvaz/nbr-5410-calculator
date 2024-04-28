@@ -46,6 +46,10 @@ class UniqueSerializable( JsonSerializable ):
 	uuid: UUID = field( default_factory = uuid4 )
 	
 	
+	def __post_init__( self ):
+		self._instances[self.uuid] = self
+	
+	
 	@classmethod
 	def uniqueObjectDeserializer(
 		cls,
@@ -59,6 +63,7 @@ class UniqueSerializable( JsonSerializable ):
 		
 		if 'uuid' in jsonDict:
 			uuid = UUID( jsonDict['uuid'] )
+			
 			if uuid in cls._instances:
 				return cls._instances[uuid]
 		
