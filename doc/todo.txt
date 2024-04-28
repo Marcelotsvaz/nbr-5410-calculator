@@ -1,13 +1,16 @@
-self.get_datasource(index)
 Fix mimedata
+Fix drag and drop for children
+Python:
+	from typing_extensions import Self
+	@override
+	Use StrEnumsz
+self.get_datasource(index)
+Search # TODO FIXME
 Fix sort for fields without __gt__
 Fix sort for children
-Fix drag and drop for children
 Show thousands separator in status bar
 Qt python properties
 
-from typing_extensions import Self
-Search # TODO FIXME
 Use >= dependencies
 Add arguments with units to docstrings, including properties
 Refactor tests docstrings
@@ -31,5 +34,41 @@ Electrical:
 
 
 
-Python 3.11:
-	Use StrEnum
+
+
+
+
+
+
+
+
+
+
+
+
+
+def decode_data(bytearray2):
+
+			data = []
+
+			ds = QDataStream(bytearray2)
+			while not ds.atEnd():
+
+				row = ds.readInt32()
+				column = ds.readInt32()
+
+				item = {}
+				map_items = ds.readInt32()
+				for i in range(map_items):
+
+					key = ds.readInt32()
+
+					value = ds.readQVariant()
+					item[Qt.ItemDataRole(key)] = value
+
+				data.append(item)
+
+			return data
+		
+		bytearray2 = data.data('application/x-qabstractitemmodeldatalist')
+		data_items = decode_data(bytearray2)

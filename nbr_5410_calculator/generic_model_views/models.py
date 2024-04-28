@@ -12,12 +12,12 @@ from contextlib import suppress
 from enum import Enum
 
 from PySide6.QtCore import (
-	Qt,
-	QObject,
 	QAbstractItemModel,
-	QModelIndex,
-	QPersistentModelIndex,
 	QMimeData,
+	QModelIndex,
+	QObject,
+	QPersistentModelIndex,
+	Qt,
 )
 
 
@@ -340,7 +340,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		
 		# Move to end.
 		if destinationChild == -1:
-			destinationChild = self.rowCount()
+			destinationChild = self.rowCount( destinationParent )
 		
 		if not self.beginMoveRows(
 			sourceParent,
@@ -348,20 +348,30 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 			sourceRow + count - 1,
 			destinationParent,
 			destinationChild
-		) or destinationChild < 0 or destinationChild > self.rowCount():
+		) or destinationChild < 0 or destinationChild > self.rowCount( destinationParent ):
 			return False
+		
+		if sourceParent.isValid():
+			sourceDatasource = getattr( self.itemFromIndex( sourceParent ), self.childListName )
+		else:
+			sourceDatasource = self.datasource
 		
 		items: list[T] = []
 		for _ in range( count ):
-			items.append( self.datasource.pop( sourceRow ) )
+			items.append( sourceDatasource.pop( sourceRow ) )
 		
 		# Update destination after we removed items from the list.
-		if destinationChild > sourceRow:
+		if destinationParent == sourceParent and destinationChild >= sourceRow:
 			destinationChild -= count
 		
+		if destinationParent.isValid():
+			destinationDatasource = getattr( self.itemFromIndex( destinationParent ), self.childListName )
+		else:
+			destinationDatasource = self.datasource
+		
 		for item in reversed( items ):
-			self.datasource.insert( destinationChild, item )
-			
+			destinationDatasource.insert( destinationChild, item )
+		
 		self.endMoveRows()
 		
 		return True
@@ -426,7 +436,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 			
 			for sourceIndex in sourceIndexes:
 				self.moveRow( QModelIndex(), sourceIndex.row(), parent, targetIndex.row() )
-				
+			
 			return True
 		
 		return False
