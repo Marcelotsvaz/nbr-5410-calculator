@@ -6,12 +6,10 @@
 
 
 
-from unittest import TestCase
-from typing import Any
 from dataclasses import dataclass
+from typing import Any, Self
+from unittest import TestCase
 from uuid import UUID
-
-from typing_extensions import Self
 
 from nbr_5410_calculator.installation.util import UniqueSerializable
 

@@ -6,11 +6,11 @@
 
 
 
-from enum import Enum
 from dataclasses import dataclass, field
+from enum import Enum
 from math import pi
+from typing import Self
 
-from typing_extensions import Self
 from pyjson5 import decode_buffer
 
 from .util import UniqueSerializable

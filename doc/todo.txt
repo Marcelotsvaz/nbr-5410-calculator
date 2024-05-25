@@ -1,8 +1,4 @@
-Fix mimedata
-Fix drag and drop for children
 Python:
-	from typing_extensions import Self
-	@override
 	Use StrEnumsz
 UniqueSerializable
 	Just use UUID references with weakref fields and master field in project

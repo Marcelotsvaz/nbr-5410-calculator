@@ -20,7 +20,6 @@
 		'jsons @ git+https://gitlab.com/marcelotsvaz/jsons.git@0fe4c64a643a46fb44d1d3e87da915899ee4f8e9',
 		'pyjson5 >= 1.6.6',
 		'pyside6-essentials >= 6.4.3',
-		'typing_extensions >= 4.5.0',
 	]
 	
 	

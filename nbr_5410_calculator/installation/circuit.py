@@ -6,11 +6,11 @@
 
 
 
-from enum import Enum, auto
 from dataclasses import dataclass, field
+from enum import Enum, auto
 from math import pi
+from typing import Self
 
-from typing_extensions import Self	# TODO: Remove on Python 3.11.
 from pyjson5 import decode_buffer
 
 from .util import UniqueSerializable

@@ -8,10 +8,9 @@
 
 from dataclasses import dataclass, field
 from functools import partial
-from typing import Any, ClassVar, cast
+from typing import Any, ClassVar, Self, cast
 from uuid import UUID, uuid4
 
-from typing_extensions import Self
 from jsons import (
 	default_object_deserializer,
 	default_object_serializer,
