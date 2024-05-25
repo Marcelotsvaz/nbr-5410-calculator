@@ -6,11 +6,13 @@
 
 
 
-from typing import TypeVar, NamedTuple, Generic, Sequence, Any, cast, overload
-from operator import attrgetter
+from collections.abc import Sequence
 from contextlib import suppress
 from enum import Enum
+from operator import attrgetter
+from typing import TypeVar, NamedTuple, Generic, Any, cast, overload
 
+import jsons
 from PySide6.QtCore import (
 	QAbstractItemModel,
 	QMimeData,
@@ -71,6 +73,9 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 	Maps a list of generic objects to a `QAbstractItemView`.
 	'''
 	
+	jsonMimeType = 'application/json'
+	
+	
 	def __init__(
 		self,
 		fields: list[Field] | list[Field | None],
@@ -80,8 +85,6 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		parent: QObject | None = None,
 	) -> None:
 		super().__init__( parent )
-		
-		self.moveMimeType = 'application/vnd.set.row'
 		
 		self.fields = fields
 		self.datasource = datasource
@@ -126,15 +129,17 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		
 		# Top-level item.
 		if not parent.isValid():
-			try:
+			if len( self.datasource ) > 0:
 				return self.createIndex( row, column, self.datasource[row] )
-			except IndexError:
-				# Empty model.
+			else:
 				return QModelIndex()
 		
 		# Sub-item.
 		parentItem = self.itemFromIndex( parent )
-		childItem = self.childList( parentItem )[row]
+		if len( self.childList( parentItem ) ) > 0:
+			childItem = self.childList( parentItem )[row]
+		else:
+			return QModelIndex()
 		
 		return self.createIndex( row, column, childItem )
 	
@@ -290,9 +295,9 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		raise NotImplementedError()
 	
 	
-	def insertRows( self, row: int, count: int, parent: ModelIndex = QModelIndex() ) -> bool:
+	def insertItem( self, item: T, parent: ModelIndex = QModelIndex(), row: int = -1 ) -> None:
 		'''
-		Insert new items using `newItem`.
+		Insert an existing item into the model's datasource.
 		'''
 		
 		if parent.isValid():
@@ -300,10 +305,21 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		else:
 			datasource = self.datasource
 		
-		self.beginInsertRows( parent, row, row + count - 1 )
-		for index in range( row, row + count ):
-			datasource.insert( index, self.newItem() )
+		if row < 0:
+			row = len( datasource ) + 2 + row
+		
+		self.beginInsertRows( parent, row, row )
+		datasource.insert( row, item )
 		self.endInsertRows()
+	
+	
+	def insertRows( self, row: int, count: int, parent: ModelIndex = QModelIndex() ) -> bool:
+		'''
+		Insert new items using `newItem`.
+		'''
+		
+		for _ in range( count ):
+			self.insertItem( self.newItem(), parent = parent, row = row )
 		
 		return True
 	
@@ -395,7 +411,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		Returns the list of allowed MIME types.
 		'''
 		
-		return [ self.moveMimeType ]
+		return [ self.jsonMimeType ]
 	
 	
 	def mimeData( self, indexes: Sequence[QModelIndex] ) -> QMimeData:
@@ -403,11 +419,12 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		Encode a list of items into supported MIME types.
 		'''
 		
-		mimeData = QMimeData()
+		items = [ self.itemFromIndex( index ) for index in indexes if index.column() == 0 ]
 		
-		# Move MIME type.
-		rowsData = ','.join( str( index.row() ) for index in indexes if index.column() == 0 )
-		mimeData.setData( self.moveMimeType, rowsData.encode() )
+		jsonBytes = jsons.dumpb( items, verbose = jsons.Verbosity.WITH_CLASS_INFO )
+		
+		mimeData = QMimeData()
+		mimeData.setData( self.jsonMimeType, jsonBytes )
 		
 		return mimeData
 	
@@ -424,22 +441,21 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		Handles the data supplied by a drag and drop operation.
 		'''
 		
-		if action is Qt.DropAction.IgnoreAction:
-			return True
-		
-		if action is Qt.DropAction.MoveAction and data.hasFormat( self.moveMimeType ):
-			sourceIndexes = [
-				QPersistentModelIndex( self.index( int( sourceRow ), 0 ) )
-				for sourceRow in data.data( self.moveMimeType ).toStdString().split( ',' )
-			]
-			targetIndex = QPersistentModelIndex( self.index( row, column ) )
+		match action:
+			case Qt.DropAction.IgnoreAction:
+				return True
 			
-			for sourceIndex in sourceIndexes:
-				self.moveRow( QModelIndex(), sourceIndex.row(), parent, targetIndex.row() )
+			case Qt.DropAction.MoveAction | Qt.DropAction.CopyAction if data.hasFormat( self.jsonMimeType ):
+				jsonBytes = data.data( self.jsonMimeType ).data()
+				items = cast( list[T], jsons.loadb( jsonBytes ) )
+				
+				for item in reversed( items ):
+					self.insertItem( item, parent, row )
+				
+				return True
 			
-			return True
-		
-		return False
+			case _:
+				return False
 	
 	
 	def supportedDropActions( self ) -> Qt.DropAction:

@@ -6,12 +6,19 @@
 
 
 
-from typing import Any, ClassVar, cast
 from dataclasses import dataclass, field
+from functools import partial
+from typing import Any, ClassVar, cast
 from uuid import UUID, uuid4
 
 from typing_extensions import Self
-from jsons import JsonSerializable, set_deserializer, default_object_deserializer
+from jsons import (
+	default_object_deserializer,
+	default_object_serializer,
+	JsonSerializable,
+	set_deserializer,
+	set_serializer,
+)
 
 
 
@@ -20,15 +27,6 @@ class UniqueSerializable( JsonSerializable ):
 	'''
 	Sub-class of `JsonSerializable` with defaults for dump and load methods.
 	'''
-	
-	_loadKwargs = {
-		'strict': True,
-	}
-	
-	_dumpKwargs = {
-		'strip_properties': True,
-		'strip_privates': True,
-	}
 	
 	_dumpsKwargs = {
 		'jdkwargs': {
@@ -73,48 +71,26 @@ class UniqueSerializable( JsonSerializable ):
 		return instance
 	
 	
-	@classmethod
-	def load( cls: type[Self], json_obj: object, **kwargs: Any ) -> Self:
-		kwargs = cls._loadKwargs | kwargs
-		
-		return super().load( json_obj, **kwargs )
-	
-	
-	@classmethod
-	def loads( cls: type[Self], json_obj: str, **kwargs: Any ) -> Self:
-		kwargs = cls._loadKwargs | kwargs
-		
-		return super().loads( json_obj, **kwargs )
-	
-	
-	@classmethod
-	def loadb( cls: type[Self], json_obj: bytes, **kwargs: Any ) -> Self:
-		kwargs = cls._loadKwargs | kwargs
-		
-		return super().loadb( json_obj, **kwargs )
-	
-	
-	def dump( self, **kwargs: Any ) -> object:
-		kwargs = self._dumpKwargs | kwargs
-		
-		return super().dump( **kwargs )
-	
-	
 	def dumps( self, **kwargs: Any ) -> str:
-		kwargs = self._dumpKwargs | self._dumpsKwargs | kwargs
+		kwargs = self._dumpsKwargs | kwargs
 		
 		return super().dumps( **kwargs )
-	
-	
-	def dumpb( self, **kwargs: Any ) -> bytes:
-		kwargs = self._dumpKwargs | self._dumpsKwargs | kwargs
-		
-		return super().dumpb( **kwargs )
 
 
 
 set_deserializer(
-	UniqueSerializable.uniqueObjectDeserializer,
+	partial(
+		UniqueSerializable.uniqueObjectDeserializer,
+		strict = True,
+	),
 	UniqueSerializable,
-	fork_inst = UniqueSerializable,
+)
+
+set_serializer(
+	partial(
+		default_object_serializer,
+		strip_privates = True,
+		strip_properties = True,
+	),
+	UniqueSerializable,
 )
