@@ -6,6 +6,8 @@
 
 
 
+from typing import override
+
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QWidget, QMainWindow, QFileDialog, QMessageBox
 from jsons import Verbosity
@@ -26,6 +28,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 	project: Project
 	
 	
+	@override
 	def __init__( self, parent: QWidget | None = None ) -> None:
 		super().__init__( parent )
 		self.setupUi( self )	# pyright: ignore [reportUnknownMemberType]

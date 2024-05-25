@@ -6,6 +6,8 @@
 
 
 
+from typing import override
+
 from PySide6.QtCore import QObject
 
 from nbr_5410_calculator.generic_model_views.models import Field, GenericItemModel
@@ -27,6 +29,7 @@ class CircuitsModel( GenericItemModel[BaseCircuit] ):
 	Map a list of `Circuit`s to a QTableView.
 	'''
 	
+	@override
 	def __init__( self, circuits: list[BaseCircuit], parent: QObject | None = None ) -> None:
 		fields = [
 			Field( 'name',						self.tr('Name') ),
@@ -50,6 +53,7 @@ class CircuitsModel( GenericItemModel[BaseCircuit] ):
 		super().__init__( fields, circuits, childListName, childFields, parent )
 	
 	
+	@override
 	def newItem( self ) -> BaseCircuit:
 		'''
 		Return a new `Circuit` to be used with `insertRows`.

@@ -6,6 +6,8 @@
 
 
 
+from typing import override
+
 from PySide6.QtCore import QObject
 
 from nbr_5410_calculator.generic_model_views.models import Field, GenericItemModel
@@ -18,6 +20,7 @@ class ConduitRunsModel( GenericItemModel[ConduitRun] ):
 	Map a list of `ConduitRun`s to a QTableView.
 	'''
 	
+	@override
 	def __init__( self, conduitRuns: list[ConduitRun], parent: QObject | None = None ) -> None:
 		fields = [
 			Field( 'name',						self.tr('Name') ),
@@ -36,6 +39,7 @@ class ConduitRunsModel( GenericItemModel[ConduitRun] ):
 		super().__init__( fields, conduitRuns, childListName, childFields, parent )
 	
 	
+	@override
 	def newItem( self ) -> ConduitRun:
 		'''
 		Return a new `ConduitRun` to be used with `insertRows`.

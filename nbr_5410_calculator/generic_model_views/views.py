@@ -1,12 +1,9 @@
-# 
-# NBR 5410 Calculator
-# 
-# 
-# Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
+'''
 
-
+'''
 
 from enum import Enum
+from typing import override
 
 from PySide6 import QtGui
 from PySide6.QtCore import (
@@ -40,6 +37,7 @@ class GenericListView( QListView ):
 	`QListView` for `GenericItemModel`.
 	'''
 	
+	@override
 	def __init__( self, parent: QWidget | None = None ) -> None:
 		super().__init__( parent )
 	
@@ -76,6 +74,7 @@ class GenericTreeView( QTreeView ):
 	`QTreeView` for `GenericItemModel`.
 	'''
 	
+	@override
 	def __init__( self, parent: QWidget | None = None ) -> None:
 		super().__init__( parent )
 		
@@ -115,6 +114,7 @@ class GenericTreeView( QTreeView ):
 		]
 	
 	
+	@override
 	def startDrag( self, supportedActions: Qt.DropAction ) -> None:
 		'''
 		Starts a drag by calling `drag.exec()` using the given `supportedActions`.
@@ -193,6 +193,7 @@ class GenericTreeView( QTreeView ):
 		return row, parent, dropIndicator
 	
 	
+	@override
 	def dragMoveEvent( self, event: QtGui.QDragMoveEvent ) -> None:
 		'''
 		Draw drop indicator.
@@ -205,6 +206,7 @@ class GenericTreeView( QTreeView ):
 		self.viewport().update()
 	
 	
+	@override
 	def dropEvent( self, event: QtGui.QDropEvent ) -> None:
 		if event.proposedAction() not in self.model().supportedDropActions():
 			return
@@ -242,6 +244,7 @@ class GenericTreeView( QTreeView ):
 		self.viewport().update()
 	
 	
+	@override
 	def paintEvent( self, event: QtGui.QPaintEvent ) -> None:
 		'''
 		Draw view content and drop indicator.
@@ -303,6 +306,7 @@ class EnumDelegate( QStyledItemDelegate ):
 	`QStyledItemDelegate` with support for displaying and editing `Enum`s.
 	'''
 	
+	@override
 	def createEditor(
 		self,
 		parent: QWidget,
@@ -326,6 +330,7 @@ class EnumDelegate( QStyledItemDelegate ):
 				return super().createEditor( parent, option, index )
 	
 	
+	@override
 	def setEditorData( self, editor: QWidget, index: ModelIndex ) -> None:
 		'''
 		Sets the contents of the given `editor` to the data for the item at the given `index`.
@@ -339,6 +344,7 @@ class EnumDelegate( QStyledItemDelegate ):
 				super().setEditorData( editor, index )
 	
 	
+	@override
 	def setModelData( self, editor: QWidget, model: QAbstractItemModel, index: ModelIndex ) -> None:
 		'''
 		Sets the data for the item at the given `index` in the model to the contents of the given

@@ -1,16 +1,12 @@
-# 
-# NBR 5410 Calculator
-# 
-# 
-# Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
+'''
 
-
+'''
 
 from collections.abc import Sequence
 from contextlib import suppress
 from enum import Enum
 from operator import attrgetter
-from typing import TypeVar, NamedTuple, Generic, Any, cast, overload
+from typing import TypeVar, NamedTuple, Generic, Any, cast, overload, override
 
 import jsons
 from PySide6.QtCore import (
@@ -25,7 +21,7 @@ from PySide6.QtCore import (
 
 
 # Type aliases.
-T = TypeVar('T')
+T = TypeVar( 'T' )
 ModelIndex = QModelIndex | QPersistentModelIndex
 
 
@@ -76,6 +72,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 	jsonMimeType = 'application/json'
 	
 	
+	@override
 	def __init__(
 		self,
 		fields: list[Field] | list[Field | None],
@@ -121,6 +118,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return getattr( item, self.childListName )
 	
 	
+	@override
 	def index( self, row: int, column: int, parent: ModelIndex = QModelIndex() ) -> QModelIndex:
 		'''
 		Return the index of the item in the model specified by the given `row`, `column` and
@@ -150,6 +148,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 	@overload
 	def parent( self, child: ModelIndex ) -> QModelIndex: ...
 	
+	@override
 	def parent( self, child: ModelIndex | None = None ) -> QModelIndex | QObject:
 		'''
 		Return the parent of the model item with the given `index`.
@@ -172,6 +171,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return QModelIndex()
 	
 	
+	@override
 	def columnCount( self, parent: ModelIndex = QModelIndex() ) -> int:
 		'''
 		Return the number of columns (`Field`s) in the model.
@@ -182,6 +182,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return len( self.fields )
 	
 	
+	@override
 	def rowCount( self, parent: ModelIndex = QModelIndex() ) -> int:
 		'''
 		Return the number of rows under the given `parent`.
@@ -198,6 +199,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return 0
 	
 	
+	@override
 	def flags( self, index: ModelIndex ) -> Qt.ItemFlag:
 		'''
 		Return flags for cells in table.
@@ -218,6 +220,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return flags | Qt.ItemFlag.ItemIsDragEnabled
 	
 	
+	@override
 	def headerData( self, section: int, orientation: Qt.Orientation, role: int = 0 ) -> str | None:
 		'''
 		Return data for table headers.
@@ -236,6 +239,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return field.label
 	
 	
+	@override
 	def data( self, index: ModelIndex, role: int = 0 ) -> Any | None:
 		'''
 		Return data for table cells.
@@ -265,6 +269,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 				return f'{value:{field.format}}{field.suffix}'
 	
 	
+	@override
 	def setData( self, index: ModelIndex, value: Any, role: int = 0 ) -> bool:
 		'''
 		Update values in model.
@@ -313,6 +318,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		self.endInsertRows()
 	
 	
+	@override
 	def insertRows( self, row: int, count: int, parent: ModelIndex = QModelIndex() ) -> bool:
 		'''
 		Insert new items using `newItem`.
@@ -324,6 +330,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return True
 	
 	
+	@override
 	def removeRows( self, row: int, count: int, parent: ModelIndex = QModelIndex() ) -> bool:
 		'''
 		Delete existing items.
@@ -342,6 +349,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return True
 	
 	
+	@override
 	def moveRows(
 		self,
 		sourceParent: ModelIndex,
@@ -393,6 +401,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return True
 	
 	
+	@override
 	def sort( self, column: int, order: Qt.SortOrder = Qt.SortOrder.AscendingOrder ) -> None:
 		'''
 		Sort items by specified field.
@@ -406,6 +415,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		self.layoutChanged.emit()
 	
 	
+	@override
 	def mimeTypes( self ) -> list[str]:
 		'''
 		Returns the list of allowed MIME types.
@@ -414,6 +424,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return [ self.jsonMimeType ]
 	
 	
+	@override
 	def mimeData( self, indexes: Sequence[QModelIndex] ) -> QMimeData:
 		'''
 		Encode a list of items into supported MIME types.
@@ -429,6 +440,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return mimeData
 	
 	
+	@override
 	def dropMimeData(
 		self,
 		data: QMimeData,
@@ -458,6 +470,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 				return False
 	
 	
+	@override
 	def supportedDropActions( self ) -> Qt.DropAction:
 		'''
 		Return supported drop actions.
@@ -466,6 +479,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return Qt.DropAction.MoveAction
 	
 	
+	@override
 	def supportedDragActions( self ) -> Qt.DropAction:
 		'''
 		Return supported drag actions.
