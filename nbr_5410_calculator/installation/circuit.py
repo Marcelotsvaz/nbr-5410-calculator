@@ -515,7 +515,7 @@ class UpstreamCircuit( BaseCircuit ):
 	Represents a circuit whose load is a group of downstream circuits.
 	'''
 	
-	circuits: list[BaseCircuit] = Field( default_factory = list )
+	circuits: list['BaseCircuitUnion'] = Field( default_factory = list )
 	
 	
 	@property
@@ -525,6 +525,11 @@ class UpstreamCircuit( BaseCircuit ):
 		'''
 		
 		return sum( circuit.power * circuit.loadType.demandFactor for circuit in self.circuits )
+
+
+
+# For Pydantic serialization of derived classes.
+BaseCircuitUnion = Circuit | UpstreamCircuit
 
 
 

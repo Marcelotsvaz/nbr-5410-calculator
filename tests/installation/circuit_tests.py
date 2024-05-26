@@ -347,8 +347,38 @@ class UpstreamCircuitTests( BaseCircuitTests ):
 			referenceMethod	= ReferenceMethod.B1,
 			supply			= self.circuit.supply,
 			temperature		= 30,
+			uuid			= UUID( 'be773608-605f-46a8-89a9-366e4fe2bd1c' ),
 			wireType		= self.circuit.wireType,
 		)
+		
+		self.upstreamCircuitJsonDict  = {
+			'circuits': [ createCircuitJsonDict() ] * 10,
+			'description': '',
+			'grouping': 1,
+			'length': 10.0,
+			'loadType': {
+				'demandFactor': 1.0,
+				'minimumWireSection': 2.5,
+				'name': 'Power',
+				'uuid': UUID( '52cc8cf9-e0b3-4adc-aa76-5248d4c7787b' ),
+			},
+			'name': 'Test Upstream Circuit',
+			'referenceMethod': ReferenceMethod.B1,
+			'supply': {
+				'hasGround': True,
+				'hasNeutral': True,
+				'phases': 1,
+				'uuid': UUID( '13cb4131-69c7-4483-b23c-e820a18d7ebf' ),
+				'voltage': 100,
+			},
+			'temperature': 30,
+			'uuid': UUID( 'be773608-605f-46a8-89a9-366e4fe2bd1c' ),
+			'wireType': {
+				'insulation': WireInsulation.PVC,
+				'material': WireMaterial.COPPER,
+				'uuid': UUID( '31373e68-bb79-44b9-9227-c87ff4f46db3' ),
+			},
+		}
 	
 	
 	def testTotalPower( self ) -> None:
@@ -367,3 +397,22 @@ class UpstreamCircuitTests( BaseCircuitTests ):
 		
 		self.circuit.loadType.demandFactor = 0.5
 		self.assertEqual( self.upstreamCircuit.power, 25_000.0 )
+	
+	
+	def testSerialize( self ) -> None:
+		'''
+		Test serialization.
+		'''
+		
+		self.assertEqual( self.upstreamCircuit.model_dump(), self.upstreamCircuitJsonDict )
+	
+	
+	def testDeserialize( self ) -> None:
+		'''
+		Test deserialization.
+		'''
+		
+		self.assertEqual(
+			UpstreamCircuit.model_validate( self.upstreamCircuitJsonDict ),
+			self.upstreamCircuit,
+		)

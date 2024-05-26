@@ -26,6 +26,7 @@ class UniqueSerializable( BaseModel ):
 		# strict = True,
 		# strip_privates = True,
 		# strip_properties = True,
+		extra = 'forbid',
 	)
 	
 	# Fields.

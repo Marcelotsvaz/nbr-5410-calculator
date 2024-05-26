@@ -8,7 +8,7 @@
 
 from pydantic import Field
 
-from .circuit import Supply, LoadType, WireType, BaseCircuit
+from .circuit import BaseCircuitUnion, Supply, LoadType, WireType
 from .conduitRun import ConduitRun
 from .util import UniqueSerializable
 
@@ -23,5 +23,5 @@ class Project( UniqueSerializable ):
 	supplies: list[Supply] = Field( default_factory = list )
 	loadTypes: list[LoadType] = Field( default_factory = list )
 	wireTypes: list[WireType] = Field( default_factory = list )
-	circuits: list[BaseCircuit] = Field( default_factory = list )
+	circuits: list[BaseCircuitUnion] = Field( default_factory = list )
 	conduitRuns: list[ConduitRun] = Field( default_factory = list )

@@ -13,8 +13,8 @@ from typing import Self
 from pydantic import BaseModel, Field
 from pyjson5 import decode_buffer
 
+from .circuit import BaseCircuitUnion
 from .util import UniqueSerializable
-from .circuit import BaseCircuit
 
 
 
@@ -97,7 +97,7 @@ class ConduitRun( UniqueSerializable ):
 	
 	name: str
 	length: float
-	circuits: list[BaseCircuit] = Field( default_factory = list )
+	circuits: list[BaseCircuitUnion] = Field( default_factory = list )
 	
 	
 	@property
