@@ -6,11 +6,11 @@
 
 
 
-from dataclasses import dataclass, field
-from enum import Enum
+from enum import StrEnum, auto
 from math import pi
 from typing import Self
 
+from pydantic import BaseModel, Field
 from pyjson5 import decode_buffer
 
 from .util import UniqueSerializable
@@ -18,18 +18,17 @@ from .circuit import BaseCircuit
 
 
 
-class ConduitType( Enum ):
+class ConduitType( StrEnum ):
 	'''
 	Type of conduit.
 	'''
 	
-	RIGID = 'rigid'
-	FLEXIBLE = 'flexible'
+	RIGID = auto()
+	FLEXIBLE = auto()
 
 
 
-@dataclass
-class Conduit:
+class Conduit( BaseModel ):
 	'''
 	Conduit of specific type and size.
 	'''
@@ -38,6 +37,7 @@ class Conduit:
 	nominalDiameter: str
 	externalDiameter: float
 	internalDiameter: float
+	# TODO: Validate diameters.
 	
 	brand: str = ''
 	model: str = ''
@@ -61,8 +61,16 @@ class Conduit:
 		model = jsonData['model']
 		
 		conduits = [
-			cls( conduitType, *args, brand, model )
-			for args in zip( nominalDiameters, externalDiameters, internalDiameters )
+			cls(
+				conduitType = conduitType,
+				nominalDiameter = nominalDiameter,
+				externalDiameter = externalDiameter,
+				internalDiameter = internalDiameter,
+				brand = brand,
+				model = model,
+			)
+			for nominalDiameter, externalDiameter, internalDiameter
+			in zip( nominalDiameters, externalDiameters, internalDiameters )
 		]
 		
 		return conduits
@@ -82,7 +90,6 @@ class Conduit:
 
 
 
-@dataclass
 class ConduitRun( UniqueSerializable ):
 	'''
 	Represents a conduit run containing multiple circuits.
@@ -90,7 +97,7 @@ class ConduitRun( UniqueSerializable ):
 	
 	name: str
 	length: float
-	circuits: list[BaseCircuit] = field( default_factory = list )
+	circuits: list[BaseCircuit] = Field( default_factory = list )
 	
 	
 	@property

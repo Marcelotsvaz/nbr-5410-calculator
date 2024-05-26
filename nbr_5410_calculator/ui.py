@@ -10,7 +10,6 @@ from typing import override
 
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QWidget, QMainWindow, QFileDialog, QMessageBox
-from jsons import Verbosity
 
 from nbr_5410_calculator.UiMainWindow import Ui_mainWindow as UiMainWindow
 from nbr_5410_calculator.installation.project import Project
@@ -62,7 +61,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Create a new empty project.
 		'''
 		
-		self.setProject( Project( self.tr('New Project') ) )
+		self.setProject( Project( name = self.tr('New Project') ) )
 		
 		self.suppliesListView.newItem()
 		self.loadTypesListView.newItem()
@@ -94,7 +93,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		
 		try:
 			with open( fileName, 'rb' ) as file:
-				project = Project.loadb( file.read() )
+				project = Project.model_validate_json( file.read() )
 			
 			self.setProject( project )
 		except FileNotFoundError as error:
@@ -118,7 +117,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		
 		try:
 			with open( fileName, 'wb' ) as file:
-				file.write( self.project.dumpb( verbose = Verbosity.WITH_CLASS_INFO ) )
+				file.write( self.project.model_dump_json().encode() )
 		except PermissionError as error:
 			QMessageBox.critical( self, self.tr('Error'), str( error ) )
 	

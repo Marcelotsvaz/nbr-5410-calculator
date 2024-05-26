@@ -43,7 +43,7 @@ def createProjectJsonDict() -> dict[str, Any]:
 		'loadTypes': [],
 		'name': 'Test Project',
 		'supplies': [],
-		'uuid': 'd1019f95-f48d-4a66-b1c3-681c802d396a',
+		'uuid': UUID( 'd1019f95-f48d-4a66-b1c3-681c802d396a' ),
 		'wireTypes': [],
 	}
 	
@@ -75,33 +75,27 @@ class ProjectTests( BaseProjectTests ):
 		Test empty `Project`.
 		'''
 		
-		Project( 'Test Project' )
+		Project( name = 'Test Project' )
 
 
 
 class ProjectSerializationTests( BaseProjectTests ):
 	'''
-	Tests for `Project` serialization with jsons.
+	Tests for `Project` serialization with Pydantic.
 	'''
 	
+	# TODO: Pydantic handle base class
 	def testSerialize( self ) -> None:
 		'''
-		Test serialization with jsons.dump.
+		Test serialization.
 		'''
 		
-		self.assertEqual( self.project.dump(), createProjectJsonDict() )
+		self.assertEqual( self.project.model_dump(), createProjectJsonDict() )
 	
 	
 	def testDeserialize( self ) -> None:
 		'''
-		Test deserialization with jsons.load.
+		Test deserialization.
 		'''
 		
-		# FIXME
-		projectJsonDict = createProjectJsonDict()
-		for circuitJsonDict in projectJsonDict['circuits']:
-			circuitJsonDict['-meta'] = {
-				'classes': { '/': 'nbr_5410_calculator.installation.circuit.Circuit' }
-			}
-		
-		self.assertEqual( Project.load( projectJsonDict ), self.project )
+		self.assertEqual( Project.model_validate( createProjectJsonDict() ), self.project )

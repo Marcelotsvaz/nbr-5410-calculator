@@ -29,20 +29,32 @@ def createCircuit() -> Circuit:
 	Create instance of `Circuit`.
 	'''
 	
-	loadType = LoadType( 'Power', 2.5, 1.0 )
-	supply = Supply( 100 )
-	wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
+	loadType = LoadType(
+		demandFactor		= 1.0,
+		minimumWireSection	= 2.5,
+		name				= 'Power',
+		uuid				= UUID( '52cc8cf9-e0b3-4adc-aa76-5248d4c7787b' ),
+	)
+	supply = Supply(
+		uuid				= UUID( '13cb4131-69c7-4483-b23c-e820a18d7ebf' ),
+		voltage				= 100,
+	)
+	wireType = WireType(
+		insulation			= WireInsulation.PVC,
+		material			= WireMaterial.COPPER,
+		uuid				= UUID( '31373e68-bb79-44b9-9227-c87ff4f46db3' ),
+	)
 	circuit = Circuit(
-		grouping		= 1,
-		length			= 10.0,
-		loadPower		= 5000,
-		loadType		= loadType,
-		name			= 'Test Circuit',
-		referenceMethod	= ReferenceMethod.B1,
-		supply			= supply,
-		temperature		= 30,
-		uuid			= UUID( 'e3f9a216-774e-46ee-986a-190abdb37b32' ),
-		wireType		= wireType,
+		grouping			= 1,
+		length				= 10.0,
+		loadPower			= 5000,
+		loadType			= loadType,
+		name				= 'Test Circuit',
+		referenceMethod		= ReferenceMethod.B1,
+		supply				= supply,
+		temperature			= 30,
+		uuid				= UUID( 'e3f9a216-774e-46ee-986a-190abdb37b32' ),
+		wireType			= wireType,
 	)
 	
 	return circuit
@@ -63,20 +75,23 @@ def createCircuitJsonDict() -> dict[str, Any]:
 			'demandFactor': 1.0,
 			'minimumWireSection': 2.5,
 			'name': 'Power',
+			'uuid': UUID( '52cc8cf9-e0b3-4adc-aa76-5248d4c7787b' ),
 		},
 		'name': 'Test Circuit',
-		'referenceMethod': 'B1',
+		'referenceMethod': ReferenceMethod.B1,
 		'supply': {
 			'hasGround': True,
 			'hasNeutral': True,
 			'phases': 1,
+			'uuid': UUID( '13cb4131-69c7-4483-b23c-e820a18d7ebf' ),
 			'voltage': 100,
 		},
 		'temperature': 30,
-		'uuid': 'e3f9a216-774e-46ee-986a-190abdb37b32',
+		'uuid': UUID( 'e3f9a216-774e-46ee-986a-190abdb37b32' ),
 		'wireType': {
-			'insulation': 'PVC',
-			'material': 'COPPER',
+			'insulation': WireInsulation.PVC,
+			'material': WireMaterial.COPPER,
+			'uuid': UUID( '31373e68-bb79-44b9-9227-c87ff4f46db3' ),
 		},
 	}
 	
@@ -295,23 +310,23 @@ class CircuitBreakerTests( BaseCircuitTests ):
 
 class CircuitSerializationTests( BaseCircuitTests ):
 	'''
-	Tests for `Circuit` serialization with jsons.
+	Tests for `Circuit` serialization with Pydantic.
 	'''
 	
 	def testSerialize( self ) -> None:
 		'''
-		Test serialization with jsons.dump.
+		Test serialization.
 		'''
 		
-		self.assertEqual( self.circuit.dump(), createCircuitJsonDict() )
+		self.assertEqual( self.circuit.model_dump(), createCircuitJsonDict() )
 	
 	
 	def testDeserialize( self ) -> None:
 		'''
-		Test deserialization with jsons.load.
+		Test deserialization.
 		'''
 		
-		self.assertEqual( Circuit.load( createCircuitJsonDict() ), self.circuit )
+		self.assertEqual( Circuit.model_validate( createCircuitJsonDict() ), self.circuit )
 
 
 

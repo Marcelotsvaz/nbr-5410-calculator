@@ -6,90 +6,52 @@
 
 
 
-from dataclasses import dataclass, field
-from functools import partial
-from typing import Any, ClassVar, Self, cast
+from typing import Any, Self, cast
 from uuid import UUID, uuid4
 
-from jsons import (
-	default_object_deserializer,
-	default_object_serializer,
-	JsonSerializable,
-	set_deserializer,
-	set_serializer,
-)
+from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, model_validator
 
 
 
-@dataclass( kw_only = True )
-class UniqueSerializable( JsonSerializable ):
+class UniqueSerializable( BaseModel ):
 	'''
-	Sub-class of `JsonSerializable` with defaults for dump and load methods.
+	Sub-class of `BaseModel` that reuses previously deserialized instances that share the same UUID.
 	'''
-	
-	_dumpsKwargs = {
-		'jdkwargs': {
-			'indent': '\t',
-			'sort_keys': True,
-		}
-	}
-	
 	
 	# Class variables.
-	_instances: ClassVar[dict[UUID, Self]] = {}
+	model_config = ConfigDict(
+		# TODO:
+		# 'sort_keys': True,
+		# 'indent': '\t',
+		# strict = True,
+		# strip_privates = True,
+		# strip_properties = True,
+	)
+	
+	# Fields.
+	uuid: UUID = Field( default_factory = uuid4 )
 	
 	
-	# Instance variables.
-	uuid: UUID = field( default_factory = uuid4 )
-	
-	
-	def __post_init__( self ):
-		self._instances[self.uuid] = self
-	
-	
-	@classmethod
-	def uniqueObjectDeserializer(
-		cls,
-		jsonDict: dict[str, Any],
-		targetClass: type[Self],
-		**kwargs: Any
-	) -> Self:
+	@model_validator( mode = 'after' )
+	def shareInstanceByUuid( self, info: ValidationInfo ) -> Self:
 		'''
-		Deserialize an object, objects previously deserialized are returned from a cache instead.
+		Reuse previously deserialized instances with the same UUID.
 		'''
 		
-		if 'uuid' in jsonDict:
-			uuid = UUID( jsonDict['uuid'] )
-			
-			if uuid in cls._instances:
-				return cls._instances[uuid]
+		context = cast( dict[UUID, Self] | Any, info.context )
 		
-		instance = cast( targetClass, default_object_deserializer( jsonDict, targetClass, **kwargs ) )
-		cls._instances[instance.uuid] = instance
+		# No context used.
+		if not isinstance( context, dict ):
+			return self
 		
-		return instance
-	
-	
-	def dumps( self, **kwargs: Any ) -> str:
-		kwargs = self._dumpsKwargs | kwargs
+		# New UUID.
+		if self.uuid not in context:
+			context[self.uuid] = self
+			return self
 		
-		return super().dumps( **kwargs )
-
-
-
-set_deserializer(
-	partial(
-		UniqueSerializable.uniqueObjectDeserializer,
-		strict = True,
-	),
-	UniqueSerializable,
-)
-
-set_serializer(
-	partial(
-		default_object_serializer,
-		strip_privates = True,
-		strip_properties = True,
-	),
-	UniqueSerializable,
-)
+		# Invalid instance.
+		if self != context[self.uuid]:
+			raise ValueError( 'A different instance with this UUID was already registered.' )
+		
+		# Return existing instance.
+		return context[self.uuid]

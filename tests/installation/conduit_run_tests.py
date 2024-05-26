@@ -40,7 +40,7 @@ def createConduitRunJsonDict() -> dict[str, Any]:
 		'circuits': [ createCircuitJsonDict() ] * 3,
 		'length': 10.0,
 		'name': 'Test Conduit Run',
-		'uuid': 'f4f3bd7c-c818-4ffc-a776-212469d8ba16',
+		'uuid': UUID( 'f4f3bd7c-c818-4ffc-a776-212469d8ba16' ),
 	}
 	
 	return conduitRunJsonDict
@@ -57,9 +57,14 @@ class ConduitTests( TestCase ):
 		Test `Conduit.section`.
 		'''
 		
-		conduit = Conduit( ConduitType.RIGID, '25 mm', 23.0, 25.0 )
+		conduit = Conduit(
+			conduitType = ConduitType.RIGID,
+			nominalDiameter = '25 mm',
+			externalDiameter = 25.0,
+			internalDiameter = 23.0,
+		)
 		
-		self.assertAlmostEqual( conduit.section, 490.873852, 6 )
+		self.assertAlmostEqual( conduit.section, 415.475628, 6 )
 
 
 
@@ -125,27 +130,21 @@ class ConduitRunBasicTests( BaseConduitRunTests ):
 
 class ConduitRunSerializationTests( BaseConduitRunTests ):
 	'''
-	Tests for `ConduitRun` serialization with jsons.
+	Tests for `ConduitRun` serialization with Pydantic.
 	'''
 	
+	# TODO: Pydantic handle base class
 	def testSerialize( self ) -> None:
 		'''
-		Test serialization with jsons.dump.
+		Test serialization.
 		'''
 		
-		self.assertEqual( self.conduitRun.dump(), createConduitRunJsonDict() )
+		self.assertEqual( self.conduitRun.model_dump(), createConduitRunJsonDict() )
 	
 	
 	def testDeserialize( self ) -> None:
 		'''
-		Test deserialization with jsons.load.
+		Test deserialization.
 		'''
 		
-		# FIXME
-		conduitRunJsonDict = createConduitRunJsonDict()
-		for circuitJsonDict in conduitRunJsonDict['circuits']:
-			circuitJsonDict['-meta'] = {
-				'classes': { '/': 'nbr_5410_calculator.installation.circuit.Circuit' }
-			}
-		
-		self.assertEqual( ConduitRun.load( conduitRunJsonDict ), self.conduitRun )
+		self.assertEqual( ConduitRun.model_validate( createConduitRunJsonDict() ), self.conduitRun )

@@ -34,7 +34,7 @@ class SupplyModel( GenericItemModel[Supply] ):
 		Return a new `Supply` to be used with `insertRows`.
 		'''
 		
-		supply = Supply( 127 )
+		supply = Supply( voltage = 127 )
 		
 		return supply
 
@@ -60,7 +60,11 @@ class LoadTypeModel( GenericItemModel[LoadType] ):
 		Return a new `LoadType` to be used with `insertRows`.
 		'''
 		
-		loadType = LoadType( 'Power', 2.5, 1.0 )
+		loadType = LoadType(
+			name = 'Power',
+			minimumWireSection = 2.5,
+			demandFactor = 1.0,
+		)
 		
 		return loadType
 
@@ -86,6 +90,9 @@ class WireTypeModel( GenericItemModel[WireType] ):
 		Return a new `WireType` to be used with `insertRows`.
 		'''
 		
-		wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
+		wireType = WireType(
+			material = WireMaterial.COPPER,
+			insulation = WireInsulation.PVC,
+		)
 		
 		return wireType

@@ -6,19 +6,18 @@
 
 
 
-from dataclasses import dataclass, field
-from enum import Enum, auto
+from enum import Enum, StrEnum, auto
 from math import pi
-from typing import Self
+from typing import Any, Self
 
+from pydantic import BaseModel, Field
 from pyjson5 import decode_buffer
 
 from .util import UniqueSerializable
 
 
 
-@dataclass
-class Supply:
+class Supply( UniqueSerializable ):
 	'''
 	Power supply feeding a `Circuit`. Eg.: 3 Phase 220V.
 	'''
@@ -54,8 +53,7 @@ class Supply:
 
 
 
-@dataclass
-class LoadType:
+class LoadType( UniqueSerializable ):
 	'''
 	Load type to determine minimum wire section and demand factor.
 	
@@ -68,32 +66,32 @@ class LoadType:
 
 
 
-class WireMaterial( Enum ):
+class WireMaterial( StrEnum ):
 	'''
 	Wire conductor material.
 	
 	See NBR 5410 6.2.3.7.
 	'''
 	
-	COPPER = 'copper'
-	ALUMINIUM = 'aluminium'
+	COPPER = auto()
+	ALUMINIUM = auto()
 
 
 
-class WireInsulation( Enum ):
+class WireInsulation( StrEnum ):
 	'''
 	Wire insulation material.
 	
 	See NBR 5410 6.2.3.2.
 	'''
 	
-	PVC = 'pvc'
-	EPR = 'epr'
-	XLPE = 'xlpe'
+	PVC = auto()
+	EPR = auto()
+	XLPE = auto()
 
 
 
-class ReferenceMethod( Enum ):
+class ReferenceMethod( StrEnum ):
 	'''
 	Reference wire installation methods used to determine wire current capacity.
 	
@@ -115,8 +113,7 @@ class ReferenceMethod( Enum ):
 
 
 
-@dataclass
-class WireType:
+class WireType( UniqueSerializable ):
 	'''
 	Represent all available sizes of an actual wire type used in a circuit.
 	'''
@@ -124,19 +121,20 @@ class WireType:
 	material: WireMaterial
 	insulation: WireInsulation
 	
-	_resistivity: float = field( repr = False )
-	_conductorSections: list[float] = field( repr = False )
-	_conductorDiameters: list[float] = field( repr = False )
-	_externalDiameters: list[float] = field( repr = False )
-	_referenceMethods: dict[str, dict[str, list[float]]] = field( repr = False )
+	# TODO: Improve this.
+	_resistivity: float
+	_conductorSections: list[float]
+	_conductorDiameters: list[float]
+	_externalDiameters: list[float | None]
+	_referenceMethods: dict[str, dict[str, list[float]]]
 	
 	
-	def __init__( self, material: WireMaterial, insulation: WireInsulation ) -> None:
-		with open( f'share/data/wireTypes/{material.value}-{insulation.value}.json5', 'rb' ) as file:
-			jsonData = decode_buffer( file.read() )
+	# TODO: Fix signature.
+	def __init__( self, **kwargs: Any ) -> None:
+		super().__init__( **kwargs )
 		
-		self.material = material
-		self.insulation = insulation
+		with open( f'share/data/wireTypes/{self.material.value}-{self.insulation.value}.json5', 'rb' ) as file:
+			jsonData = decode_buffer( file.read() )
 		
 		self._resistivity = jsonData['resistivity']
 		self._conductorSections = jsonData['conductorSections']
@@ -173,13 +171,22 @@ class WireType:
 		capacities = self._referenceMethods[referenceMethod.name][str( loadedWireCount )]
 		
 		return [
-			Wire( self, *parameters, correctionFactor )
-			for parameters in zip(
+			Wire(
+				type = self,
+				section = section,
+				uncorrectedCapacity = uncorrectedCapacity,
+				conductorDiameter = conductorDiameter,
+				externalDiameter = externalDiameter,
+				correctionFactor = correctionFactor,
+			)
+			for section, uncorrectedCapacity, conductorDiameter, externalDiameter in zip(
 				self._conductorSections,
 				capacities,
 				self._conductorDiameters,
 				self._externalDiameters,
 			)
+			# TODO: Remove this.
+			if externalDiameter is not None
 		]
 
 
@@ -251,8 +258,7 @@ class VoltageDropLimit( float, Enum ):
 
 
 
-@dataclass
-class Wire:
+class Wire( BaseModel ):
 	'''
 	WireType of a specific size with capacity already calculated based on reference method,
 	configuration, temperature and grouping.
@@ -305,8 +311,7 @@ class Wire:
 
 
 
-@dataclass
-class Breaker:
+class Breaker( BaseModel ):
 	'''
 	Circuit breaker of a specific capacity.
 	'''
@@ -324,7 +329,7 @@ class Breaker:
 		with open( 'share/data/breakers.json5', 'rb' ) as file:
 			breakers = decode_buffer( file.read() )
 		
-		return [ cls( current, curve ) for current in breakers[curve] ]
+		return [ cls( current = current, curve = curve ) for current in breakers[curve] ]
 	
 	
 	def __str__( self ) -> str:
@@ -339,7 +344,6 @@ class Breaker:
 
 
 
-@dataclass( kw_only = True )
 class BaseCircuit( UniqueSerializable ):
 	'''
 	Abstract base class for a circuit in an electrical installation.
@@ -487,7 +491,6 @@ class BaseCircuit( UniqueSerializable ):
 
 
 
-@dataclass
 class Circuit( BaseCircuit ):
 	'''
 	Represents a single terminal circuit in an electrical installation.
@@ -507,13 +510,12 @@ class Circuit( BaseCircuit ):
 
 
 
-@dataclass
 class UpstreamCircuit( BaseCircuit ):
 	'''
 	Represents a circuit whose load is a group of downstream circuits.
 	'''
 	
-	circuits: list[BaseCircuit] = field( default_factory = list )
+	circuits: list[BaseCircuit] = Field( default_factory = list )
 	
 	
 	@property

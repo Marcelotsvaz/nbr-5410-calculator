@@ -8,7 +8,6 @@ from enum import Enum
 from operator import attrgetter
 from typing import TypeVar, NamedTuple, Generic, Any, cast, overload, override
 
-import jsons
 from PySide6.QtCore import (
 	QAbstractItemModel,
 	QMimeData,
@@ -17,6 +16,7 @@ from PySide6.QtCore import (
 	QPersistentModelIndex,
 	Qt,
 )
+from pydantic import TypeAdapter
 
 
 
@@ -432,7 +432,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		
 		items = [ self.itemFromIndex( index ) for index in indexes if index.column() == 0 ]
 		
-		jsonBytes = jsons.dumpb( items, verbose = jsons.Verbosity.WITH_CLASS_INFO )
+		jsonBytes = TypeAdapter( list[T] ).dump_json( items )
 		
 		mimeData = QMimeData()
 		mimeData.setData( self.jsonMimeType, jsonBytes )
@@ -459,7 +459,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 			
 			case Qt.DropAction.MoveAction | Qt.DropAction.CopyAction if data.hasFormat( self.jsonMimeType ):
 				jsonBytes = data.data( self.jsonMimeType ).data()
-				items = cast( list[T], jsons.loadb( jsonBytes ) )
+				items = TypeAdapter( list[T] ).validate_json( jsonBytes )
 				
 				for item in reversed( items ):
 					self.insertItem( item, parent, row )

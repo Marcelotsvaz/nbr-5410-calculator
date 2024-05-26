@@ -6,8 +6,6 @@
 
 
 
-from dataclasses import dataclass
-from typing import Any, Self
 from unittest import TestCase
 from uuid import UUID
 
@@ -20,34 +18,16 @@ class TestClass( UniqueSerializable ):
 	Regular sub-class of `uniqueSerializable`.
 	'''
 	
-	def __init__( self, name: str, **kwargs: Any ) -> None:
-		super().__init__( **kwargs )
-		
-		self.name = name
-	
-	
-	def __eq__( self, other: Self ) -> bool:
-		return self.name == other.name and self.uuid == other.uuid
-
-
-
-@dataclass
-class TestDataclass( UniqueSerializable ):
-	'''
-	Dataclass sub-class of `uniqueSerializable`.
-	'''
-	
 	name: str
 
 
 
-@dataclass
-class TestContainerDataclass( UniqueSerializable ):
+class TestContainerClass( UniqueSerializable ):
 	'''
 	Nested sub-class of `uniqueSerializable`.
 	'''
 	
-	items: list[TestDataclass]
+	items: list[TestClass]
 
 
 
@@ -61,92 +41,37 @@ class BaseUniqueSerializableTests( TestCase ):
 		Setup for all tests.
 		'''
 		
-		UniqueSerializable._instances = {}
-		
 		self.testClass = TestClass(
-			name = 'Test Instance',
-			uuid = UUID( 'e3f9a216-774e-46ee-986a-190abdb37b32' ),
-		)
-		
-		self.testDataclass = TestDataclass(
 			name = 'Test Instance',
 			uuid = UUID( 'e3f9a216-774e-46ee-986a-190abdb37b32' ),
 		)
 		
 		self.testClassJsonDict = {
 			'name': 'Test Instance',
-			'uuid': 'e3f9a216-774e-46ee-986a-190abdb37b32',
+			'uuid': UUID( 'e3f9a216-774e-46ee-986a-190abdb37b32' ),
 		}
 
 
 
-class UniqueSerializableClassSerializationTests( BaseUniqueSerializableTests ):
+class UniqueSerializableTests( BaseUniqueSerializableTests ):
 	'''
 	Test serialization of regular sub-class of `uniqueSerializable`.
 	'''
 	
 	def testSerialize( self ) -> None:
 		'''
-		Test serialization with jsons.dump.
+		Test serialization.
 		'''
 		
-		self.assertEqual( self.testClass.dump(), self.testClassJsonDict )
-	
-	
-	# TODO
-	# def testDeserialize( self ) -> None:
-	# 	'''
-	# 	Test deserialization with jsons.load.
-	# 	'''
-		
-	# 	self.assertEqual( TestClass.load( self.testClassJsonDict ), self.testClass )
-	
-	
-	def testDeserializeWithoutUuid( self ) -> None:
-		'''
-		Test deserialization without UUID.
-		'''
-		
-		self.testClassJsonDict.pop( 'uuid' )
-		testClass = TestClass.load( self.testClassJsonDict )
-		self.testClass.uuid = testClass.uuid
-		
-		self.assertIsNotNone( testClass.uuid )
-		self.assertEqual( testClass, self.testClass )
-	
-	
-	# TODO
-	# def testDeserializeDuplicated( self ) -> None:
-	# 	'''
-	# 	Test deserialization of two items with the same UUID.
-	# 	'''
-		
-	# 	testClass1 = TestClass.load( self.testClassJsonDict )
-	# 	testClass2 = TestClass.load( self.testClassJsonDict )
-		
-	# 	self.assertIs( testClass1, testClass2 )
-
-
-
-class UniqueSerializableDataclassSerializationTests( BaseUniqueSerializableTests ):
-	'''
-	Test serialization of dataclass sub-class of `uniqueSerializable`.
-	'''
-	
-	def testSerialize( self ) -> None:
-		'''
-		Test serialization with jsons.dump.
-		'''
-		
-		self.assertEqual( self.testDataclass.dump(), self.testClassJsonDict )
+		self.assertEqual( self.testClass.model_dump(), self.testClassJsonDict )
 	
 	
 	def testDeserialize( self ) -> None:
 		'''
-		Test deserialization with jsons.load.
+		Test deserialization.
 		'''
 		
-		self.assertEqual( TestDataclass.load( self.testClassJsonDict ), self.testDataclass )
+		self.assertEqual( TestClass.model_validate( self.testClassJsonDict ), self.testClass )
 	
 	
 	def testDeserializeWithoutUuid( self ) -> None:
@@ -155,11 +80,11 @@ class UniqueSerializableDataclassSerializationTests( BaseUniqueSerializableTests
 		'''
 		
 		self.testClassJsonDict.pop( 'uuid' )
-		testDataclass = TestDataclass.load( self.testClassJsonDict )
-		self.testDataclass.uuid = testDataclass.uuid
+		testClass = TestClass.model_validate( self.testClassJsonDict )
+		self.testClass.uuid = testClass.uuid
 		
-		self.assertIsNotNone( testDataclass.uuid )
-		self.assertEqual( testDataclass, self.testDataclass )
+		self.assertIsNotNone( testClass.uuid )
+		self.assertEqual( testClass, self.testClass )
 	
 	
 	def testDeserializeDuplicated( self ) -> None:
@@ -167,14 +92,16 @@ class UniqueSerializableDataclassSerializationTests( BaseUniqueSerializableTests
 		Test deserialization of two items with the same UUID.
 		'''
 		
-		testClass1 = TestDataclass.load( self.testClassJsonDict )
-		testClass2 = TestDataclass.load( self.testClassJsonDict )
+		context: dict[UUID, TestClass] = {}
+		
+		testClass1 = TestClass.model_validate( self.testClassJsonDict, context = context )
+		testClass2 = TestClass.model_validate( self.testClassJsonDict, context = context )
 		
 		self.assertIs( testClass1, testClass2 )
 
 
 
-class NestedUniqueSerializableSerializationTests( BaseUniqueSerializableTests ):
+class NestedUniqueSerializableTests( BaseUniqueSerializableTests ):
 	'''
 	Test serialization of nested sub-class of `uniqueSerializable`.
 	'''
@@ -186,31 +113,31 @@ class NestedUniqueSerializableSerializationTests( BaseUniqueSerializableTests ):
 		
 		super().setUp()
 		
-		self.testContainerDataclass = TestContainerDataclass(
-			items = [ self.testDataclass, self.testDataclass ],
+		self.testContainerClass = TestContainerClass(
+			items = [ self.testClass, self.testClass ],
 			uuid = UUID( 'd5c04a14-7e60-4b18-bf8b-97b34eaa33a2' ),
 		)
 		
-		self.testContainerDataclassJsonDict = {
+		self.testContainerJsonDict = {
 			'items': [ self.testClassJsonDict, self.testClassJsonDict ],
-			'uuid': 'd5c04a14-7e60-4b18-bf8b-97b34eaa33a2',
+			'uuid': UUID( 'd5c04a14-7e60-4b18-bf8b-97b34eaa33a2' ),
 		}
 	
 	
 	def testSerialize( self ) -> None:
 		'''
-		Test serialization with jsons.dump.
+		Test serialization.
 		'''
 		
-		self.assertEqual( self.testContainerDataclass.dump(), self.testContainerDataclassJsonDict )
+		self.assertEqual( self.testContainerClass.model_dump(), self.testContainerJsonDict )
 	
 	
 	def testDeserialize( self ) -> None:
 		'''
-		Test deserialization with jsons.load.
+		Test deserialization.
 		'''
 		
-		testContainerDataclass = TestContainerDataclass.load( self.testContainerDataclassJsonDict )
+		testContainerClass = TestContainerClass.model_validate( self.testContainerJsonDict, context = {} )
 		
-		self.assertEqual( testContainerDataclass, self.testContainerDataclass )
-		self.assertIs( testContainerDataclass.items[0], testContainerDataclass.items[1] )
+		self.assertEqual( testContainerClass, self.testContainerClass )
+		self.assertIs( testContainerClass.items[0], testContainerClass.items[1] )

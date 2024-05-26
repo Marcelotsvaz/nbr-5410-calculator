@@ -59,9 +59,16 @@ class CircuitsModel( GenericItemModel[BaseCircuit] ):
 		Return a new `Circuit` to be used with `insertRows`.
 		'''
 		
-		loadType = LoadType( 'Power', 2.5, 1.0 )
-		supply = Supply( 127 )
-		wireType = WireType( WireMaterial.COPPER, WireInsulation.PVC )
+		loadType = LoadType(
+			name = 'Power',
+			minimumWireSection = 2.5,
+			demandFactor = 1.0,
+		)
+		supply = Supply( voltage = 127 )
+		wireType = WireType(
+			material = WireMaterial.COPPER,
+			insulation = WireInsulation.PVC,
+		)
 		circuit = Circuit(
 			grouping		= 1,
 			length			= 10.0,
