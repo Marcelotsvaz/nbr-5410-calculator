@@ -12,6 +12,7 @@ from nbr_5410_calculator.installation.circuit import (
 	BaseCircuitUnion,
 	ReferenceMethod,
 	Circuit,
+	UpstreamCircuit,
 )
 from nbr_5410_calculator.installation.project import Project
 
@@ -79,6 +80,35 @@ class CircuitsView( GenericTreeView[CircuitsModel, BaseCircuitUnion] ):
 			loadPower		= 1000,
 			loadType		= defaultLoadType,
 			name			= self.tr('New Circuit'),
+			referenceMethod	= ReferenceMethod.B1,
+			supply			= defaultSupply,
+			temperature		= 30,
+			wireType		= defaultWireType,
+		)
+		
+		self.appendItem( circuit )
+		
+		return circuit
+	
+	
+	@Slot()
+	def newUpstreamCircuit( self ) -> UpstreamCircuit:
+		'''
+		Create new `UpstreamCircuit`.
+		'''
+		
+		defaultLoadType = self.model().project.defaultLoadType
+		defaultSupply = self.model().project.defaultSupply
+		defaultWireType = self.model().project.defaultWireType
+		
+		if not ( defaultLoadType and defaultSupply and defaultWireType ):
+			raise Exception( 'TODO' )
+		
+		circuit = UpstreamCircuit(
+			grouping		= 1,
+			length			= 10.0,
+			loadType		= defaultLoadType,
+			name			= self.tr('New Upstream Circuit'),
 			referenceMethod	= ReferenceMethod.B1,
 			supply			= defaultSupply,
 			temperature		= 30,

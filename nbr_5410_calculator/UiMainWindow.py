@@ -64,35 +64,66 @@ class Ui_mainWindow(object):
         self.projectTab.setObjectName(u"projectTab")
         self.gridLayout_4 = QGridLayout(self.projectTab)
         self.gridLayout_4.setObjectName(u"gridLayout_4")
-        self.suppliesListView = SupplyView(self.projectTab)
-        self.suppliesListView.setObjectName(u"suppliesListView")
+        self.newSupplyButton = QPushButton(self.projectTab)
+        self.newSupplyButton.setObjectName(u"newSupplyButton")
+        icon6 = QIcon(QIcon.fromTheme(u"contact-new"))
+        self.newSupplyButton.setIcon(icon6)
 
-        self.gridLayout_4.addWidget(self.suppliesListView, 1, 0, 1, 1)
+        self.gridLayout_4.addWidget(self.newSupplyButton, 0, 2, 1, 1)
+
+        self.newWireTypeButton = QPushButton(self.projectTab)
+        self.newWireTypeButton.setObjectName(u"newWireTypeButton")
+        self.newWireTypeButton.setIcon(icon6)
+
+        self.gridLayout_4.addWidget(self.newWireTypeButton, 0, 8, 1, 1)
+
+        self.horizontalSpacer2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_4.addItem(self.horizontalSpacer2, 0, 4, 1, 1)
+
+        self.loadTypesLabel = QLabel(self.projectTab)
+        self.loadTypesLabel.setObjectName(u"loadTypesLabel")
+
+        self.gridLayout_4.addWidget(self.loadTypesLabel, 0, 3, 1, 1)
+
+        self.wireTypesLabel = QLabel(self.projectTab)
+        self.wireTypesLabel.setObjectName(u"wireTypesLabel")
+
+        self.gridLayout_4.addWidget(self.wireTypesLabel, 0, 6, 1, 1)
 
         self.loadTypesListView = LoadTypeView(self.projectTab)
         self.loadTypesListView.setObjectName(u"loadTypesListView")
 
-        self.gridLayout_4.addWidget(self.loadTypesListView, 1, 1, 1, 1)
-
-        self.wireTypesListView = WireTypeView(self.projectTab)
-        self.wireTypesListView.setObjectName(u"wireTypesListView")
-
-        self.gridLayout_4.addWidget(self.wireTypesListView, 1, 2, 1, 1)
+        self.gridLayout_4.addWidget(self.loadTypesListView, 1, 3, 1, 3)
 
         self.suppliesLabel = QLabel(self.projectTab)
         self.suppliesLabel.setObjectName(u"suppliesLabel")
 
         self.gridLayout_4.addWidget(self.suppliesLabel, 0, 0, 1, 1)
 
-        self.loadTypesLabel = QLabel(self.projectTab)
-        self.loadTypesLabel.setObjectName(u"loadTypesLabel")
+        self.suppliesListView = SupplyView(self.projectTab)
+        self.suppliesListView.setObjectName(u"suppliesListView")
 
-        self.gridLayout_4.addWidget(self.loadTypesLabel, 0, 1, 1, 1)
+        self.gridLayout_4.addWidget(self.suppliesListView, 1, 0, 1, 3)
 
-        self.wireTypesLabel = QLabel(self.projectTab)
-        self.wireTypesLabel.setObjectName(u"wireTypesLabel")
+        self.horizontalSpacer1 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.gridLayout_4.addWidget(self.wireTypesLabel, 0, 2, 1, 1)
+        self.gridLayout_4.addItem(self.horizontalSpacer1, 0, 1, 1, 1)
+
+        self.newLoadTypeButton = QPushButton(self.projectTab)
+        self.newLoadTypeButton.setObjectName(u"newLoadTypeButton")
+        self.newLoadTypeButton.setIcon(icon6)
+
+        self.gridLayout_4.addWidget(self.newLoadTypeButton, 0, 5, 1, 1)
+
+        self.wireTypesListView = WireTypeView(self.projectTab)
+        self.wireTypesListView.setObjectName(u"wireTypesListView")
+
+        self.gridLayout_4.addWidget(self.wireTypesListView, 1, 6, 1, 3)
+
+        self.horizontalSpacer3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_4.addItem(self.horizontalSpacer3, 0, 7, 1, 1)
 
         self.tabWidget.addTab(self.projectTab, "")
         self.circuitsTab = QWidget()
@@ -106,25 +137,25 @@ class Ui_mainWindow(object):
 
         self.deleteCircuitButton = QPushButton(self.circuitsTab)
         self.deleteCircuitButton.setObjectName(u"deleteCircuitButton")
-        icon6 = QIcon(QIcon.fromTheme(u"delete"))
-        self.deleteCircuitButton.setIcon(icon6)
+        icon7 = QIcon(QIcon.fromTheme(u"delete"))
+        self.deleteCircuitButton.setIcon(icon7)
 
         self.gridLayout_2.addWidget(self.deleteCircuitButton, 0, 1, 1, 1)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.horizontalSpacer4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.gridLayout_2.addItem(self.horizontalSpacer, 0, 0, 1, 1)
+        self.gridLayout_2.addItem(self.horizontalSpacer4, 0, 0, 1, 1)
 
         self.newCircuitButton = QPushButton(self.circuitsTab)
         self.newCircuitButton.setObjectName(u"newCircuitButton")
-        icon7 = QIcon(QIcon.fromTheme(u"window-new"))
-        self.newCircuitButton.setIcon(icon7)
+        icon8 = QIcon(QIcon.fromTheme(u"window-new"))
+        self.newCircuitButton.setIcon(icon8)
 
         self.gridLayout_2.addWidget(self.newCircuitButton, 0, 3, 1, 1)
 
         self.newUpstreamCircuitButton = QPushButton(self.circuitsTab)
         self.newUpstreamCircuitButton.setObjectName(u"newUpstreamCircuitButton")
-        self.newUpstreamCircuitButton.setIcon(icon7)
+        self.newUpstreamCircuitButton.setIcon(icon8)
 
         self.gridLayout_2.addWidget(self.newUpstreamCircuitButton, 0, 2, 1, 1)
 
@@ -139,13 +170,13 @@ class Ui_mainWindow(object):
 
         self.newConduitRunButton = QPushButton(self.conduitsTab)
         self.newConduitRunButton.setObjectName(u"newConduitRunButton")
-        self.newConduitRunButton.setIcon(icon7)
+        self.newConduitRunButton.setIcon(icon8)
 
         self.gridLayout_3.addWidget(self.newConduitRunButton, 0, 2, 1, 1)
 
         self.deleteConduitRunButton = QPushButton(self.conduitsTab)
         self.deleteConduitRunButton.setObjectName(u"deleteConduitRunButton")
-        self.deleteConduitRunButton.setIcon(icon6)
+        self.deleteConduitRunButton.setIcon(icon7)
 
         self.gridLayout_3.addWidget(self.deleteConduitRunButton, 0, 1, 1, 1)
 
@@ -164,6 +195,7 @@ class Ui_mainWindow(object):
         mainWindow.setStatusBar(self.statusbar)
         self.menuBar = QMenuBar(mainWindow)
         self.menuBar.setObjectName(u"menuBar")
+        self.menuBar.setGeometry(QRect(0, 0, 1000, 22))
         self.menuFile = QMenu(self.menuBar)
         self.menuFile.setObjectName(u"menuFile")
         self.menuHelp = QMenu(self.menuBar)
@@ -192,9 +224,12 @@ class Ui_mainWindow(object):
         self.deleteCircuitButton.clicked.connect(self.circuitsTreeView.deleteSelectedItems)
         self.newConduitRunButton.clicked.connect(self.conduitsTreeView.newConduitRun)
         self.deleteConduitRunButton.clicked.connect(self.conduitsTreeView.deleteSelectedItems)
-        self.newUpstreamCircuitButton.clicked.connect(self.circuitsTreeView.newCircuit)
+        self.newUpstreamCircuitButton.clicked.connect(self.circuitsTreeView.newUpstreamCircuit)
+        self.newSupplyButton.clicked.connect(self.suppliesListView.newSupply)
+        self.newLoadTypeButton.clicked.connect(self.loadTypesListView.newLoadType)
+        self.newWireTypeButton.clicked.connect(self.wireTypesListView.newWireType)
 
-        self.tabWidget.setCurrentIndex(1)
+        self.tabWidget.setCurrentIndex(0)
 
 
         QMetaObject.connectSlotsByName(mainWindow)
@@ -223,9 +258,9 @@ class Ui_mainWindow(object):
         self.actionQuit.setShortcut(QCoreApplication.translate("mainWindow", u"Ctrl+Q", None))
 #endif // QT_CONFIG(shortcut)
         self.actionAbout.setText(QCoreApplication.translate("mainWindow", u"&About", None))
-        self.suppliesLabel.setText(QCoreApplication.translate("mainWindow", u"Supplies", None))
         self.loadTypesLabel.setText(QCoreApplication.translate("mainWindow", u"Load Types", None))
         self.wireTypesLabel.setText(QCoreApplication.translate("mainWindow", u"Wire Types", None))
+        self.suppliesLabel.setText(QCoreApplication.translate("mainWindow", u"Supplies", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.projectTab), QCoreApplication.translate("mainWindow", u"Project", None))
         self.deleteCircuitButton.setText(QCoreApplication.translate("mainWindow", u"Delete circuit", None))
         self.newCircuitButton.setText(QCoreApplication.translate("mainWindow", u"New circuit", None))
