@@ -1,10 +1,6 @@
-# 
-# NBR 5410 Calculator
-# 
-# 
-# Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
-
-
+'''
+Main window and project-level stuff.
+'''
 
 from typing import override
 
@@ -42,15 +38,21 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		
 		self.project = project
 		
-		self.suppliesListView.setModel( SupplyModel( project.supplies, self ) )
-		self.loadTypesListView.setModel( LoadTypeModel( project.loadTypes, self ) )
-		self.wireTypesListView.setModel( WireTypeModel( project.wireTypes, self ) )
+		self.supplyModel = SupplyModel( project.supplies, self )
+		self.loadTypeModel = LoadTypeModel( project.loadTypes, self )
+		self.wireTypeModel = WireTypeModel( project.wireTypes, self )
+		self.circuitsModel = CircuitsModel( project, self )
+		self.conduitRunsModel = ConduitRunsModel( project.conduitRuns, self )
 		
-		self.circuitsTreeView.setModel( CircuitsModel( project.circuits, self ) )
+		self.suppliesListView.setModel( self.supplyModel )
+		self.loadTypesListView.setModel( self.loadTypeModel )
+		self.wireTypesListView.setModel( self.wireTypeModel )
+		
+		self.circuitsTreeView.setModel( self.circuitsModel )
 		self.circuitsTreeView.expandAll()
 		self.circuitsTreeView.resizeColumnsToContents()
 		
-		self.conduitsTreeView.setModel( ConduitRunsModel( project.conduitRuns, self ) )
+		self.conduitsTreeView.setModel( self.conduitRunsModel )
 		self.conduitsTreeView.expandAll()
 		self.conduitsTreeView.resizeColumnsToContents()
 	
@@ -61,17 +63,19 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		Create a new empty project.
 		'''
 		
-		self.setProject( Project( name = self.tr('New Project') ) )
+		project = Project( name = self.tr('New Project') )
 		
-		self.suppliesListView.newItem()
-		self.loadTypesListView.newItem()
-		self.wireTypesListView.newItem()
+		self.setProject( project )
 		
-		self.circuitsTreeView.newItem()
+		project.defaultSupply = self.suppliesListView.newSupply()
+		project.defaultLoadType = self.loadTypesListView.newLoadType()
+		project.defaultWireType = self.wireTypesListView.newWireType()
+		
+		self.circuitsTreeView.newCircuit()
 		self.circuitsTreeView.expandAll()
 		self.circuitsTreeView.resizeColumnsToContents()
 		
-		self.conduitsTreeView.newItem()
+		self.conduitsTreeView.newConduitRun()
 		self.conduitsTreeView.expandAll()
 		self.conduitsTreeView.resizeColumnsToContents()
 	

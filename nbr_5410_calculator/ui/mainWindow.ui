@@ -27,13 +27,13 @@
        </attribute>
        <layout class="QGridLayout" name="gridLayout_4">
         <item row="1" column="0">
-         <widget class="GenericListView" name="suppliesListView"/>
+         <widget class="SupplyView" name="suppliesListView"/>
         </item>
         <item row="1" column="1">
-         <widget class="GenericListView" name="loadTypesListView"/>
+         <widget class="LoadTypeView" name="loadTypesListView"/>
         </item>
         <item row="1" column="2">
-         <widget class="GenericListView" name="wireTypesListView"/>
+         <widget class="WireTypeView" name="wireTypesListView"/>
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="suppliesLabel">
@@ -63,18 +63,18 @@
         <string>Circuits</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="0" column="2">
-         <widget class="QPushButton" name="newCircuitButton">
+        <item row="1" column="0" colspan="4">
+         <widget class="CircuitsView" name="circuitsTreeView"/>
+        </item>
+        <item row="0" column="1">
+         <widget class="QPushButton" name="deleteCircuitButton">
           <property name="text">
-           <string>New circuit</string>
+           <string>Delete circuit</string>
           </property>
           <property name="icon">
-           <iconset theme="window-new"/>
+           <iconset theme="delete"/>
           </property>
          </widget>
-        </item>
-        <item row="1" column="0" colspan="3">
-         <widget class="GenericTreeView" name="circuitsTreeView"/>
         </item>
         <item row="0" column="0">
          <spacer name="horizontalSpacer">
@@ -89,13 +89,23 @@
           </property>
          </spacer>
         </item>
-        <item row="0" column="1">
-         <widget class="QPushButton" name="deleteCircuitButton">
+        <item row="0" column="3">
+         <widget class="QPushButton" name="newCircuitButton">
           <property name="text">
-           <string>Delete circuit</string>
+           <string>New circuit</string>
           </property>
           <property name="icon">
-           <iconset theme="delete"/>
+           <iconset theme="window-new"/>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="2">
+         <widget class="QPushButton" name="newUpstreamCircuitButton">
+          <property name="text">
+           <string>New upstream circuit</string>
+          </property>
+          <property name="icon">
+           <iconset theme="window-new"/>
           </property>
          </widget>
         </item>
@@ -140,7 +150,7 @@
          </widget>
         </item>
         <item row="1" column="0" colspan="3">
-         <widget class="GenericTreeView" name="conduitsTreeView"/>
+         <widget class="ConduitRunsView" name="conduitsTreeView"/>
         </item>
        </layout>
       </widget>
@@ -237,20 +247,47 @@
  </widget>
  <customwidgets>
   <customwidget>
-   <class>GenericTreeView</class>
-   <extends>QTreeView</extends>
-   <header>nbr_5410_calculator.generic_model_views.views</header>
+   <class>SupplyView</class>
+   <extends>QListView</extends>
+   <header>nbr_5410_calculator.projectTab</header>
    <slots>
-    <slot>newItem()</slot>
+    <slot>deleteSelectedItems()</slot>
+    <slot>newSupply()</slot>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>LoadTypeView</class>
+   <extends>QListView</extends>
+   <header>nbr_5410_calculator.projectTab</header>
+   <slots>
+    <slot>deleteSelectedItems()</slot>
+    <slot>newLoadType()</slot>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>WireTypeView</class>
+   <extends>QListView</extends>
+   <header>nbr_5410_calculator.projectTab</header>
+   <slots>
+    <slot>deleteSelectedItems()</slot>
+    <slot>newWireType()</slot>
+   </slots>
+  </customwidget>
+  <customwidget>
+   <class>CircuitsView</class>
+   <extends>QTreeView</extends>
+   <header>nbr_5410_calculator.circuitsTab</header>
+   <slots>
+    <slot>newCircuit()</slot>
     <slot>deleteSelectedItems()</slot>
    </slots>
   </customwidget>
   <customwidget>
-   <class>GenericListView</class>
-   <extends>QListView</extends>
-   <header>nbr_5410_calculator.generic_model_views.views</header>
+   <class>ConduitRunsView</class>
+   <extends>QTreeView</extends>
+   <header>nbr_5410_calculator.conduitsTab</header>
    <slots>
-    <slot>newItem()</slot>
+    <slot>newConduitRun()</slot>
     <slot>deleteSelectedItems()</slot>
    </slots>
   </customwidget>
@@ -309,7 +346,7 @@
    <sender>newCircuitButton</sender>
    <signal>clicked()</signal>
    <receiver>circuitsTreeView</receiver>
-   <slot>newItem()</slot>
+   <slot>newCircuit()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>968</x>
@@ -376,8 +413,8 @@
    <slot>deleteSelectedItems()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>814</x>
-     <y>91</y>
+     <x>726</x>
+     <y>93</y>
     </hint>
     <hint type="destinationlabel">
      <x>499</x>
@@ -389,7 +426,7 @@
    <sender>newConduitRunButton</sender>
    <signal>clicked()</signal>
    <receiver>conduitsTreeView</receiver>
-   <slot>newItem()</slot>
+   <slot>newConduitRun()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>914</x>
@@ -414,6 +451,22 @@
     <hint type="destinationlabel">
      <x>499</x>
      <y>337</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>newUpstreamCircuitButton</sender>
+   <signal>clicked()</signal>
+   <receiver>circuitsTreeView</receiver>
+   <slot>newCircuit()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>807</x>
+     <y>81</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>499</x>
+     <y>328</y>
     </hint>
    </hints>
   </connection>

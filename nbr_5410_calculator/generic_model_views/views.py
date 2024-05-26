@@ -1,9 +1,9 @@
 '''
-
+Views for `GenericItemModel`.
 '''
 
 from enum import Enum
-from typing import override
+from typing import Any, Generic, TypeVar, cast, override
 
 from PySide6 import QtGui
 from PySide6.QtCore import (
@@ -28,28 +28,38 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtGui import QDrag, QPainter, QPixmap
 
-from .models import ModelIndex
+from .models import GenericItemModel, ModelIndex
 
 
 
-class GenericListView( QListView ):
+# Type aliases.
+ModelType = TypeVar( 'ModelType', bound = GenericItemModel[Any] )
+DataType = TypeVar( 'DataType' )
+
+
+
+class GenericListView( Generic[ModelType, DataType], QListView ):
 	'''
 	`QListView` for `GenericItemModel`.
 	'''
 	
 	@override
-	def __init__( self, parent: QWidget | None = None ) -> None:
-		super().__init__( parent )
+	def model( self ) -> ModelType:
+		return cast( ModelType, super().model() )
 	
 	
-	@Slot()
-	def newItem( self ) -> None:
+	def appendItem( self, item: DataType ) -> None:
 		'''
-		Insert new item.
+		Append `item` after the last selected item.
 		'''
 		
-		# After last item.
-		self.model().insertRow( self.model().rowCount() + 1 )
+		if selectedIndexes := self.selectedIndexes():
+			# After last selected item.
+			lastSelectedIndex = max( selectedIndexes, key = lambda index: index.row() )
+			self.model().insertItem( item, lastSelectedIndex.row() + 1, lastSelectedIndex.parent() )
+		else:
+			# After last item.
+			self.model().insertItem( item, self.model().rowCount() + 1 )
 	
 	
 	@Slot()
@@ -58,18 +68,19 @@ class GenericListView( QListView ):
 		Delete selected items from table.
 		'''
 		
-		indexes = {
+		selectedIndexes = [
 			QPersistentModelIndex( index )
 			for index in self.selectedIndexes()
 			if index.column() == 0
-		}
+		]
 		
-		for index in indexes:
-			self.model().removeRow( index.row() )
+		for index in selectedIndexes:
+			# TODO: Check deleting parent before child.
+			self.model().removeRow( index.row(), index.parent() )
 
 
 
-class GenericTreeView( QTreeView ):
+class GenericTreeView( Generic[ModelType, DataType], QTreeView ):
 	'''
 	`QTreeView` for `GenericItemModel`.
 	'''
@@ -112,6 +123,25 @@ class GenericTreeView( QTreeView ):
 			for index in sorted( self.selectedIndexes(), key = lambda index: index.row() )
 			if index.column() == 0
 		]
+	
+	
+	@override
+	def model( self ) -> ModelType:
+		return cast( ModelType, super().model() )
+	
+	
+	def appendItem( self, item: DataType ) -> None:
+		'''
+		Append `item` after last selected item.
+		'''
+		
+		if selectedIndexes := self.selectedIndexes():
+			# After last selected item.
+			lastSelectedIndex = max( selectedIndexes, key = lambda index: index.row() )
+			self.model().insertItem( item, lastSelectedIndex.row() + 1, lastSelectedIndex.parent() )
+		else:
+			# After last item.
+			self.model().insertItem( item, self.model().rowCount() + 1 )
 	
 	
 	@override
@@ -266,21 +296,6 @@ class GenericTreeView( QTreeView ):
 				painter,
 				self,
 			)
-	
-	
-	@Slot()
-	def newItem( self ) -> None:
-		'''
-		Insert new item.
-		'''
-		
-		if selectedIndexes := self.selectedIndexes():
-			# After last selected item.
-			lastSelectedIndex = max( selectedIndexes, key = lambda index: index.row() )
-			self.model().insertRow( lastSelectedIndex.row() + 1, lastSelectedIndex.parent() )
-		else:
-			# After last item.
-			self.model().insertRow( self.model().rowCount() + 1 )
 	
 	
 	@Slot()

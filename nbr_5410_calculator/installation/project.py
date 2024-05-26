@@ -1,10 +1,6 @@
-# 
-# NBR 5410 Calculator
-# 
-# 
-# Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
-
-
+'''
+Project model.
+'''
 
 from pydantic import Field
 
@@ -20,8 +16,14 @@ class Project( UniqueSerializable ):
 	'''
 	
 	name: str
+	
 	supplies: list[Supply] = Field( default_factory = list )
 	loadTypes: list[LoadType] = Field( default_factory = list )
 	wireTypes: list[WireType] = Field( default_factory = list )
+	
+	defaultSupply: Supply | None = None
+	defaultLoadType: LoadType | None = None
+	defaultWireType: WireType | None = None
+	
 	circuits: list[BaseCircuitUnion] = Field( default_factory = list )
 	conduitRuns: list[ConduitRun] = Field( default_factory = list )

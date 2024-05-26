@@ -1,5 +1,5 @@
 '''
-
+Partial implementation of `QAbstractItemModel`.
 '''
 
 from collections.abc import Sequence
@@ -300,7 +300,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		raise NotImplementedError()
 	
 	
-	def insertItem( self, item: T, parent: ModelIndex = QModelIndex(), row: int = -1 ) -> None:
+	def insertItem( self, item: T, row: int = -1, parent: ModelIndex = QModelIndex() ) -> None:
 		'''
 		Insert an existing item into the model's datasource.
 		'''
@@ -325,7 +325,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		'''
 		
 		for _ in range( count ):
-			self.insertItem( self.newItem(), parent = parent, row = row )
+			self.insertItem( self.newItem(), row, parent )
 		
 		return True
 	
@@ -462,7 +462,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 				items = TypeAdapter( list[T] ).validate_json( jsonBytes )
 				
 				for item in reversed( items ):
-					self.insertItem( item, parent, row )
+					self.insertItem( item, row, parent )
 				
 				return True
 			

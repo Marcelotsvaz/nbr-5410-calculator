@@ -1,23 +1,23 @@
-# 
-# NBR 5410 Calculator
-# 
-# 
-# Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
-
-
+'''
+Models and view for the conduits tab.
+'''
 
 from typing import override
 
-from PySide6.QtCore import QObject
+from PySide6.QtCore import QObject, Slot
 
 from nbr_5410_calculator.generic_model_views.models import Field, GenericItemModel
+from nbr_5410_calculator.generic_model_views.views import GenericTreeView
 from nbr_5410_calculator.installation.conduitRun import ConduitRun
 
 
 
+# 
+# Models
+#-------------------------------------------------------------------------------
 class ConduitRunsModel( GenericItemModel[ConduitRun] ):
 	'''
-	Map a list of `ConduitRun`s to a QTableView.
+	Map a list of `ConduitRun`s to a `QTreeView`.
 	'''
 	
 	@override
@@ -37,17 +37,28 @@ class ConduitRunsModel( GenericItemModel[ConduitRun] ):
 		]
 		
 		super().__init__( fields, conduitRuns, childListName, childFields, parent )
+
+
+
+# 
+# Views
+#-------------------------------------------------------------------------------
+class ConduitRunsView( GenericTreeView[ConduitRunsModel, ConduitRun] ):
+	'''
+	`QTreeView` for `ConduitRunsModel`.
+	'''
 	
-	
-	@override
-	def newItem( self ) -> ConduitRun:
+	@Slot()
+	def newConduitRun( self ) -> ConduitRun:
 		'''
-		Return a new `ConduitRun` to be used with `insertRows`.
+		Create new `ConduitRun`.
 		'''
 		
 		conduitRun = ConduitRun(
 			name = self.tr('New Conduit Run'),
 			length = 10.0,
 		)
+		
+		self.appendItem( conduitRun )
 		
 		return conduitRun
