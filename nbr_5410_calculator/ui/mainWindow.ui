@@ -63,10 +63,23 @@
         <string>Circuits</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
+        <item row="0" column="2">
+         <widget class="QPushButton" name="newCircuitButton">
+          <property name="text">
+           <string>New circuit</string>
+          </property>
+          <property name="icon">
+           <iconset theme="window-new"/>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="3">
+         <widget class="GenericTreeView" name="circuitsTreeView"/>
+        </item>
         <item row="0" column="0">
          <spacer name="horizontalSpacer">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -76,28 +89,13 @@
           </property>
          </spacer>
         </item>
-        <item row="1" column="0" colspan="3">
-         <widget class="GenericTreeView" name="circuitsTreeView"/>
-        </item>
-        <item row="0" column="2">
-         <widget class="QPushButton" name="newCircuitButton">
-          <property name="text">
-           <string>New circuit</string>
-          </property>
-          <property name="icon">
-           <iconset theme="window-new">
-            <normaloff>.</normaloff>.</iconset>
-          </property>
-         </widget>
-        </item>
         <item row="0" column="1">
          <widget class="QPushButton" name="deleteCircuitButton">
           <property name="text">
            <string>Delete circuit</string>
           </property>
           <property name="icon">
-           <iconset theme="delete">
-            <normaloff>.</normaloff>.</iconset>
+           <iconset theme="delete"/>
           </property>
          </widget>
         </item>
@@ -111,7 +109,7 @@
         <item row="0" column="0">
          <spacer name="horizontalSpacer_2">
           <property name="orientation">
-           <enum>Qt::Horizontal</enum>
+           <enum>Qt::Orientation::Horizontal</enum>
           </property>
           <property name="sizeHint" stdset="0">
            <size>
@@ -127,8 +125,7 @@
            <string>New conduit run</string>
           </property>
           <property name="icon">
-           <iconset theme="window-new">
-            <normaloff>.</normaloff>.</iconset>
+           <iconset theme="window-new"/>
           </property>
          </widget>
         </item>
@@ -138,8 +135,7 @@
            <string>Delete conduit run</string>
           </property>
           <property name="icon">
-           <iconset theme="delete">
-            <normaloff>.</normaloff>.</iconset>
+           <iconset theme="delete"/>
           </property>
          </widget>
         </item>
@@ -154,14 +150,6 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
   <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1000</width>
-     <height>30</height>
-    </rect>
-   </property>
    <widget class="QMenu" name="menuFile">
     <property name="title">
      <string>&amp;File</string>
@@ -185,8 +173,7 @@
   </widget>
   <action name="actionNew">
    <property name="icon">
-    <iconset theme="document-new">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="document-new"/>
    </property>
    <property name="text">
     <string>&amp;New</string>
@@ -197,8 +184,7 @@
   </action>
   <action name="actionOpen">
    <property name="icon">
-    <iconset theme="document-open">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="document-open"/>
    </property>
    <property name="text">
     <string>&amp;Open...</string>
@@ -209,8 +195,7 @@
   </action>
   <action name="actionSave">
    <property name="icon">
-    <iconset theme="document-save">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="document-save"/>
    </property>
    <property name="text">
     <string>&amp;Save</string>
@@ -221,8 +206,7 @@
   </action>
   <action name="actionSaveAs">
    <property name="icon">
-    <iconset theme="document-save-as">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="document-save-as"/>
    </property>
    <property name="text">
     <string>Save &amp;As...</string>
@@ -233,8 +217,7 @@
   </action>
   <action name="actionQuit">
    <property name="icon">
-    <iconset theme="application-exit">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="application-exit"/>
    </property>
    <property name="text">
     <string>&amp;Quit</string>
@@ -245,8 +228,7 @@
   </action>
   <action name="actionAbout">
    <property name="icon">
-    <iconset theme="help-about">
-     <normaloff>.</normaloff>.</iconset>
+    <iconset theme="help-about"/>
    </property>
    <property name="text">
     <string>&amp;About</string>
@@ -257,7 +239,7 @@
   <customwidget>
    <class>GenericTreeView</class>
    <extends>QTreeView</extends>
-   <header>genericModelViews.views</header>
+   <header>nbr_5410_calculator.generic_model_views.views</header>
    <slots>
     <slot>newItem()</slot>
     <slot>deleteSelectedItems()</slot>
@@ -266,7 +248,7 @@
   <customwidget>
    <class>GenericListView</class>
    <extends>QListView</extends>
-   <header>genericModelViews.views</header>
+   <header>nbr_5410_calculator.generic_model_views.views</header>
    <slots>
     <slot>newItem()</slot>
     <slot>deleteSelectedItems()</slot>

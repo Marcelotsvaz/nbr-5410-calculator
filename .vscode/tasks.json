@@ -13,17 +13,17 @@
 			"problemMatcher": [],
 		},
 		
-		// {
-		// 	"label": "Compile UI",
-		// 	"type": "shell",
-		// 	"command": "deployment/env/bin/pyside6-uic src/ui/mainWindow.ui -o src/UiMainWindow.py",
-		// 	"icon": {
-		// 		"id": "combine",
-		// 		"color": "terminal.ansiGreen",
-		// 	},
-		// 	"presentation": { "close": true },
-		// 	"problemMatcher": [],
-		// },
+		{
+			"label": "Compile UI",
+			"type": "shell",
+			"command": ".venv/bin/pyside6-uic nbr_5410_calculator/ui/mainWindow.ui -o nbr_5410_calculator/UiMainWindow.py",
+			"icon": {
+				"id": "combine",
+				"color": "terminal.ansiGreen",
+			},
+			"problemMatcher": [],
+		},
+		
 		// {
 		// 	"label": "Update Translations",
 		// 	"type": "shell",
