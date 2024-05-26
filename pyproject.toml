@@ -105,14 +105,10 @@
 	]
 	
 	disable = [
-		# 'fixme',
 		'trailing-whitespace',
 		'missing-final-newline',
 		'logging-fstring-interpolation',
 		'too-few-public-methods',
-		# 'too-many-instance-attributes',
-		# 'unspecified-encoding',
-		# 'no-name-in-module',	# Fix PyLint bug?
 	]
 	
 	# Naming.

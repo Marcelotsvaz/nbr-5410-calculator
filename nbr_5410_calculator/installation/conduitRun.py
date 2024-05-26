@@ -7,6 +7,7 @@
 
 
 from enum import StrEnum, auto
+from functools import cache
 from math import pi
 from typing import Self
 
@@ -44,11 +45,13 @@ class Conduit( BaseModel ):
 	
 	
 	@classmethod
+	@cache
 	def allConduits( cls ) -> list[Self]:
 		'''
 		Return all available sizes of this model of conduit.
 		'''
 		
+		# TODO: Proper class with Pydantic.
 		with open( 'share/data/conduit/rigid.json5', 'rb' ) as file:
 			jsonData = decode_buffer( file.read() )
 		

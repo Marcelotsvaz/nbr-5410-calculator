@@ -1,10 +1,9 @@
+Use Pydantic for shared data
 self.get_datasource(index)
-Search # TODO FIXME
 Fix sort for fields without __gt__
 Fix sort for children
 Show thousands separator in status bar
 Qt python properties
-
 Use >= dependencies
 Add arguments with units to docstrings, including properties
 Refactor tests docstrings

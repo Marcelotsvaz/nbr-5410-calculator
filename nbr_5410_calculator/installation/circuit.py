@@ -7,6 +7,7 @@
 
 
 from enum import Enum, StrEnum, auto
+from functools import cache
 from math import pi
 from typing import Any, Self
 
@@ -129,18 +130,28 @@ class WireType( UniqueSerializable ):
 	_referenceMethods: dict[str, dict[str, list[float]]]
 	
 	
+	@classmethod
+	@cache
+	def load_wires( cls, material: WireMaterial, insulation: WireInsulation ) -> dict[str, Any]:
+		'''
+		TODO: Proper class with Pydantic.
+		'''
+		
+		with open( f'share/data/wireTypes/{material.value}-{insulation.value}.json5', 'rb' ) as file:
+			return decode_buffer( file.read() )
+	
+	
 	# TODO: Fix signature.
 	def __init__( self, **kwargs: Any ) -> None:
 		super().__init__( **kwargs )
 		
-		with open( f'share/data/wireTypes/{self.material.value}-{self.insulation.value}.json5', 'rb' ) as file:
-			jsonData = decode_buffer( file.read() )
+		wires = self.load_wires( self.material, self.insulation )
 		
-		self._resistivity = jsonData['resistivity']
-		self._conductorSections = jsonData['conductorSections']
-		self._conductorDiameters = jsonData['conductorDiameters']
-		self._externalDiameters = jsonData['externalDiameters']
-		self._referenceMethods = jsonData['referenceMethods']
+		self._resistivity = wires['resistivity']
+		self._conductorSections = wires['conductorSections']
+		self._conductorDiameters = wires['conductorDiameters']
+		self._externalDiameters = wires['externalDiameters']
+		self._referenceMethods = wires['referenceMethods']
 	
 	
 	def __str__( self ) -> str:
@@ -199,13 +210,23 @@ class TemperatureCorrectionFactor:
 	'''
 	
 	@classmethod
+	@cache
+	def load_factors( cls ) -> list[dict[str, Any]]:
+		'''
+		TODO: Proper class with Pydantic.
+		'''
+		
+		with open( 'share/data/temperatureCorrectionFactor.json5', 'rb' ) as file:
+			return decode_buffer( file.read() )
+	
+	
+	@classmethod
 	def forTemperature( cls, temperature: int ) -> float:
 		'''
 		Return the interpolated correction factor for a given temperature.
 		'''
 		
-		with open( 'share/data/temperatureCorrectionFactor.json5', 'rb' ) as file:
-			factors = decode_buffer( file.read() )
+		factors = cls.load_factors()
 		
 		if temperature <= factors[0]['temperature']:
 			return factors[0]['value']
@@ -231,13 +252,23 @@ class GroupingCorrectionFactor:
 	'''
 	
 	@classmethod
+	@cache
+	def load_factors( cls ) -> dict[str, float]:
+		'''
+		TODO: Proper class with Pydantic.
+		'''
+		
+		with open( 'share/data/groupingCorrectionFactor.json5', 'rb' ) as file:
+			return decode_buffer( file.read() )
+	
+	
+	@classmethod
 	def forGrouping( cls, grouping: int ) -> float:
 		'''
 		Return the correction factor for a given circuit grouping.
 		'''
 		
-		with open( 'share/data/groupingCorrectionFactor.json5', 'rb' ) as file:
-			factors = decode_buffer( file.read() )
+		factors = cls.load_factors()
 		
 		last = max( factors.keys() )
 		if grouping > int( last ):
@@ -321,13 +352,23 @@ class Breaker( BaseModel ):
 	
 	
 	@classmethod
+	@cache
+	def load_breakers( cls ) -> dict[str, list[int]]:
+		'''
+		TODO: Proper class with Pydantic.
+		'''
+		
+		with open( 'share/data/breakers.json5', 'rb' ) as file:
+			return decode_buffer( file.read() )
+	
+	
+	@classmethod
 	def getBreakers( cls, curve: str ) -> list[Self]:
 		'''
 		Return breakers by curve.
 		'''
 		
-		with open( 'share/data/breakers.json5', 'rb' ) as file:
-			breakers = decode_buffer( file.read() )
+		breakers = cls.load_breakers()
 		
 		return [ cls( current = current, curve = curve ) for current in breakers[curve] ]
 	
