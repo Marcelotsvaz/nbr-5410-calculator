@@ -1,4 +1,19 @@
+Rewrite model adapter to use Pydantic fields
+	Set root index
+		Check rowCount parent
+	Use protocols:
+		len for rowCount
+		sequence for hasChildren
+	https://doc.qt.io/qtforpython-6/PySide6/QtCore/QAbstractItemModel.html#PySide6.QtCore.QAbstractItemModel.checkIndex
+Delegates
+Move stuff to conduitrun
+
+
+
 Use Pydantic for shared data
+def f[T](a: T) -> T: ...
+from __feature__ import true_property
+Use Pydantic validators for circuit data
 self.get_datasource(index)
 Fix sort for fields without __gt__
 Fix sort for children
