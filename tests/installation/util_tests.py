@@ -92,7 +92,7 @@ class UniqueSerializableTests( BaseUniqueSerializableTests ):
 		Test deserialization of two items with the same UUID.
 		'''
 		
-		context: dict[UUID, TestClass] = {}
+		context: dict[str, TestClass] = {}
 		
 		testClass1 = TestClass.model_validate( self.testClassJsonDict, context = context )
 		testClass2 = TestClass.model_validate( self.testClassJsonDict, context = context )

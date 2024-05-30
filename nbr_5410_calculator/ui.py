@@ -38,21 +38,21 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		
 		self.project = project
 		
-		self.supplyModel = SupplyModel( project.supplies, self )
-		self.loadTypeModel = LoadTypeModel( project.loadTypes, self )
-		self.wireTypeModel = WireTypeModel( project.wireTypes, self )
-		self.circuitsModel = CircuitsModel( project, self )
-		self.conduitRunsModel = ConduitRunsModel( project.conduitRuns, self )
+		supplyModel = SupplyModel( project.supplies, self )
+		loadTypeModel = LoadTypeModel( project.loadTypes, self )
+		wireTypeModel = WireTypeModel( project.wireTypes, self )
+		circuitsModel = CircuitsModel( project, self )
+		conduitRunsModel = ConduitRunsModel( project.conduitRuns, self )
 		
-		self.suppliesListView.setModel( self.supplyModel )
-		self.loadTypesListView.setModel( self.loadTypeModel )
-		self.wireTypesListView.setModel( self.wireTypeModel )
+		self.suppliesListView.setModel( supplyModel )
+		self.loadTypesListView.setModel( loadTypeModel )
+		self.wireTypesListView.setModel( wireTypeModel )
 		
-		self.circuitsTreeView.setModel( self.circuitsModel )
+		self.circuitsTreeView.setModel( circuitsModel )
 		self.circuitsTreeView.expandAll()
 		self.circuitsTreeView.resizeColumnsToContents()
 		
-		self.conduitsTreeView.setModel( self.conduitRunsModel )
+		self.conduitsTreeView.setModel( conduitRunsModel )
 		self.conduitsTreeView.expandAll()
 		self.conduitsTreeView.resizeColumnsToContents()
 	

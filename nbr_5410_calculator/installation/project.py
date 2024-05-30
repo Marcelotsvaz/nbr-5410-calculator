@@ -1,12 +1,12 @@
 '''
-Project model.
+Top-level project model.
 '''
 
 from pydantic import Field
 
-from .circuit import BaseCircuitUnion, Supply, LoadType, WireType
-from .conduitRun import ConduitRun
-from .util import UniqueSerializable
+from nbr_5410_calculator.installation.circuit import BaseCircuitUnion, Supply, LoadType, WireType
+from nbr_5410_calculator.installation.conduitRun import ConduitRun
+from nbr_5410_calculator.installation.util import UniqueSerializable
 
 
 

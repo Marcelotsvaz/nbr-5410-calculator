@@ -1,8 +1,6 @@
-# 
-# NBR 5410 Calculator
-# 
-# 
-# Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
+'''
+`BaseCircuit` implementation, sub-classes and other models required by them.
+'''
 
 from __future__ import annotations
 
@@ -135,7 +133,7 @@ class WireType( UniqueSerializable, GenericItem ):
 	
 	@classmethod
 	@cache
-	def load_wires( cls, material: WireMaterial, insulation: WireInsulation ) -> dict[str, Any]:
+	def loadWires( cls, material: WireMaterial, insulation: WireInsulation ) -> dict[str, Any]:
 		'''
 		TODO: Proper class with Pydantic.
 		'''
@@ -148,7 +146,7 @@ class WireType( UniqueSerializable, GenericItem ):
 	def __init__( self, **kwargs: Any ) -> None:
 		super().__init__( **kwargs )
 		
-		wires = self.load_wires( self.material, self.insulation )
+		wires = self.loadWires( self.material, self.insulation )
 		
 		self._resistivity = wires['resistivity']
 		self._conductorSections = wires['conductorSections']
@@ -214,7 +212,7 @@ class TemperatureCorrectionFactor:
 	
 	@classmethod
 	@cache
-	def load_factors( cls ) -> list[dict[str, Any]]:
+	def loadFactors( cls ) -> list[dict[str, Any]]:
 		'''
 		TODO: Proper class with Pydantic.
 		'''
@@ -229,7 +227,7 @@ class TemperatureCorrectionFactor:
 		Return the interpolated correction factor for a given temperature.
 		'''
 		
-		factors = cls.load_factors()
+		factors = cls.loadFactors()
 		
 		if temperature <= factors[0]['temperature']:
 			return factors[0]['value']
@@ -256,7 +254,7 @@ class GroupingCorrectionFactor:
 	
 	@classmethod
 	@cache
-	def load_factors( cls ) -> dict[str, float]:
+	def loadFactors( cls ) -> dict[str, float]:
 		'''
 		TODO: Proper class with Pydantic.
 		'''
@@ -271,7 +269,7 @@ class GroupingCorrectionFactor:
 		Return the correction factor for a given circuit grouping.
 		'''
 		
-		factors = cls.load_factors()
+		factors = cls.loadFactors()
 		
 		last = max( factors.keys() )
 		if grouping > int( last ):
@@ -356,7 +354,7 @@ class Breaker( BaseModel ):
 	
 	@classmethod
 	@cache
-	def load_breakers( cls ) -> dict[str, list[int]]:
+	def loadBreakers( cls ) -> dict[str, list[int]]:
 		'''
 		TODO: Proper class with Pydantic.
 		'''
@@ -371,7 +369,7 @@ class Breaker( BaseModel ):
 		Return breakers by curve.
 		'''
 		
-		breakers = cls.load_breakers()
+		breakers = cls.loadBreakers()
 		
 		return [ cls( current = current, curve = curve ) for current in breakers[curve] ]
 	

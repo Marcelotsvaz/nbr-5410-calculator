@@ -1,5 +1,3 @@
-# 
-# NBR 5410 Calculator
-# 
-# 
-# Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
+'''
+Calculator for electrical installations following the NBR 5410 standard.
+'''

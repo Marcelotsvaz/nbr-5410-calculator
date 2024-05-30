@@ -461,13 +461,15 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		Handles the data supplied by a drag and drop operation.
 		'''
 		
+		_ = column	# Unused.
+		
 		match action:
 			case Qt.DropAction.IgnoreAction:
 				return True
 			
 			case Qt.DropAction.MoveAction | Qt.DropAction.CopyAction if data.hasFormat( self.jsonMimeType ):
 				jsonBytes = data.data( self.jsonMimeType ).data()
-				items = TypeAdapter( list[ItemT] ).validate_json( jsonBytes )
+				items = TypeAdapter( list[ItemT] ).validate_json( bytes( jsonBytes ) )
 				
 				for item in reversed( items ):
 					self.insertItem( item, row, parent )

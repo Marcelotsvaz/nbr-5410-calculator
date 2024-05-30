@@ -1,10 +1,6 @@
-# 
-# NBR 5410 Calculator
-# 
-# 
-# Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
-
-
+'''
+Base Pydantic model for all `Project` models.
+'''
 
 from typing import Any, Self, cast
 from uuid import UUID, uuid4
@@ -39,20 +35,20 @@ class UniqueSerializable( BaseModel ):
 		Reuse previously deserialized instances with the same UUID.
 		'''
 		
-		context = cast( dict[UUID, Self] | Any, info.context )
+		context = cast( dict[str, Self] | Any, info.context )
 		
 		# No context used.
 		if not isinstance( context, dict ):
 			return self
 		
 		# New UUID.
-		if self.uuid not in context:
-			context[self.uuid] = self
+		if self.uuid.hex not in context:
+			context[self.uuid.hex] = self
 			return self
 		
 		# Invalid instance.
-		if self != context[self.uuid]:
+		if self != context[self.uuid.hex]:
 			raise ValueError( 'A different instance with this UUID was already registered.' )
 		
 		# Return existing instance.
-		return context[self.uuid]
+		return context[self.uuid.hex]

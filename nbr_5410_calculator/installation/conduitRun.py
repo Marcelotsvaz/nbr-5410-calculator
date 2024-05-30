@@ -1,10 +1,6 @@
-# 
-# NBR 5410 Calculator
-# 
-# 
-# Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
-
-
+'''
+Models related to conduits.
+'''
 
 from enum import StrEnum, auto
 from functools import cache
