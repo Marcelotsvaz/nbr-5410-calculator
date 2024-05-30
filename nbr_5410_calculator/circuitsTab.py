@@ -46,10 +46,9 @@ class CircuitsModel( GenericItemModel[BaseCircuitUnion] ):
 			Field( 'voltageDrop',		self.tr('Voltage Drop'),	False, format = '.1%' ),
 			Field( 'wire.section',		self.tr('Wire Section'),	False, format = ',', suffix = ' mm²' ),
 		]
-		childListName = 'circuits'
 		childFields = fields
 		
-		super().__init__( fields, self.project.circuits, childListName, childFields, parent )
+		super().__init__( fields, self.project.circuits, childFields, parent )
 
 
 

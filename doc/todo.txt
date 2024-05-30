@@ -1,6 +1,11 @@
+def f[T](a: T) -> T: ...
+from __feature__ import true_property
+
 Rewrite model adapter to use Pydantic fields
 	Set root index
+		GenericItem as root
 		Check rowCount parent
+	self.get_datasource(index)
 	Use protocols:
 		len for rowCount
 		sequence for hasChildren
@@ -11,14 +16,10 @@ Move stuff to conduitrun
 
 
 Use Pydantic for shared data
-def f[T](a: T) -> T: ...
-from __feature__ import true_property
 Use Pydantic validators for circuit data
-self.get_datasource(index)
 Fix sort for fields without __gt__
 Fix sort for children
 Show thousands separator in status bar
-Qt python properties
 Use >= dependencies
 Add arguments with units to docstrings, including properties
 Refactor tests docstrings

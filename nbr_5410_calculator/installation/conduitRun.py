@@ -14,8 +14,9 @@ from typing import Self
 from pydantic import BaseModel, Field
 from pyjson5 import decode_buffer
 
-from .circuit import BaseCircuitUnion
-from .util import UniqueSerializable
+from nbr_5410_calculator.generic_model_views.models import GenericItem
+from nbr_5410_calculator.installation.circuit import BaseCircuitUnion
+from nbr_5410_calculator.installation.util import UniqueSerializable
 
 
 
@@ -93,7 +94,7 @@ class Conduit( BaseModel ):
 
 
 
-class ConduitRun( UniqueSerializable ):
+class ConduitRun( UniqueSerializable, GenericItem ):
 	'''
 	Represents a conduit run containing multiple circuits.
 	'''

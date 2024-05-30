@@ -28,7 +28,6 @@ class ConduitRunsModel( GenericItemModel[ConduitRun] ):
 			Field( 'conduit.nominalDiameter',	self.tr('Diameter'),	False ),
 			Field( 'fillFactor',				self.tr('Fill Factor'),	False,	format = '.1%' ),
 		]
-		childListName = 'circuits'
 		childFields = [
 			Field( 'name',						self.tr('Name') ),
 			Field( 'length',					self.tr('Length'),				format = ',', suffix = ' m' ),
@@ -36,7 +35,7 @@ class ConduitRunsModel( GenericItemModel[ConduitRun] ):
 			None,
 		]
 		
-		super().__init__( fields, conduitRuns, childListName, childFields, parent )
+		super().__init__( fields, conduitRuns, childFields, parent )
 
 
 

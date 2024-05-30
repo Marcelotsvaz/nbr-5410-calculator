@@ -14,11 +14,12 @@ from typing import Any, Self
 from pydantic import BaseModel, Field
 from pyjson5 import decode_buffer
 
-from .util import UniqueSerializable
+from nbr_5410_calculator.generic_model_views.models import GenericItem
+from nbr_5410_calculator.installation.util import UniqueSerializable
 
 
 
-class Supply( UniqueSerializable ):
+class Supply( UniqueSerializable, GenericItem ):
 	'''
 	Power supply feeding a `Circuit`. Eg.: 3 Phase 220V.
 	'''
@@ -54,7 +55,7 @@ class Supply( UniqueSerializable ):
 
 
 
-class LoadType( UniqueSerializable ):
+class LoadType( UniqueSerializable, GenericItem ):
 	'''
 	Load type to determine minimum wire section and demand factor.
 	
@@ -114,7 +115,7 @@ class ReferenceMethod( StrEnum ):
 
 
 
-class WireType( UniqueSerializable ):
+class WireType( UniqueSerializable, GenericItem ):
 	'''
 	Represent all available sizes of an actual wire type used in a circuit.
 	'''
@@ -385,7 +386,7 @@ class Breaker( BaseModel ):
 
 
 
-class BaseCircuit( UniqueSerializable ):
+class BaseCircuit( UniqueSerializable, GenericItem ):
 	'''
 	Abstract base class for a circuit in an electrical installation.
 	'''
@@ -566,6 +567,11 @@ class UpstreamCircuit( BaseCircuit ):
 		'''
 		
 		return sum( circuit.power * circuit.loadType.demandFactor for circuit in self.circuits )
+	
+	
+	@property
+	def children( self ) -> list[Self]:
+		return self.circuits
 
 
 

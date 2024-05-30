@@ -6,7 +6,7 @@ from collections.abc import Sequence
 from contextlib import suppress
 from enum import Enum
 from operator import attrgetter
-from typing import TypeVar, NamedTuple, Generic, Any, cast, overload, override
+from typing import Self, TypeVar, NamedTuple, Generic, Any, cast, overload, override
 
 from PySide6.QtCore import (
 	QAbstractItemModel,
@@ -16,13 +16,7 @@ from PySide6.QtCore import (
 	QPersistentModelIndex,
 	Qt,
 )
-from pydantic import TypeAdapter
-
-
-
-# Type aliases.
-T = TypeVar( 'T' )
-ModelIndex = QModelIndex | QPersistentModelIndex
+from pydantic import BaseModel, TypeAdapter
 
 
 
@@ -64,6 +58,27 @@ class Field( NamedTuple ):
 
 
 
+class GenericItem( BaseModel ):
+	'''
+	TODO
+	'''
+	
+	@property
+	def children( self ) -> list[Self] | None:
+		'''
+		TODO
+		'''
+		
+		return None
+
+
+
+# Type aliases.
+T = TypeVar( 'T', bound = GenericItem )
+ModelIndex = QModelIndex | QPersistentModelIndex
+
+
+
 class GenericItemModel( Generic[T], QAbstractItemModel ):
 	'''
 	Maps a list of generic objects to a `QAbstractItemView`.
@@ -77,7 +92,6 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		self,
 		fields: list[Field] | list[Field | None],
 		datasource: list[T],
-		childListName: str = '',
 		childFields: list[Field] | list[Field | None] | None = None,
 		parent: QObject | None = None,
 	) -> None:
@@ -85,7 +99,6 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		
 		self.fields = fields
 		self.datasource = datasource
-		self.childListName = childListName
 		self.childFields = childFields if childFields is not None else []
 	
 	
@@ -110,14 +123,6 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return cast( T, index.internalPointer() )
 	
 	
-	def childList( self, item: T ) -> list[T]:
-		'''
-		Return the list of children for an `item` in the model.
-		'''
-		
-		return getattr( item, self.childListName )
-	
-	
 	@override
 	def index( self, row: int, column: int, parent: ModelIndex = QModelIndex() ) -> QModelIndex:
 		'''
@@ -127,19 +132,23 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		
 		# Top-level item.
 		if not parent.isValid():
-			if len( self.datasource ) > 0:
-				return self.createIndex( row, column, self.datasource[row] )
-			else:
+			if not 0 <= row < len( self.datasource ):
+				# Requested row not in datasource.
 				return QModelIndex()
+			
+			return self.createIndex( row, column, self.datasource[row] )
 		
 		# Sub-item.
 		parentItem = self.itemFromIndex( parent )
-		if len( self.childList( parentItem ) ) > 0:
-			childItem = self.childList( parentItem )[row]
-		else:
+		
+		if not parentItem.children:
 			return QModelIndex()
 		
-		return self.createIndex( row, column, childItem )
+		if not 0 <= row < len( parentItem.children ):
+			# Requested row not in datasource.
+			return QModelIndex()
+		
+		return self.createIndex( row, column, parentItem.children[row] )
 	
 	
 	@overload
@@ -159,16 +168,26 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		if child is None:
 			return super().parent()
 		
-		# Iterate all children of top-level items.
-		if self.childListName:
-			item = self.itemFromIndex( child )
-			
-			for row, parentItem in enumerate( self.datasource ):
-				if hasattr( parentItem, self.childListName ) and item in self.childList( parentItem ):
-					return self.createIndex( row, 0, parentItem )
+		childItem = self.itemFromIndex( child )
 		
-		# Top-level items have no parent.
-		return QModelIndex()
+		if childItem in self.datasource:
+			# Top-level items have no parent.
+			return QModelIndex()
+		
+		# Iterate all children recursively.
+		parents = list( enumerate( self.datasource[:] ) )
+		while parents:
+			parentIndex, parent = parents.pop()
+			
+			if not parent.children:
+				continue
+			
+			if childItem in parent.children:
+				return self.createIndex( parentIndex, 0, parent )
+			
+			parents += enumerate( parent.children )
+		
+		raise LookupError( 'Could not find child in datasource hierarchy.' )
 	
 	
 	@override
@@ -193,8 +212,8 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		if not parent.isValid():
 			return len( self.datasource )
 		
-		with suppress( AttributeError ):
-			return len( self.childList( self.itemFromIndex( parent ) ) )
+		if children := self.itemFromIndex( parent ).children:
+			return len( children )
 		
 		return 0
 	
@@ -214,7 +233,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		if field and field.editable:
 			flags |= Qt.ItemFlag.ItemIsEditable
 		
-		if hasattr( self.itemFromIndex( index ), self.childListName ):
+		if self.itemFromIndex( index ).children is not None:
 			flags |= Qt.ItemFlag.ItemIsDropEnabled
 		
 		return flags | Qt.ItemFlag.ItemIsDragEnabled
@@ -292,21 +311,16 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return False
 	
 	
-	def newItem( self ) -> T:
-		'''
-		Return a new item to be used with `insertRows`.
-		'''
-		
-		raise NotImplementedError()
-	
-	
 	def insertItem( self, item: T, row: int = -1, parent: ModelIndex = QModelIndex() ) -> None:
 		'''
 		Insert an existing item into the model's datasource.
 		'''
 		
 		if parent.isValid():
-			datasource = getattr( self.itemFromIndex( parent ), self.childListName )
+			datasource = self.itemFromIndex( parent ).children
+			
+			if datasource is None:
+				raise ValueError( 'Parent does not support children.' )
 		else:
 			datasource = self.datasource
 		
@@ -319,25 +333,16 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 	
 	
 	@override
-	def insertRows( self, row: int, count: int, parent: ModelIndex = QModelIndex() ) -> bool:
-		'''
-		Insert new items using `newItem`.
-		'''
-		
-		for _ in range( count ):
-			self.insertItem( self.newItem(), row, parent )
-		
-		return True
-	
-	
-	@override
 	def removeRows( self, row: int, count: int, parent: ModelIndex = QModelIndex() ) -> bool:
 		'''
 		Delete existing items.
 		'''
 		
 		if parent.isValid():
-			datasource = getattr( self.itemFromIndex( parent ), self.childListName )
+			datasource = self.itemFromIndex( parent ).children
+			
+			if datasource is None:
+				raise ValueError( 'Parent does not support children.' )
 		else:
 			datasource = self.datasource
 		
@@ -376,9 +381,17 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 			return False
 		
 		if sourceParent.isValid():
-			sourceDatasource = getattr( self.itemFromIndex( sourceParent ), self.childListName )
+			sourceDatasource = self.itemFromIndex( sourceParent ).children
 		else:
 			sourceDatasource = self.datasource
+		
+		if destinationParent.isValid():
+			destinationDatasource = self.itemFromIndex( destinationParent ).children
+		else:
+			destinationDatasource = self.datasource
+		
+		if sourceDatasource is None or destinationDatasource is None:
+			raise ValueError( 'Parent does not support children.' )
 		
 		items: list[T] = []
 		for _ in range( count ):
@@ -388,11 +401,6 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		if destinationParent == sourceParent and destinationChild >= sourceRow:
 			destinationChild -= count
 		
-		if destinationParent.isValid():
-			destinationDatasource = getattr( self.itemFromIndex( destinationParent ), self.childListName )
-		else:
-			destinationDatasource = self.datasource
-		
 		for item in reversed( items ):
 			destinationDatasource.insert( destinationChild, item )
 		
@@ -401,18 +409,20 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return True
 	
 	
-	@override
-	def sort( self, column: int, order: Qt.SortOrder = Qt.SortOrder.AscendingOrder ) -> None:
-		'''
-		Sort items by specified field.
-		'''
+	# @override
+	# def sort( self, column: int, order: Qt.SortOrder = Qt.SortOrder.AscendingOrder ) -> None:
+	# 	'''
+	# 	Sort items by specified field.
+	# 	'''
 		
-		reverse = order is not Qt.SortOrder.AscendingOrder
-		key = attrgetter( self.fields[column].name )	# TODO: Fix for sub-items.
+	# 	reverse = order is not Qt.SortOrder.AscendingOrder
+	# 	key = attrgetter( self.fields[column].name )	# TODO: Fix for sub-items.
 		
-		self.layoutAboutToBeChanged.emit()
-		self.datasource = sorted( self.datasource, key = key, reverse = reverse )
-		self.layoutChanged.emit()
+	# 	self.layoutAboutToBeChanged.emit()
+	# 	# TODO: Remember the QModelIndex that will change https://doc.qt.io/qtforpython-6/PySide6/QtCore/QAbstractItemModel.html#PySide6.QtCore.QAbstractItemModel.layoutChanged
+	# 	self.datasource = sorted( self.datasource, key = key, reverse = reverse )
+	# 	# TODO: Call changePersistentIndex()
+	# 	self.layoutChanged.emit()
 	
 	
 	@override

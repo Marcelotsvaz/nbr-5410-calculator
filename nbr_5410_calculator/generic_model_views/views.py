@@ -28,13 +28,13 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtGui import QDrag, QPainter, QPixmap
 
-from .models import GenericItemModel, ModelIndex
+from nbr_5410_calculator.generic_model_views.models import GenericItem, GenericItemModel, ModelIndex
 
 
 
 # Type aliases.
 ModelType = TypeVar( 'ModelType', bound = GenericItemModel[Any] )
-DataType = TypeVar( 'DataType' )
+DataType = TypeVar( 'DataType', bound = GenericItem )
 
 
 
