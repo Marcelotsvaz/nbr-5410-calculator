@@ -3,7 +3,7 @@ Views for `GenericItemModel`.
 '''
 
 from enum import Enum
-from typing import Any, Generic, TypeVar, cast, override
+from typing import Any, cast, override
 
 from PySide6 import QtGui
 from PySide6.QtCore import (
@@ -32,23 +32,17 @@ from nbr_5410_calculator.generic_model_views.models import GenericItem, GenericI
 
 
 
-# Type aliases.
-ModelType = TypeVar( 'ModelType', bound = GenericItemModel[Any] )
-DataType = TypeVar( 'DataType', bound = GenericItem )
-
-
-
-class GenericListView( Generic[ModelType, DataType], QListView ):
+class GenericListView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QListView ):
 	'''
 	`QListView` for `GenericItemModel`.
 	'''
 	
 	@override
-	def model( self ) -> ModelType:
-		return cast( ModelType, super().model() )
+	def model( self ) -> ModelT:
+		return cast( ModelT, super().model() )
 	
 	
-	def appendItem( self, item: DataType ) -> None:
+	def appendItem( self, item: ItemT ) -> None:
 		'''
 		Append `item` after the last selected item.
 		'''
@@ -80,7 +74,7 @@ class GenericListView( Generic[ModelType, DataType], QListView ):
 
 
 
-class GenericTreeView( Generic[ModelType, DataType], QTreeView ):
+class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QTreeView ):
 	'''
 	`QTreeView` for `GenericItemModel`.
 	'''
@@ -126,11 +120,11 @@ class GenericTreeView( Generic[ModelType, DataType], QTreeView ):
 	
 	
 	@override
-	def model( self ) -> ModelType:
-		return cast( ModelType, super().model() )
+	def model( self ) -> ModelT:
+		return cast( ModelT, super().model() )
 	
 	
-	def appendItem( self, item: DataType ) -> None:
+	def appendItem( self, item: ItemT ) -> None:
 		'''
 		Append `item` after last selected item.
 		'''

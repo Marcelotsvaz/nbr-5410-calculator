@@ -106,7 +106,6 @@
 	enable = [
 		'useless-suppression',
 		'consider-using-augmented-assign',
-		'use-implicit-booleaness-not-comparison-to-zero',
 		'use-implicit-booleaness-not-comparison-to-string',
 	]
 	

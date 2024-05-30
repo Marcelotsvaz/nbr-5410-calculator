@@ -6,7 +6,7 @@ from collections.abc import Sequence
 from contextlib import suppress
 from enum import Enum
 from operator import attrgetter
-from typing import Self, TypeVar, NamedTuple, Generic, Any, cast, overload, override
+from typing import Self, NamedTuple, Any, cast, overload, override
 
 from PySide6.QtCore import (
 	QAbstractItemModel,
@@ -17,6 +17,10 @@ from PySide6.QtCore import (
 	Qt,
 )
 from pydantic import BaseModel, TypeAdapter
+
+
+
+type ModelIndex = QModelIndex | QPersistentModelIndex
 
 
 
@@ -73,13 +77,7 @@ class GenericItem( BaseModel ):
 
 
 
-# Type aliases.
-T = TypeVar( 'T', bound = GenericItem )
-ModelIndex = QModelIndex | QPersistentModelIndex
-
-
-
-class GenericItemModel( Generic[T], QAbstractItemModel ):
+class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 	'''
 	Maps a list of generic objects to a `QAbstractItemView`.
 	'''
@@ -91,7 +89,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 	def __init__(
 		self,
 		fields: list[Field] | list[Field | None],
-		datasource: list[T],
+		datasource: list[ItemT],
 		childFields: list[Field] | list[Field | None] | None = None,
 		parent: QObject | None = None,
 	) -> None:
@@ -115,12 +113,12 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return self.childFields[index.column()]
 	
 	
-	def itemFromIndex( self, index: ModelIndex ) -> T:
+	def itemFromIndex( self, index: ModelIndex ) -> ItemT:
 		'''
 		Return the item associated with the given `index`.
 		'''
 		
-		return cast( T, index.internalPointer() )
+		return cast( ItemT, index.internalPointer() )
 	
 	
 	@override
@@ -311,7 +309,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		return False
 	
 	
-	def insertItem( self, item: T, row: int = -1, parent: ModelIndex = QModelIndex() ) -> None:
+	def insertItem( self, item: ItemT, row: int = -1, parent: ModelIndex = QModelIndex() ) -> None:
 		'''
 		Insert an existing item into the model's datasource.
 		'''
@@ -393,7 +391,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		if sourceDatasource is None or destinationDatasource is None:
 			raise ValueError( 'Parent does not support children.' )
 		
-		items: list[T] = []
+		items: list[ItemT] = []
 		for _ in range( count ):
 			items.append( sourceDatasource.pop( sourceRow ) )
 		
@@ -442,7 +440,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 		
 		items = [ self.itemFromIndex( index ) for index in indexes if index.column() == 0 ]
 		
-		jsonBytes = TypeAdapter( list[T] ).dump_json( items )
+		jsonBytes = TypeAdapter( list[ItemT] ).dump_json( items )
 		
 		mimeData = QMimeData()
 		mimeData.setData( self.jsonMimeType, jsonBytes )
@@ -469,7 +467,7 @@ class GenericItemModel( Generic[T], QAbstractItemModel ):
 			
 			case Qt.DropAction.MoveAction | Qt.DropAction.CopyAction if data.hasFormat( self.jsonMimeType ):
 				jsonBytes = data.data( self.jsonMimeType ).data()
-				items = TypeAdapter( list[T] ).validate_json( jsonBytes )
+				items = TypeAdapter( list[ItemT] ).validate_json( jsonBytes )
 				
 				for item in reversed( items ):
 					self.insertItem( item, row, parent )

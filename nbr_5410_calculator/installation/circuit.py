@@ -4,6 +4,8 @@
 # 
 # Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
 
+from __future__ import annotations
+
 
 
 from enum import Enum, StrEnum, auto
@@ -173,7 +175,7 @@ class WireType( UniqueSerializable, GenericItem ):
 		referenceMethod: ReferenceMethod,
 		loadedWireCount: int,
 		correctionFactor: float,
-	) -> list['Wire']:
+	) -> list[Wire]:
 		'''
 		Get all wire sizes for a given reference method and wire configuration.
 		
@@ -557,7 +559,7 @@ class UpstreamCircuit( BaseCircuit ):
 	Represents a circuit whose load is a group of downstream circuits.
 	'''
 	
-	circuits: list['BaseCircuitUnion'] = Field( default_factory = list )
+	circuits: list[BaseCircuitUnion] = Field( default_factory = list )
 	
 	
 	@property
@@ -570,13 +572,13 @@ class UpstreamCircuit( BaseCircuit ):
 	
 	
 	@property
-	def children( self ) -> list[Self]:
+	def children( self ) -> list[BaseCircuitUnion]:
 		return self.circuits
 
 
 
 # For Pydantic serialization of derived classes.
-BaseCircuitUnion = Circuit | UpstreamCircuit
+type BaseCircuitUnion = Circuit | UpstreamCircuit
 
 
 
