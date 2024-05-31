@@ -2,11 +2,13 @@
 Partial implementation of `QAbstractItemModel`.
 '''
 
+from __future__ import annotations
+
 from collections.abc import Sequence
 from contextlib import suppress
 from enum import Enum
 from operator import attrgetter
-from typing import Self, NamedTuple, Any, cast, overload, override
+from typing import NamedTuple, Any, cast, overload, override
 
 from PySide6.QtCore import (
 	QAbstractItemModel,
@@ -68,12 +70,26 @@ class GenericItem( BaseModel ):
 	'''
 	
 	@property
-	def children( self ) -> list[Self] | None:
+	def children( self ) -> list[GenericItem] | None:
 		'''
 		TODO
 		'''
 		
 		return None
+
+
+
+class RootItem( GenericItem ):
+	'''
+	Root item for a `GenericItemModel`.
+	'''
+	
+	items: list[GenericItem]
+	
+	
+	@property
+	def children( self ) -> list[GenericItem]:
+		return self.items
 
 
 
@@ -96,7 +112,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		super().__init__( parent )
 		
 		self.fields = fields
-		self.datasource = datasource
+		self.root = RootItem( items = datasource )
 		self.childFields = childFields if childFields is not None else []
 	
 	
@@ -105,12 +121,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		Return the `Field` associated with the given `index`.
 		'''
 		
-		# Top-level item.
-		if not index.parent().isValid():
-			return self.fields[index.column()]
-		
-		# Sub-item.
-		return self.childFields[index.column()]
+		return self.fields[index.column()]
 	
 	
 	def itemFromIndex( self, index: ModelIndex ) -> ItemT:
@@ -118,7 +129,10 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		Return the item associated with the given `index`.
 		'''
 		
-		return cast( ItemT, index.internalPointer() )
+		if item := cast( ItemT | None, index.internalPointer() ):
+			return item
+		
+		raise LookupError( 'Index points to `None`.' )
 	
 	
 	@override
@@ -128,25 +142,16 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		`parent` index.
 		'''
 		
-		# Top-level item.
-		if not parent.isValid():
-			if not 0 <= row < len( self.datasource ):
-				# Requested row not in datasource.
-				return QModelIndex()
-			
-			return self.createIndex( row, column, self.datasource[row] )
+		# Root index.
+		if not parent.isValid() and row == 0:
+			return self.createIndex( row, column, self.root )
 		
-		# Sub-item.
-		parentItem = self.itemFromIndex( parent )
+		children = self.itemFromIndex( parent ).children
 		
-		if not parentItem.children:
-			return QModelIndex()
+		if not children or not 0 <= row < len( children ):
+			raise ValueError( 'Row not in parent or parent does not support children.' )
 		
-		if not 0 <= row < len( parentItem.children ):
-			# Requested row not in datasource.
-			return QModelIndex()
-		
-		return self.createIndex( row, column, parentItem.children[row] )
+		return self.createIndex( row, column, children[row] )
 	
 	
 	@overload
@@ -166,24 +171,22 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		if child is None:
 			return super().parent()
 		
-		childItem = self.itemFromIndex( child )
-		
-		if childItem in self.datasource:
-			# Top-level items have no parent.
-			return QModelIndex()
 		
 		# Iterate all children recursively.
-		parents = list( enumerate( self.datasource[:] ) )
+		parents: list[tuple[int, GenericItem]] = [ ( 0, self.root ) ]
 		while parents:
 			parentIndex, parent = parents.pop()
 			
 			if not parent.children:
 				continue
 			
-			if childItem in parent.children:
+			if self.itemFromIndex( child ) in parent.children:
 				return self.createIndex( parentIndex, 0, parent )
 			
 			parents += enumerate( parent.children )
+		
+		if self.itemFromIndex( child ) is self.root:
+			return QModelIndex()
 		
 		raise LookupError( 'Could not find child in datasource hierarchy.' )
 	
@@ -206,9 +209,8 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		An invalid `parent` returns the number of top-level rows.
 		'''
 		
-		# Top-level items.
 		if not parent.isValid():
-			return len( self.datasource )
+			raise ValueError( 'Invalid parent index.' )
 		
 		if children := self.itemFromIndex( parent ).children:
 			return len( children )
@@ -263,7 +265,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		'''
 		
 		role = Qt.ItemDataRole( role )
-		if role not in { Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.EditRole } or not index.isValid():
+		if role not in { Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.EditRole }:
 			return None
 		
 		field = self.fieldFromIndex( index )
@@ -278,11 +280,11 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 			return field.getFrom( item )
 		
 		# Display role.
-		match value := field.getFrom( item ):
-			case Enum():
-				return value.name
+		match field.getFrom( item ):
+			case Enum() as enum:
+				return enum.name
 			
-			case _:
+			case _ as value:
 				return f'{value:{field.format}}{field.suffix}'
 	
 	
@@ -314,19 +316,16 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		Insert an existing item into the model's datasource.
 		'''
 		
-		if parent.isValid():
-			datasource = self.itemFromIndex( parent ).children
-			
-			if datasource is None:
-				raise ValueError( 'Parent does not support children.' )
-		else:
-			datasource = self.datasource
+		children = self.itemFromIndex( parent ).children
+		
+		if children is None:
+			raise ValueError( 'Parent does not support children.' )
 		
 		if row < 0:
-			row = len( datasource ) + 2 + row
+			row = len( children ) + 2 + row
 		
 		self.beginInsertRows( parent, row, row )
-		datasource.insert( row, item )
+		children.insert( row, item )
 		self.endInsertRows()
 	
 	
@@ -336,17 +335,14 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		Delete existing items.
 		'''
 		
-		if parent.isValid():
-			datasource = self.itemFromIndex( parent ).children
-			
-			if datasource is None:
-				raise ValueError( 'Parent does not support children.' )
-		else:
-			datasource = self.datasource
+		children = self.itemFromIndex( parent ).children
+		
+		if children is None:
+			raise ValueError( 'Parent does not support children.' )
 		
 		self.beginRemoveRows( parent, row, row + count - 1 )
 		for _ in range( count ):
-			datasource.pop( row )
+			children.pop( row )
 		self.endRemoveRows()
 		
 		return True
@@ -378,15 +374,8 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		) or destinationChild < 0 or destinationChild > self.rowCount( destinationParent ):
 			return False
 		
-		if sourceParent.isValid():
-			sourceDatasource = self.itemFromIndex( sourceParent ).children
-		else:
-			sourceDatasource = self.datasource
-		
-		if destinationParent.isValid():
-			destinationDatasource = self.itemFromIndex( destinationParent ).children
-		else:
-			destinationDatasource = self.datasource
+		sourceDatasource = self.itemFromIndex( sourceParent ).children
+		destinationDatasource = self.itemFromIndex( destinationParent ).children
 		
 		if sourceDatasource is None or destinationDatasource is None:
 			raise ValueError( 'Parent does not support children.' )

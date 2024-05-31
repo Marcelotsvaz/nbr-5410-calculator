@@ -1,9 +1,5 @@
-from __feature__ import true_property
-
 Rewrite model adapter to use Pydantic fields
-	Set root index
-		GenericItem as root
-		Check rowCount parent
+	Check rowCount parent
 	self.get_datasource(index)
 	Use protocols:
 		len for rowCount
@@ -11,6 +7,7 @@ Rewrite model adapter to use Pydantic fields
 	https://doc.qt.io/qtforpython-6/PySide6/QtCore/QAbstractItemModel.html#PySide6.QtCore.QAbstractItemModel.checkIndex
 Delegates
 Move stuff to conduitrun
+from __feature__ import true_property
 
 
 

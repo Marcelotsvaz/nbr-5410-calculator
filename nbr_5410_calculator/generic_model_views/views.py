@@ -42,18 +42,30 @@ class GenericListView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QListV
 		return cast( ModelT, super().model() )
 	
 	
+	@override
+	def setModel( self, model: ModelT | None ) -> None:	# pyright: ignore [reportIncompatibleMethodOverride]
+		super().setModel( model )
+		
+		if model:
+			self.setRootIndex( model.index( 0, 0 ) )
+	
+	
 	def appendItem( self, item: ItemT ) -> None:
 		'''
-		Append `item` after the last selected item.
+		Append `item` after last selected item.
 		'''
 		
 		if selectedIndexes := self.selectedIndexes():
 			# After last selected item.
 			lastSelectedIndex = max( selectedIndexes, key = lambda index: index.row() )
-			self.model().insertItem( item, lastSelectedIndex.row() + 1, lastSelectedIndex.parent() )
+			row = lastSelectedIndex.row() + 1
+			parent = lastSelectedIndex.parent()
 		else:
 			# After last item.
-			self.model().insertItem( item, self.model().rowCount() + 1 )
+			row = self.model().rowCount( self.rootIndex() ) + 1
+			parent = self.rootIndex()
+		
+		self.model().insertItem( item, row, parent )
 	
 	
 	@Slot()
@@ -107,6 +119,13 @@ class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QTreeV
 			self.resizeColumnToContents( index )
 	
 	
+	@override
+	def expandAll( self ) -> None:
+		# This should avoid invalid calls to `QGenericItemModel.index`.
+		if self.model().rowCount( self.rootIndex() ) > 0:
+			super().expandAll()
+	
+	
 	def selectedRowIndexes( self ) -> list[QModelIndex]:
 		'''
 		Return a sorted list of indexes, one for each selected row.
@@ -124,6 +143,14 @@ class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QTreeV
 		return cast( ModelT, super().model() )
 	
 	
+	@override
+	def setModel( self, model: ModelT | None ) -> None:	# pyright: ignore [reportIncompatibleMethodOverride]
+		super().setModel( model )
+		
+		if model:
+			self.setRootIndex( model.index( 0, 0 ) )
+	
+	
 	def appendItem( self, item: ItemT ) -> None:
 		'''
 		Append `item` after last selected item.
@@ -132,10 +159,14 @@ class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QTreeV
 		if selectedIndexes := self.selectedIndexes():
 			# After last selected item.
 			lastSelectedIndex = max( selectedIndexes, key = lambda index: index.row() )
-			self.model().insertItem( item, lastSelectedIndex.row() + 1, lastSelectedIndex.parent() )
+			row = lastSelectedIndex.row() + 1
+			parent = lastSelectedIndex.parent()
 		else:
 			# After last item.
-			self.model().insertItem( item, self.model().rowCount() + 1 )
+			row = self.model().rowCount( self.rootIndex() ) + 1
+			parent = self.rootIndex()
+		
+		self.model().insertItem( item, row, parent )
 	
 	
 	@override
@@ -185,7 +216,11 @@ class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QTreeV
 		
 		# Dropped on viewport.
 		if not index.isValid():
-			index = self.model().index( self.model().rowCount() - 1, 0 )
+			index = self.model().index(
+				self.model().rowCount( self.rootIndex() ) - 1,
+				0,
+				self.rootIndex(),
+			)
 		
 		parent = index.parent()
 		row = index.row()
