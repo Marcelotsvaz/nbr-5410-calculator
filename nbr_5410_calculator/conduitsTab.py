@@ -6,7 +6,7 @@ from typing import override
 
 from PySide6.QtCore import QObject, Slot
 
-from nbr_5410_calculator.generic_model_views.models import Field, GenericItemModel
+from nbr_5410_calculator.generic_model_views.models import GenericItemModel
 from nbr_5410_calculator.generic_model_views.views import GenericTreeView
 from nbr_5410_calculator.installation.conduitRun import ConduitRun
 
@@ -22,20 +22,11 @@ class ConduitRunsModel( GenericItemModel[ConduitRun] ):
 	
 	@override
 	def __init__( self, conduitRuns: list[ConduitRun], parent: QObject | None = None ) -> None:
-		fields = [
-			Field( 'name',						self.tr('Name') ),
-			Field( 'length',					self.tr('Length'),				format = ',', suffix = ' m' ),
-			Field( 'conduit.nominalDiameter',	self.tr('Diameter'),	False ),
-			Field( 'fillFactor',				self.tr('Fill Factor'),	False,	format = '.1%' ),
-		]
-		childFields = [
-			Field( 'name',						self.tr('Name') ),
-			Field( 'length',					self.tr('Length'),				format = ',', suffix = ' m' ),
-			None,
-			None,
-		]
-		
-		super().__init__( fields, conduitRuns, childFields, parent )
+		super().__init__(
+			datasource = conduitRuns,
+			dataType = ConduitRun,
+			parent = parent,
+		)
 
 
 

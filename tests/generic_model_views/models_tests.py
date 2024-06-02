@@ -21,8 +21,8 @@ class GenericItemModelIndexTests( TestCase ):
 		'''
 		
 		self.model = GenericItemModel[GenericItem](
-			fields = [],
 			datasource = [],
+			dataType = GenericItem,
 		)
 	
 	

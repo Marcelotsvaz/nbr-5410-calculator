@@ -5,11 +5,12 @@ Models related to conduits.
 from enum import StrEnum, auto
 from functools import cache
 from math import pi
-from typing import Self
+from typing import Annotated, Self
 
 from pydantic import BaseModel, Field
 from pyjson5 import decode_buffer
 
+from nbr_5410_calculator.generic_model_views.items import ItemField
 from nbr_5410_calculator.generic_model_views.models import GenericItem
 from nbr_5410_calculator.installation.circuit import BaseCircuitUnion
 from nbr_5410_calculator.installation.util import UniqueSerializable
@@ -95,13 +96,16 @@ class ConduitRun( UniqueSerializable, GenericItem ):
 	Represents a conduit run containing multiple circuits.
 	'''
 	
-	name: str
-	length: float
+	name: Annotated[str, ItemField( 'Name' )]
+	length: Annotated[float, ItemField( 'Length', format = '{0:,} m' )]
 	circuits: list[BaseCircuitUnion] = Field( default_factory = list )
 	
 	
 	@property
-	def conduit( self ) -> Conduit:
+	def conduit( self ) -> Annotated[
+		Conduit,
+		ItemField( 'Diameter', format = lambda value: value.nominalDiameter ),
+	]:
 		'''
 		TODO
 		'''
@@ -132,7 +136,7 @@ class ConduitRun( UniqueSerializable, GenericItem ):
 	
 	
 	@property
-	def fillFactor( self ) -> float:
+	def fillFactor( self ) -> Annotated[float, ItemField( 'Fill Factor', format = '{0:.1%}' )]:
 		'''
 		Fraction of conduit area occupied by wires.
 		'''

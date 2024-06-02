@@ -2,13 +2,9 @@
 Partial implementation of `QAbstractItemModel`.
 '''
 
-from __future__ import annotations
-
 from collections.abc import Sequence
 from contextlib import suppress
-from enum import Enum
-from operator import attrgetter
-from typing import NamedTuple, Any, cast, overload, override
+from typing import Any, cast, overload, override
 
 from PySide6.QtCore import (
 	QAbstractItemModel,
@@ -18,78 +14,13 @@ from PySide6.QtCore import (
 	QPersistentModelIndex,
 	Qt,
 )
-from pydantic import BaseModel, TypeAdapter
+from pydantic import TypeAdapter
+
+from nbr_5410_calculator.generic_model_views.items import GenericItem, ItemFieldInfo, RootItem
 
 
 
 type ModelIndex = QModelIndex | QPersistentModelIndex
-
-
-
-class Field( NamedTuple ):
-	'''
-	Field mapping for models.
-	'''
-	
-	name: str
-	label: str
-	editable: bool = True
-	setter: str = ''
-	format: str = ''
-	suffix: str = ''
-	
-	
-	def typeIn( self, instance: Any ) -> type:
-		'''
-		Return type of `Field` in `instance`.
-		'''
-		
-		return type( getattr( instance, self.setter or self.name ) )
-	
-	
-	def getFrom( self, instance: Any ) -> Any:
-		'''
-		Return the value of `Field` in `instance`.
-		'''
-		
-		return attrgetter( self.name )( instance )
-	
-	
-	def setIn( self, instance: Any, value: Any ) -> None:
-		'''
-		Set value of `Field` in `instance`.
-		'''
-		
-		setattr( instance, self.setter or self.name, self.typeIn( instance )( value ) )
-
-
-
-class GenericItem( BaseModel ):
-	'''
-	TODO
-	'''
-	
-	@property
-	def children( self ) -> list[GenericItem] | None:
-		'''
-		TODO
-		'''
-		
-		return None
-
-
-
-class RootItem( GenericItem ):
-	'''
-	Root item for a `GenericItemModel`.
-	'''
-	
-	items: list[GenericItem]
-	
-	
-	@property
-	def children( self ) -> list[GenericItem]:
-		return self.items
 
 
 
@@ -104,24 +35,21 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 	@override
 	def __init__(
 		self,
-		fields: list[Field] | list[Field | None],
 		datasource: list[ItemT],
-		childFields: list[Field] | list[Field | None] | None = None,
+		dataType: type[ItemT],
 		parent: QObject | None = None,
 	) -> None:
 		super().__init__( parent )
 		
-		self.fields = fields
 		self.root = RootItem( items = datasource )
-		self.childFields = childFields if childFields is not None else []
-	
-	
-	def fieldFromIndex( self, index: ModelIndex ) -> Field | None:
-		'''
-		Return the `Field` associated with the given `index`.
-		'''
 		
-		return self.fields[index.column()]
+		# Reorder fields.
+		self.fields: list[ItemFieldInfo] = []
+		
+		for name in dataType.__itemFields__.keys():
+			field = ItemFieldInfo.fromItemFieldList( name, dataType.__itemFields__[name] )
+			
+			self.fields.append( field )
 	
 	
 	def itemFromIndex( self, index: ModelIndex ) -> ItemT:
@@ -229,7 +157,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		if not index.isValid():
 			return flags | Qt.ItemFlag.ItemIsDropEnabled
 		
-		field = self.fieldFromIndex( index )
+		field = self.fields[index.column()]
 		if field and field.editable:
 			flags |= Qt.ItemFlag.ItemIsEditable
 		
@@ -252,7 +180,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		if orientation is Qt.Orientation.Vertical:	# TODO: Remove this?
 			return f'{section + 1}'
 		
-		field = self.fields[section] or self.childFields[section]
+		field = self.fields[section]
 		assert field is not None
 		
 		return field.label
@@ -268,7 +196,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		if role not in { Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.EditRole }:
 			return None
 		
-		field = self.fieldFromIndex( index )
+		field = self.fields[index.column()]
 		item = self.itemFromIndex( index )
 		
 		# This column is only valid for a parent or child of this item.
@@ -277,15 +205,10 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		
 		# Edit role.
 		if role is Qt.ItemDataRole.EditRole:
-			return field.getFrom( item )
+			return field.valueForEdition( item )
 		
 		# Display role.
-		match field.getFrom( item ):
-			case Enum() as enum:
-				return enum.name
-			
-			case _ as value:
-				return f'{value:{field.format}}{field.suffix}'
+		return field.valueForDisplay( item )
 	
 	
 	@override
@@ -298,12 +221,12 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		if role is not Qt.ItemDataRole.EditRole or not index.isValid():
 			return False
 		
-		field = self.fieldFromIndex( index )
+		field = self.fields[index.column()]
 		item = self.itemFromIndex( index )
 		assert field is not None
 		
 		with suppress( ValueError ):
-			field.setIn( item, value )
+			field.setValue( item, value )
 			self.dataChanged.emit( index, index, [ role ] )
 			
 			return True
@@ -374,22 +297,22 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		) or destinationChild < 0 or destinationChild > self.rowCount( destinationParent ):
 			return False
 		
-		sourceDatasource = self.itemFromIndex( sourceParent ).children
-		destinationDatasource = self.itemFromIndex( destinationParent ).children
+		sourceChildren = self.itemFromIndex( sourceParent ).children
+		destinationChildren = self.itemFromIndex( destinationParent ).children
 		
-		if sourceDatasource is None or destinationDatasource is None:
+		if sourceChildren is None or destinationChildren is None:
 			raise ValueError( 'Parent does not support children.' )
 		
 		items: list[ItemT] = []
 		for _ in range( count ):
-			items.append( sourceDatasource.pop( sourceRow ) )
+			items.append( sourceChildren.pop( sourceRow ) )
 		
 		# Update destination after we removed items from the list.
 		if destinationParent == sourceParent and destinationChild >= sourceRow:
 			destinationChild -= count
 		
 		for item in reversed( items ):
-			destinationDatasource.insert( destinationChild, item )
+			destinationChildren.insert( destinationChild, item )
 		
 		self.endMoveRows()
 		

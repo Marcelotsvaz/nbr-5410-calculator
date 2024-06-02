@@ -7,11 +7,12 @@ from __future__ import annotations
 from enum import Enum, StrEnum, auto
 from functools import cache
 from math import pi
-from typing import Any, Self
+from typing import Annotated, Any, Self
 
 from pydantic import BaseModel, Field
 from pyjson5 import decode_buffer
 
+from nbr_5410_calculator.generic_model_views.items import ItemField
 from nbr_5410_calculator.generic_model_views.models import GenericItem
 from nbr_5410_calculator.installation.util import UniqueSerializable
 
@@ -22,7 +23,7 @@ class Supply( UniqueSerializable, GenericItem ):
 	Power supply feeding a `Circuit`. Eg.: 3 Phase 220V.
 	'''
 	
-	voltage: int
+	voltage: Annotated[int, ItemField( 'Voltage', format = '{0} V' )]
 	phases: int = 1
 	hasNeutral: bool = True
 	hasGround: bool = True
@@ -60,7 +61,7 @@ class LoadType( UniqueSerializable, GenericItem ):
 	See NBR 5410 6.2.6.1.1.
 	'''
 	
-	name: str
+	name: Annotated[str, ItemField( 'Name' )]
 	minimumWireSection: float
 	demandFactor: float
 
@@ -118,7 +119,7 @@ class WireType( UniqueSerializable, GenericItem ):
 	Represent all available sizes of an actual wire type used in a circuit.
 	'''
 	
-	material: WireMaterial
+	material: Annotated[WireMaterial, ItemField( 'Material' )]
 	insulation: WireInsulation
 	
 	# TODO: Improve this.
@@ -389,20 +390,20 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 	Abstract base class for a circuit in an electrical installation.
 	'''
 	
-	name: str
-	description: str = ''
+	name: Annotated[str, ItemField( 'Name' )]
+	description: Annotated[str, ItemField( 'Description' )] = ''
 	
-	loadType: LoadType
-	supply: Supply
-	grouping: int
-	temperature: int
-	referenceMethod: ReferenceMethod
-	wireType: WireType
-	length: float
+	supply: Annotated[Supply, ItemField( 'Supply' )]
+	loadType: Annotated[LoadType, ItemField( 'Load Type', format = lambda value: value.name )]
+	referenceMethod: Annotated[ReferenceMethod, ItemField( 'Ref. Method' )]
+	temperature: Annotated[int, ItemField( 'Temperature', format = '{0}°C' )]
+	grouping: Annotated[int, ItemField( 'Grouping' )]
+	wireType: Annotated[WireType, ItemField( 'Wire Type' )]
+	length: Annotated[float, ItemField( 'Length', format = '{0:,} m' )]
 	
 	
 	@property
-	def power( self ) -> float:
+	def power( self ) -> Annotated[float, ItemField( 'Power', format = '{0:,} VA' )]:
 		'''
 		Apparent power consumed by this circuit.
 		'''
@@ -423,12 +424,42 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 	
 	
 	@property
-	def current( self ) -> float:
+	def current( self ) -> Annotated[float, ItemField( 'Current', format = '{0:,.1f} A' )]:
 		'''
 		Project current.
 		'''
 		
 		return self.power / self.supply.voltage
+	
+	
+	@property
+	def breaker( self ) -> Annotated[
+		Breaker,
+		ItemField( 'Breaker', format = lambda value: f'{value.current} A' )
+	]:
+		'''
+		Suitable breaker for this circuit.
+		'''
+		
+		return self.calculate()[1]
+	
+	
+	@property
+	def wire( self ) -> Annotated[
+		Wire,
+		ItemField( 'Wire Section', format = lambda value: f'{value.section:,.1f} mm²' )
+	]:
+		'''
+		Suitable wire for this circuit considering current capacity, voltage drop and short-circuit
+		current.
+		'''
+		
+		return self.calculate()[0]
+	
+	
+	@property
+	def _wireCapacity( self ) -> Annotated[float, ItemField( 'Wire Capacity', format = '{0:,} A' )]:
+		return self.wire.capacity
 	
 	
 	def _voltageDrop( self, wire: Wire ) -> float:
@@ -445,31 +476,12 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 	
 	
 	@property
-	def voltageDrop( self ) -> float:
+	def voltageDrop( self ) -> Annotated[float, ItemField( 'Voltage Drop', format = '{0:.1%}' )]:
 		'''
 		Voltage drop as a fraction of nominal voltage.
 		'''
 		
 		return self._voltageDrop( self.wire )
-	
-	
-	@property
-	def wire( self ) -> Wire:
-		'''
-		Suitable wire for this circuit considering current capacity, voltage drop and short-circuit
-		current.
-		'''
-		
-		return self.calculate()[0]
-	
-	
-	@property
-	def breaker( self ) -> Breaker:
-		'''
-		Suitable breaker for this circuit.
-		'''
-		
-		return self.calculate()[1]
 	
 	
 	def calculate( self ) -> tuple[Wire, Breaker]:
@@ -550,6 +562,12 @@ class Circuit( BaseCircuit ):
 
 
 
+# For Pydantic serialization of derived classes.
+# TODO:
+type BaseCircuitUnion = 'Circuit | UpstreamCircuit'
+
+
+
 class UpstreamCircuit( BaseCircuit ):
 	'''
 	Represents a circuit whose load is a group of downstream circuits.
@@ -570,11 +588,6 @@ class UpstreamCircuit( BaseCircuit ):
 	@property
 	def children( self ) -> list[BaseCircuitUnion]:
 		return self.circuits
-
-
-
-# For Pydantic serialization of derived classes.
-type BaseCircuitUnion = Circuit | UpstreamCircuit
 
 
 

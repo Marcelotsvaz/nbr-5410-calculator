@@ -1,3 +1,8 @@
+Remove custom models
+Filter model
+Check ItemField formats
+Power not settable
+
 Rewrite model adapter to use Pydantic fields
 	Check rowCount parent
 	self.get_datasource(index)

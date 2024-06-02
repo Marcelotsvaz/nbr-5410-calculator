@@ -6,7 +6,7 @@ from typing import override
 
 from PySide6.QtCore import QObject, Slot
 
-from nbr_5410_calculator.generic_model_views.models import Field, GenericItemModel
+from nbr_5410_calculator.generic_model_views.models import GenericItemModel
 from nbr_5410_calculator.generic_model_views.views import GenericListView
 from nbr_5410_calculator.installation.circuit import (
 	LoadType, 
@@ -28,11 +28,11 @@ class SupplyModel( GenericItemModel[Supply] ):
 	
 	@override
 	def __init__( self, supplies: list[Supply], parent: QObject | None = None ) -> None:
-		fields = [
-			Field( 'voltage', self.tr('Voltage') ),
-		]
-		
-		super().__init__( fields, supplies, parent = parent )
+		super().__init__(
+			datasource = supplies,
+			dataType = Supply,
+			parent = parent,
+		)
 
 
 
@@ -43,11 +43,11 @@ class LoadTypeModel( GenericItemModel[LoadType] ):
 	
 	@override
 	def __init__( self, loadTypes: list[LoadType], parent: QObject | None = None ) -> None:
-		fields = [
-			Field( 'name', self.tr('Name') ),
-		]
-		
-		super().__init__( fields, loadTypes, parent = parent )
+		super().__init__(
+			datasource = loadTypes,
+			dataType = LoadType,
+			parent = parent,
+		)
 
 
 
@@ -58,11 +58,11 @@ class WireTypeModel( GenericItemModel[WireType] ):
 	
 	@override
 	def __init__( self, wireTypes: list[WireType], parent: QObject | None = None ) -> None:
-		fields = [
-			Field( 'material', self.tr('Material') ),
-		]
-		
-		super().__init__( fields, wireTypes, parent = parent )
+		super().__init__(
+			datasource = wireTypes,
+			dataType = WireType,
+			parent = parent,
+		)
 
 
 
