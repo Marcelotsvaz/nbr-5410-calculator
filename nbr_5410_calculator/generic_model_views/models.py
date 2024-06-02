@@ -51,15 +51,17 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		Update which fields are displayed and in which order.
 		'''
 		
-		self.fields: list[ItemFieldInfo] = []
+		itemFields = self.dataType.__getItemFields__()
 		
 		if fieldOrder is None:
-			fieldOrder = self.dataType.__itemFields__.keys()
+			fieldOrder = sorted( itemFields.keys() )
 		
+		self.fields: list[ItemFieldInfo] = []
 		for name in fieldOrder:
-			field = ItemFieldInfo.fromItemFieldList( name, self.dataType.__itemFields__[name] )
+			if name not in itemFields:
+				raise ValueError( f'No definition for field `{name}` in class {self.dataType}.' )
 			
-			self.fields.append( field )
+			self.fields.append( ItemFieldInfo.fromItemFieldList( name, itemFields[name] ) )
 	
 	
 	def itemFromIndex( self, index: ModelIndex ) -> ItemT:

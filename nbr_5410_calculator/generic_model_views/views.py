@@ -104,7 +104,7 @@ class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QTreeV
 		
 		self.dropIndicatorRect = QRect()
 		
-		# self.setItemDelegate( EnumDelegate( self ) ) # TODO: Proper delegate.
+		self.setItemDelegate( GenericItemDelegate( self ) )
 		
 		self.setUniformRowHeights( True )
 		self.setAllColumnsShowFocus( True )
@@ -353,7 +353,7 @@ class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QTreeV
 
 
 
-class EnumDelegate( QStyledItemDelegate ):
+class GenericItemDelegate( QStyledItemDelegate ):
 	'''
 	`QStyledItemDelegate` with support for displaying and editing `Enum`s.
 	'''

@@ -7,8 +7,8 @@ from __future__ import annotations
 from collections import defaultdict
 from collections.abc import Callable, Iterable
 from dataclasses import KW_ONLY, dataclass
-from inspect import getmembers
-from typing import Annotated, Any, ClassVar, Self, cast, get_origin, get_type_hints
+from inspect import classify_class_attrs
+from typing import Annotated, Any, Self, cast, get_origin, get_type_hints
 
 from pydantic import BaseModel
 
@@ -120,17 +120,12 @@ class ItemFieldInfo:
 
 
 
-
-
 class GenericItem( BaseModel ):
 	'''
 	Base class for items in a `GenericItemModel`.
 	
 	Attributes and properties annotated with `ItemField` are available in the model.
 	'''
-	
-	__itemFields__: ClassVar[dict[str, list[ItemField]]] = defaultdict( list )
-	
 	
 	@property
 	def children( self ) -> list[GenericItem] | None:
@@ -142,47 +137,65 @@ class GenericItem( BaseModel ):
 	
 	
 	@classmethod
-	def __pydantic_init_subclass__( cls, **kwargs: Any ):
-		super().__pydantic_init_subclass__( **kwargs )
+	def __getItemFields__( cls ) -> dict[str, list[ItemField]]:
+		'''
+		Get all `ItemField` instances for each class attribute.
+		'''
 		
-		cls.__itemFields__ = cls.__itemFields__.copy()
+		itemFields: dict[str, list[ItemField]] = defaultdict( list )
 		
-		# Get fields from attributes.
-		for name, typeHint in get_type_hints( cls, include_extras = True ).items():
+		for parent in cls.__bases__:
+			if issubclass( parent, GenericItem ):
+				for fieldName, parentItemFields in parent.__getItemFields__().items():
+					itemFields[fieldName].extend( parentItemFields )
+		
+		# Get type hints from attributes.
+		typeHintForMembers = {
+			name: ( typeHint, False )
+			for name, typeHint
+			in get_type_hints( cls, include_extras = True ).items()
+		}
+		
+		# Get type hints from properties, methods and class methods.
+		for name, kind, defClass, member in classify_class_attrs( cls ):
+			if defClass is not cls or kind not in [ 'property', 'method', 'class method' ]:
+				continue
+			
+			editable = False
+			if isinstance( member, property ):
+				if not member.fget:
+					continue
+				
+				editable = member.fset is not None
+				member = member.fget
+			
+			try:
+				returnTypeHint = get_type_hints( member, include_extras = True )['return']
+				typeHintForMembers[name] = ( returnTypeHint, editable )
+			except KeyError:
+				pass
+			except NameError:
+				# TODO: Warning
+				print( f'Skipping {name}.' )
+		
+		# Parse annotations from type hints.
+		for name, ( typeHint, editable ) in typeHintForMembers.items():
 			if not ( typeAnnotations := getTypeAnnotations( typeHint ) ):
 				continue
 			
 			# Accumulate field properties.
-			cls.__itemFields__[name].append(
-				ItemField(
-					editable = True,
-				),
-			)
-			cls.__itemFields__[name].extend(
+			if not itemFields[name]:
+				itemFields[name].append(
+					ItemField(
+						editable = editable,
+					),
+				)
+			itemFields[name].extend(
 				annotation for annotation in typeAnnotations
 				if isinstance( annotation, ItemField )
 			)
 		
-		# Get fields from properties.
-		for name, member in getmembers( cls ):
-			if not isinstance( member, property ) or not member.fget:
-				continue
-				
-			returnTypeHint = get_type_hints( member.fget, include_extras = True ).get( 'return' )
-			
-			if not returnTypeHint or not ( typeAnnotations := getTypeAnnotations( returnTypeHint ) ):
-				continue
-			
-			# Accumulate field properties.
-			cls.__itemFields__[name].append(
-				ItemField(
-					editable = member.fset is not None,
-				),
-			)
-			cls.__itemFields__[name].extend(
-				annotation for annotation in typeAnnotations
-				if isinstance( annotation, ItemField )
-			)
+		return itemFields
 
 
 
