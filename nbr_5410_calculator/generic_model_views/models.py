@@ -2,7 +2,7 @@
 Partial implementation of `QAbstractItemModel`.
 '''
 
-from collections.abc import Sequence
+from collections.abc import Iterable, Sequence
 from contextlib import suppress
 from typing import Any, cast, overload, override
 
@@ -42,12 +42,22 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		super().__init__( parent )
 		
 		self.root = RootItem( items = datasource )
+		self.dataType = dataType
+		self.updateFieldOrder()
+	
+	
+	def updateFieldOrder( self, fieldOrder: Iterable[str] | None = None ) -> None:
+		'''
+		Update which fields are displayed and in which order.
+		'''
 		
-		# Reorder fields.
 		self.fields: list[ItemFieldInfo] = []
 		
-		for name in dataType.__itemFields__.keys():
-			field = ItemFieldInfo.fromItemFieldList( name, dataType.__itemFields__[name] )
+		if fieldOrder is None:
+			fieldOrder = self.dataType.__itemFields__.keys()
+		
+		for name in fieldOrder:
+			field = ItemFieldInfo.fromItemFieldList( name, self.dataType.__itemFields__[name] )
 			
 			self.fields.append( field )
 	

@@ -7,11 +7,12 @@ from typing import override
 from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QWidget, QMainWindow, QFileDialog, QMessageBox
 
-from nbr_5410_calculator.UiMainWindow import Ui_mainWindow as UiMainWindow
-from nbr_5410_calculator.installation.project import Project
-from nbr_5410_calculator.projectTab import SupplyModel, LoadTypeModel, WireTypeModel
 from nbr_5410_calculator.circuitsTab import CircuitsModel
-from nbr_5410_calculator.conduitsTab import ConduitRunsModel
+from nbr_5410_calculator.generic_model_views.models import GenericItemModel
+from nbr_5410_calculator.installation.circuit import LoadType, Supply, WireType
+from nbr_5410_calculator.installation.conduitRun import ConduitRun
+from nbr_5410_calculator.installation.project import Project
+from nbr_5410_calculator.UiMainWindow import Ui_mainWindow as UiMainWindow
 
 
 
@@ -38,11 +39,11 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		
 		self.project = project
 		
-		supplyModel = SupplyModel( project.supplies, self )
-		loadTypeModel = LoadTypeModel( project.loadTypes, self )
-		wireTypeModel = WireTypeModel( project.wireTypes, self )
+		supplyModel = GenericItemModel( project.supplies, Supply, self )
+		loadTypeModel = GenericItemModel( project.loadTypes, LoadType, self )
+		wireTypeModel = GenericItemModel( project.wireTypes, WireType, self )
 		circuitsModel = CircuitsModel( project, self )
-		conduitRunsModel = ConduitRunsModel( project.conduitRuns, self )
+		conduitRunsModel = GenericItemModel( project.conduitRuns, ConduitRun, self )
 		
 		self.suppliesListView.setModel( supplyModel )
 		self.loadTypesListView.setModel( loadTypeModel )

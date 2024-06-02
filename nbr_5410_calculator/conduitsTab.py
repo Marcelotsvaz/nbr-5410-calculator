@@ -2,9 +2,7 @@
 Models and view for the conduits tab.
 '''
 
-from typing import override
-
-from PySide6.QtCore import QObject, Slot
+from PySide6.QtCore import Slot
 
 from nbr_5410_calculator.generic_model_views.models import GenericItemModel
 from nbr_5410_calculator.generic_model_views.views import GenericTreeView
@@ -12,31 +10,18 @@ from nbr_5410_calculator.installation.conduitRun import ConduitRun
 
 
 
-# 
-# Models
-#-------------------------------------------------------------------------------
-class ConduitRunsModel( GenericItemModel[ConduitRun] ):
-	'''
-	Map a list of `ConduitRun`s to a `QTreeView`.
-	'''
-	
-	@override
-	def __init__( self, conduitRuns: list[ConduitRun], parent: QObject | None = None ) -> None:
-		super().__init__(
-			datasource = conduitRuns,
-			dataType = ConduitRun,
-			parent = parent,
-		)
-
-
-
-# 
-# Views
-#-------------------------------------------------------------------------------
-class ConduitRunsView( GenericTreeView[ConduitRunsModel, ConduitRun] ):
+class ConduitRunsView( GenericTreeView[GenericItemModel[ConduitRun], ConduitRun] ):
 	'''
 	`QTreeView` for `ConduitRunsModel`.
 	'''
+	
+	fieldOrder = [
+		'name',
+		'length',
+		'conduit',
+		'fillFactor',
+	]
+	
 	
 	@Slot()
 	def newConduitRun( self ) -> ConduitRun:

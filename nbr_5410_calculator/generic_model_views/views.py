@@ -37,6 +37,9 @@ class GenericListView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QListV
 	`QListView` for `GenericItemModel`.
 	'''
 	
+	fieldOrder: list[str] | None = None
+	
+	
 	@override
 	def model( self ) -> ModelT:
 		return cast( ModelT, super().model() )
@@ -47,6 +50,7 @@ class GenericListView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QListV
 		super().setModel( model )
 		
 		if model:
+			model.updateFieldOrder( self.fieldOrder )
 			self.setRootIndex( model.index( 0, 0 ) )
 	
 	
@@ -90,6 +94,9 @@ class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QTreeV
 	'''
 	`QTreeView` for `GenericItemModel`.
 	'''
+	
+	fieldOrder: list[str] | None = None
+	
 	
 	@override
 	def __init__( self, parent: QWidget | None = None ) -> None:
@@ -148,6 +155,7 @@ class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QTreeV
 		super().setModel( model )
 		
 		if model:
+			model.updateFieldOrder( self.fieldOrder )
 			self.setRootIndex( model.index( 0, 0 ) )
 	
 	

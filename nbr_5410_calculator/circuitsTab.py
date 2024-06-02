@@ -47,6 +47,24 @@ class CircuitsView( GenericTreeView[CircuitsModel, BaseCircuitUnion] ):
 	`QTreeView` for `CircuitsModel`.
 	'''
 	
+	fieldOrder = [
+		'name',
+		'supply',
+		'loadType',
+		'power',
+		'referenceMethod',
+		'temperature',
+		'grouping',
+		'wireType',
+		'length',
+		'current',
+		'breaker',
+		'wire',
+		'_wireCapacity',
+		'voltageDrop',
+	]
+	
+	
 	@Slot()
 	def newCircuit( self ) -> Circuit:
 		'''

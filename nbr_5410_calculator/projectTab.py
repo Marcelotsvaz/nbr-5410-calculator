@@ -2,9 +2,7 @@
 Models and view for the project tab.
 '''
 
-from typing import override
-
-from PySide6.QtCore import QObject, Slot
+from PySide6.QtCore import Slot
 
 from nbr_5410_calculator.generic_model_views.models import GenericItemModel
 from nbr_5410_calculator.generic_model_views.views import GenericListView
@@ -18,61 +16,15 @@ from nbr_5410_calculator.installation.circuit import (
 
 
 
-# 
-# Models
-#-------------------------------------------------------------------------------
-class SupplyModel( GenericItemModel[Supply] ):
-	'''
-	Map a list of `Supply`s to a `QListView`.
-	'''
-	
-	@override
-	def __init__( self, supplies: list[Supply], parent: QObject | None = None ) -> None:
-		super().__init__(
-			datasource = supplies,
-			dataType = Supply,
-			parent = parent,
-		)
-
-
-
-class LoadTypeModel( GenericItemModel[LoadType] ):
-	'''
-	Map a list of `LoadType`s to a `QTableView`.
-	'''
-	
-	@override
-	def __init__( self, loadTypes: list[LoadType], parent: QObject | None = None ) -> None:
-		super().__init__(
-			datasource = loadTypes,
-			dataType = LoadType,
-			parent = parent,
-		)
-
-
-
-class WireTypeModel( GenericItemModel[WireType] ):
-	'''
-	Map a list of `WireType`s to a `QTableView`.
-	'''
-	
-	@override
-	def __init__( self, wireTypes: list[WireType], parent: QObject | None = None ) -> None:
-		super().__init__(
-			datasource = wireTypes,
-			dataType = WireType,
-			parent = parent,
-		)
-
-
-
-# 
-# Views
-#-------------------------------------------------------------------------------
-class SupplyView( GenericListView[SupplyModel, Supply] ):
+class SupplyView( GenericListView[GenericItemModel[Supply], Supply] ):
 	'''
 	`QListView` for `SupplyModel`.
 	'''
+	
+	fieldOrder = [
+		'voltage'
+	]
+	
 	
 	@Slot()
 	def newSupply( self ) -> Supply:
@@ -90,10 +42,15 @@ class SupplyView( GenericListView[SupplyModel, Supply] ):
 
 
 
-class LoadTypeView( GenericListView[LoadTypeModel, LoadType] ):
+class LoadTypeView( GenericListView[GenericItemModel[LoadType], LoadType] ):
 	'''
 	`QListView` for `LoadTypeModel`.
 	'''
+	
+	fieldOrder = [
+		'name'
+	]
+	
 	
 	@Slot()
 	def newLoadType( self ) -> LoadType:
@@ -113,10 +70,15 @@ class LoadTypeView( GenericListView[LoadTypeModel, LoadType] ):
 
 
 
-class WireTypeView( GenericListView[WireTypeModel, WireType] ):
+class WireTypeView( GenericListView[GenericItemModel[WireType], WireType] ):
 	'''
 	`QListView` for `WireTypeModel`.
 	'''
+	
+	fieldOrder = [
+		'material'
+	]
+	
 	
 	@Slot()
 	def newWireType( self ) -> WireType:
