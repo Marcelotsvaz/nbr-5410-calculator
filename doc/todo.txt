@@ -1,7 +1,3 @@
-move project error
-int or float
-
-
 Delegates
 Placeholder rows
 Power not settable

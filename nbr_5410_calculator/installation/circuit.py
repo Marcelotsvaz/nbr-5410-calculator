@@ -14,7 +14,7 @@ from pyjson5 import decode_buffer
 
 from nbr_5410_calculator.generic_model_views.items import ItemField
 from nbr_5410_calculator.generic_model_views.models import GenericItem
-from nbr_5410_calculator.installation.util import UniqueSerializable
+from nbr_5410_calculator.installation.util import ProjectError, UniqueSerializable
 
 
 
@@ -477,13 +477,6 @@ class UpstreamCircuit( BaseCircuit ):
 	@property
 	def children( self ) -> list[BaseCircuitUnion]:
 		return self.circuits
-
-
-
-class ProjectError( Exception ):
-	'''
-	Base class for all project design errors.
-	'''
 
 
 

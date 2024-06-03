@@ -56,3 +56,10 @@ class UniqueSerializable( BaseModel ):
 		
 		# Return existing instance.
 		return context[self.uuid.hex]
+
+
+
+class ProjectError( Exception ):
+	'''
+	Base class for all project design errors.
+	'''

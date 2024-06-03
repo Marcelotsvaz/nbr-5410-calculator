@@ -8,12 +8,12 @@
 
 from unittest import TestCase
 
-from nbr_5410_calculator.installation.circuit import ProjectError
 from nbr_5410_calculator.installation.conduitRun import (
 	Conduit,
 	ConduitRun,
 	ConduitType,
 )
+from nbr_5410_calculator.installation.util import ProjectError
 from tests.installation.util import (
 	createCircuit,
 	createCircuitDict,
