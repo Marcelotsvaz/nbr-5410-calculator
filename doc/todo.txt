@@ -23,7 +23,6 @@ Fix __pycache__ location
 
 Electrical:
 	Breaker type
-	Separate wire and breaker
 	Accumulate errors in property
 	BUG: Test when one wireByCriteria is empty
 	Grouping wire layout

@@ -330,7 +330,15 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 		Suitable breaker for this circuit.
 		'''
 		
-		return self.calculate()[1]
+		breaker = min( filter(
+			lambda breaker: breaker.current >= self.current,
+			Breaker.getBreakers( 'C' ),
+		) )
+		
+		if not breaker:	# TODO: This check is wrong. filter raises.
+			raise ProjectError( 'No suitable breaker found.' )
+		
+		return breaker
 	
 	
 	@property
@@ -343,7 +351,43 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 		current.
 		'''
 		
-		return self.calculate()[0]
+		wireByCriteria: dict[str, Wire] = {}
+		allWires = self.wireType.getWires(
+			self.conduitRun.referenceMethod,
+			self.supply.loadedWireCount,
+			self.conduitRun.correctionFactor,
+		)
+		
+		# Wire section by minimum section.
+		wireByCriteria['minimumSection'] = min( filter(
+			lambda wire: wire.section >= self.loadType.minimumWireSection,
+			allWires,
+		) )
+		
+		# Wire section by current capacity.
+		wireByCriteria['currentCapacity'] = min( filter(
+			lambda wire: wire.capacity >= self.current,
+			allWires,
+		) )
+		
+		# Wire section by voltage drop.
+		wireByCriteria['voltageDrop'] = min( filter(
+			lambda wire: self._voltageDrop( wire ) <= VoltageDropLimit.TERMINAL,
+			allWires,
+		) )
+		
+		# Wire section by breaker.
+		wireByCriteria['breaker'] = min( filter(
+			lambda wire: wire.capacity >= self.breaker.current,
+			allWires,
+		) )
+		
+		# Select wire with largest section.
+		wire = max( wireByCriteria.values() )
+		if not wire:
+			raise ProjectError( 'No suitable wire found.' )
+		
+		return wire
 	
 	
 	@property
@@ -371,64 +415,6 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 		'''
 		
 		return self._voltageDrop( self.wire )
-	
-	
-	def calculate( self ) -> tuple[Wire, Breaker]:
-		'''
-		Calculate wire and breaker for this circuit.
-		'''
-		
-		wireByCriteria: dict[str, Wire] = {}
-		allWires = self.wireType.getWires(
-			self.conduitRun.referenceMethod,
-			self.supply.loadedWireCount,
-			self.conduitRun.correctionFactor,
-		)
-		
-		
-		# Breaker
-		breaker = min( filter(
-			lambda breaker: breaker.current >= self.current,
-			Breaker.getBreakers( 'C' ),
-		) )
-		if not breaker:	# TODO: This check is wrong. filter raises.
-			raise ProjectError( 'No suitable breaker found.' )
-		
-		
-		# Wire section by minimum section.
-		wireByCriteria['minimumSection'] = min( filter(
-			lambda wire: wire.section >= self.loadType.minimumWireSection,
-			allWires,
-		) )
-		
-		
-		# Wire section by current capacity.
-		wireByCriteria['currentCapacity'] = min( filter(
-			lambda wire: wire.capacity >= self.current,
-			allWires,
-		) )
-		
-		
-		# Wire section by voltage drop.
-		wireByCriteria['voltageDrop'] = min( filter(
-			lambda wire: self._voltageDrop( wire ) <= VoltageDropLimit.TERMINAL,
-			allWires,
-		) )
-		
-		
-		# Wire section by breaker.
-		wireByCriteria['breaker'] = min( filter(
-			lambda wire: wire.capacity >= breaker.current,
-			allWires,
-		) )
-		
-		
-		# Select wire with largest section.
-		wire = max( wireByCriteria.values() )
-		if not wire:
-			raise ProjectError( 'No suitable wire found.' )
-		
-		return wire, breaker
 
 
 

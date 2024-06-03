@@ -55,9 +55,9 @@ class CircuitsView( GenericTreeView[CircuitsModel, BaseCircuitUnion] ):
 		'length',
 		'current',
 		'breaker',
-		'wire',
 		'_wireCapacity',
 		'voltageDrop',
+		'wire',
 	]
 	
 	

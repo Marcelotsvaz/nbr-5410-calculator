@@ -18,11 +18,11 @@ class ConduitRunsView( GenericTreeView[GenericItemModel[ConduitRun], ConduitRun]
 	fieldOrder = [
 		'name',
 		'referenceMethod',
-		'length',
 		'temperature',
+		'length',
 		'grouping',
-		'conduit',
 		'fillFactor',
+		'conduit',
 	]
 	
 	
