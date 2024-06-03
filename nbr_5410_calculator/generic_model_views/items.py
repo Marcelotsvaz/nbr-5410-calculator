@@ -151,7 +151,7 @@ class GenericItem( BaseModel ):
 		
 		# Get type hints from attributes.
 		typeHintForMembers = {
-			name: ( typeHint, False )
+			name: ( typeHint, True )
 			for name, typeHint
 			in get_type_hints( cls, include_extras = True ).items()
 		}
