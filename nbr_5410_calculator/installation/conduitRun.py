@@ -2,17 +2,19 @@
 Models related to conduits.
 '''
 
+from __future__ import annotations
+
 from enum import StrEnum, auto
 from functools import cache
 from math import pi
-from typing import Annotated, Self
+from typing import Annotated, Any, Self
 
 from pydantic import BaseModel, Field
 from pyjson5 import decode_buffer
 
 from nbr_5410_calculator.generic_model_views.items import ItemField
 from nbr_5410_calculator.generic_model_views.models import GenericItem
-from nbr_5410_calculator.installation.circuit import BaseCircuitUnion
+from nbr_5410_calculator.installation.circuit import BaseCircuitUnion, ProjectError
 from nbr_5410_calculator.installation.util import UniqueSerializable
 
 
@@ -91,13 +93,114 @@ class Conduit( BaseModel ):
 
 
 
+class ReferenceMethod( StrEnum ):
+	'''
+	Reference wire installation methods used to determine wire current capacity.
+	
+	See NBR 5410 6.2.5.1.2.
+	See NBR 5410 tables 36~39.
+	'''
+	
+	A1 = auto()
+	A2 = auto()
+	B1 = auto()
+	B2 = auto()
+	C = auto()
+	D = auto()
+	E = auto()
+	F = auto()
+	F_JUXTAPOSED = auto()
+	G_HORIZONTAL = auto()
+	G_VERTICAL = auto()
+
+
+
+class TemperatureCorrectionFactor:
+	'''
+	Temperature correction factors for wire current capacity.
+	
+	See NBR 5410 6.2.5.3.
+	'''
+	
+	@classmethod
+	@cache
+	def loadFactors( cls ) -> list[dict[str, Any]]:
+		'''
+		TODO: Proper class with Pydantic.
+		'''
+		
+		with open( 'share/data/temperatureCorrectionFactor.json5', 'rb' ) as file:
+			return decode_buffer( file.read() )
+	
+	
+	@classmethod
+	def forTemperature( cls, temperature: int ) -> float:
+		'''
+		Return the interpolated correction factor for a given temperature.
+		'''
+		
+		factors = cls.loadFactors()
+		
+		if temperature <= factors[0]['temperature']:
+			return factors[0]['value']
+		
+		for factor, nextFactor in zip( factors, factors[1:] ):
+			if nextFactor['temperature'] >= temperature:
+				return (
+					factor['value'] +
+					( nextFactor['value'] - factor['value'] ) *
+					( temperature - factor['temperature'] ) / 
+					( nextFactor['temperature'] - factor['temperature'] )
+				)
+		
+		raise ProjectError( 'TODO: Temperature outside range.' )
+
+
+
+class GroupingCorrectionFactor:
+	'''
+	Grouping correction factors for wire current capacity.
+	
+	See NBR 5410 6.2.5.5.
+	'''
+	
+	@classmethod
+	@cache
+	def loadFactors( cls ) -> dict[str, float]:
+		'''
+		TODO: Proper class with Pydantic.
+		'''
+		
+		with open( 'share/data/groupingCorrectionFactor.json5', 'rb' ) as file:
+			return decode_buffer( file.read() )
+	
+	
+	@classmethod
+	def forGrouping( cls, grouping: int ) -> float:
+		'''
+		Return the correction factor for a given circuit grouping.
+		'''
+		
+		factors = cls.loadFactors()
+		
+		last = max( factors.keys() )
+		if grouping > int( last ):
+			return factors[last]
+		
+		return factors[str( grouping )]
+
+
+
 class ConduitRun( UniqueSerializable, GenericItem ):
 	'''
 	Represents a conduit run containing multiple circuits.
 	'''
 	
 	name: Annotated[str, ItemField( 'Name' )]
+	referenceMethod: Annotated[ReferenceMethod, ItemField( 'Ref. Method' )]
+	temperature: Annotated[int, ItemField( 'Temperature', format = '{0}°C' )]
 	length: Annotated[float, ItemField( 'Length', format = '{0:,} m' )]
+	
 	circuits: list[BaseCircuitUnion] = Field( default_factory = list )
 	
 	
@@ -124,6 +227,27 @@ class ConduitRun( UniqueSerializable, GenericItem ):
 		) )
 		
 		return conduit
+	
+	
+	@property
+	def grouping( self ) -> Annotated[int, ItemField( 'Grouping' )]:
+		'''
+		Number of circuits in run.
+		'''
+		
+		return len( self.circuits )
+	
+	
+	@property
+	def correctionFactor( self ) -> float:
+		'''
+		Correction factor for temperature and grouping.
+		'''
+		
+		temperatureFactor = TemperatureCorrectionFactor.forTemperature( self.temperature )
+		groupingFactor = GroupingCorrectionFactor.forGrouping( self.grouping )
+		
+		return temperatureFactor * groupingFactor
 	
 	
 	@property

@@ -92,28 +92,6 @@ class WireInsulation( StrEnum ):
 
 
 
-class ReferenceMethod( StrEnum ):
-	'''
-	Reference wire installation methods used to determine wire current capacity.
-	
-	See NBR 5410 6.2.5.1.2.
-	See NBR 5410 tables 36~39.
-	'''
-	
-	A1 = auto()
-	A2 = auto()
-	B1 = auto()
-	B2 = auto()
-	C = auto()
-	D = auto()
-	E = auto()
-	F = auto()
-	F_JUXTAPOSED = auto()
-	G_HORIZONTAL = auto()
-	G_VERTICAL = auto()
-
-
-
 class WireType( UniqueSerializable, GenericItem ):
 	'''
 	Represent all available sizes of an actual wire type used in a circuit.
@@ -199,82 +177,6 @@ class WireType( UniqueSerializable, GenericItem ):
 			# TODO: Remove this.
 			if externalDiameter is not None
 		]
-
-
-
-class TemperatureCorrectionFactor:
-	'''
-	Temperature correction factors for wire current capacity.
-	
-	See NBR 5410 6.2.5.3.
-	'''
-	
-	@classmethod
-	@cache
-	def loadFactors( cls ) -> list[dict[str, Any]]:
-		'''
-		TODO: Proper class with Pydantic.
-		'''
-		
-		with open( 'share/data/temperatureCorrectionFactor.json5', 'rb' ) as file:
-			return decode_buffer( file.read() )
-	
-	
-	@classmethod
-	def forTemperature( cls, temperature: int ) -> float:
-		'''
-		Return the interpolated correction factor for a given temperature.
-		'''
-		
-		factors = cls.loadFactors()
-		
-		if temperature <= factors[0]['temperature']:
-			return factors[0]['value']
-		
-		for factor, nextFactor in zip( factors, factors[1:] ):
-			if nextFactor['temperature'] >= temperature:
-				return (
-					factor['value'] +
-					( nextFactor['value'] - factor['value'] ) *
-					( temperature - factor['temperature'] ) / 
-					( nextFactor['temperature'] - factor['temperature'] )
-				)
-		
-		raise ProjectError( 'TODO: Temperature outside range.' )
-
-
-
-class GroupingCorrectionFactor:
-	'''
-	Grouping correction factors for wire current capacity.
-	
-	See NBR 5410 6.2.5.5.
-	'''
-	
-	@classmethod
-	@cache
-	def loadFactors( cls ) -> dict[str, float]:
-		'''
-		TODO: Proper class with Pydantic.
-		'''
-		
-		with open( 'share/data/groupingCorrectionFactor.json5', 'rb' ) as file:
-			return decode_buffer( file.read() )
-	
-	
-	@classmethod
-	def forGrouping( cls, grouping: int ) -> float:
-		'''
-		Return the correction factor for a given circuit grouping.
-		'''
-		
-		factors = cls.loadFactors()
-		
-		last = max( factors.keys() )
-		if grouping > int( last ):
-			return factors[last]
-		
-		return factors[str( grouping )]
 
 
 
@@ -395,11 +297,10 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 	
 	supply: Annotated[Supply, ItemField( 'Supply' )]
 	loadType: Annotated[LoadType, ItemField( 'Load Type', format = lambda value: value.name )]
-	referenceMethod: Annotated[ReferenceMethod, ItemField( 'Ref. Method' )]
-	temperature: Annotated[int, ItemField( 'Temperature', format = '{0}°C' )]
-	grouping: Annotated[int, ItemField( 'Grouping' )]
 	wireType: Annotated[WireType, ItemField( 'Wire Type' )]
 	length: Annotated[float, ItemField( 'Length', format = '{0:,} m' )]
+	
+	conduitRun: Annotated[ConduitRun, Field( exclude = True )]
 	
 	
 	@property
@@ -409,18 +310,6 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 		'''
 		
 		raise NotImplementedError()
-	
-	
-	@property
-	def correctionFactor( self ) -> float:
-		'''
-		Correction factor for temperature and grouping.
-		'''
-		
-		temperatureFactor = TemperatureCorrectionFactor.forTemperature( self.temperature )
-		groupingFactor = GroupingCorrectionFactor.forGrouping( self.grouping )
-		
-		return temperatureFactor * groupingFactor
 	
 	
 	@property
@@ -469,7 +358,7 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 		Used in `calculate()`.
 		'''
 		
-		resistance = wire.resistancePerMeter * 2 * self.length
+		resistance = wire.resistancePerMeter * self.length * 2
 		voltageDrop = self.current * resistance
 		
 		return voltageDrop / self.supply.voltage
@@ -491,9 +380,9 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 		
 		wireByCriteria: dict[str, Wire] = {}
 		allWires = self.wireType.getWires(
-			self.referenceMethod,
+			self.conduitRun.referenceMethod,
 			self.supply.loadedWireCount,
-			self.correctionFactor,
+			self.conduitRun.correctionFactor,
 		)
 		
 		
@@ -595,3 +484,9 @@ class ProjectError( Exception ):
 	'''
 	Base class for all project design errors.
 	'''
+
+
+
+# Import last due to circular dependencies.
+# pylint: disable-next = wrong-import-position
+from nbr_5410_calculator.installation.conduitRun import ConduitRun, ReferenceMethod

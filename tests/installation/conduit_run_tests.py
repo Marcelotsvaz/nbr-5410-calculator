@@ -7,43 +7,19 @@
 
 
 from unittest import TestCase
-from uuid import UUID
-from typing import Any
 
-from nbr_5410_calculator.installation.conduitRun import ConduitType, Conduit, ConduitRun
-from tests.installation.circuit_tests import createCircuit, createCircuitJsonDict
-
-
-
-def createConduitRun() -> ConduitRun:
-	'''
-	Create instance of `ConduitRun`.
-	'''
-	
-	conduitRun = ConduitRun(
-		circuits = [ createCircuit(), createCircuit(), createCircuit() ],
-		length = 10.0,
-		name = 'Test Conduit Run',
-		uuid = UUID( 'f4f3bd7c-c818-4ffc-a776-212469d8ba16' ),
-	)
-	
-	return conduitRun
-
-
-
-def createConduitRunJsonDict() -> dict[str, Any]:
-	'''
-	Create JSON dict for `ConduitRun`.
-	'''
-	
-	conduitRunJsonDict = {
-		'circuits': [ createCircuitJsonDict() ] * 3,
-		'length': 10.0,
-		'name': 'Test Conduit Run',
-		'uuid': UUID( 'f4f3bd7c-c818-4ffc-a776-212469d8ba16' ),
-	}
-	
-	return conduitRunJsonDict
+from nbr_5410_calculator.installation.circuit import ProjectError
+from nbr_5410_calculator.installation.conduitRun import (
+	Conduit,
+	ConduitRun,
+	ConduitType,
+)
+from tests.installation.util import (
+	createCircuit,
+	createCircuitDict,
+	createConduitRun,
+	createConduitRunDict,
+)
 
 
 
@@ -79,6 +55,9 @@ class BaseConduitRunTests( TestCase ):
 		'''
 		
 		self.conduitRun = createConduitRun()
+		self.conduitRun.circuits = [ createCircuit( self.conduitRun ) ] * 3
+		
+		self.conduitRunDict = createConduitRunDict( [ createCircuitDict() ] * 3 )
 
 
 
@@ -92,19 +71,7 @@ class ConduitRunBasicTests( BaseConduitRunTests ):
 		Test `ConduitRun.filledSection`.
 		'''
 		
-		self.assertAlmostEqual( self.conduitRun.filledSection, 246.057391, 6 )
-	
-	
-	def testFilledSectionFewWires( self ) -> None:
-		'''
-		Test `ConduitRun.filledSection` when conduit has less than 3 wires.
-		'''
-		
-		circuit = createCircuit()
-		circuit.supply.hasGround = False
-		self.conduitRun.circuits = [ circuit ]
-		
-		self.assertAlmostEqual( self.conduitRun.filledSection, 54.679420, 6 )
+		self.assertAlmostEqual( self.conduitRun.filledSection, 346.360590, 6 )
 	
 	
 	def testFillFactor( self ) -> None:
@@ -112,7 +79,18 @@ class ConduitRunBasicTests( BaseConduitRunTests ):
 		Test `ConduitRun.fillFactor`.
 		'''
 		
-		self.assertAlmostEqual( self.conduitRun.fillFactor, 0.240399, 6 )
+		self.assertAlmostEqual( self.conduitRun.fillFactor, 0.338395, 6 )
+	
+	
+	def testFilledSectionFewWires( self ) -> None:
+		'''
+		Test `ConduitRun.filledSection` when conduit has less than 3 wires.
+		'''
+		
+		self.conduitRun.circuits = self.conduitRun.circuits[:1]
+		self.conduitRun.circuits[0].supply.hasGround = False
+		
+		self.assertAlmostEqual( self.conduitRun.filledSection, 54.679420, 6 )
 	
 	
 	def testFillFactorFewWires( self ) -> None:
@@ -120,11 +98,65 @@ class ConduitRunBasicTests( BaseConduitRunTests ):
 		Test `ConduitRun.fillFactor` when conduit has less than 3 wires.
 		'''
 		
-		circuit = createCircuit()
-		circuit.supply.hasGround = False
-		self.conduitRun.circuits = [ circuit ]
+		self.conduitRun.circuits = self.conduitRun.circuits[:1]
+		self.conduitRun.circuits[0].supply.hasGround = False
 		
 		self.assertAlmostEqual( self.conduitRun.fillFactor, 0.258849, 6 )
+
+
+
+class ConduitRunCorrectionFactorTests( BaseConduitRunTests ):
+	'''
+	Test `ConduitRun` correction factor by temperature and grouping.
+	'''
+	
+	def testGroupingFactor( self ) -> None:
+		'''
+		Test grouping factor.
+		'''
+		
+		self.assertEqual( self.conduitRun.correctionFactor, 0.70 )
+	
+	
+	def testTemperatureCorrection( self ) -> None:
+		'''
+		Test temperature correction with round value.
+		'''
+		
+		self.conduitRun.temperature = 55
+		
+		self.assertEqual( self.conduitRun.correctionFactor, 0.427 )
+	
+	
+	def testTemperatureCorrectionInterpolation( self ) -> None:
+		'''
+		Test temperature correction with interpolated value.
+		'''
+		
+		self.conduitRun.temperature = 58
+		
+		self.assertEqual( self.conduitRun.correctionFactor, 0.3808 )
+	
+	
+	def testTemperatureCorrectionBelowMinimum( self ) -> None:
+		'''
+		Temperatures below minimum should use the factor for the lowest temperature available.
+		'''
+		
+		self.conduitRun.temperature = -10
+		
+		self.assertEqual( self.conduitRun.correctionFactor, 0.854 )
+	
+	
+	def testTemperatureCorrectionAboveMaximum( self ) -> None:
+		'''
+		Temperatures above maximum for the given insulation type should raise an exception.
+		'''
+		
+		self.conduitRun.temperature = 70
+		
+		with self.assertRaises( ProjectError ):
+			_ = self.conduitRun.correctionFactor
 
 
 
@@ -139,7 +171,7 @@ class ConduitRunSerializationTests( BaseConduitRunTests ):
 		Test serialization.
 		'''
 		
-		self.assertEqual( self.conduitRun.model_dump(), createConduitRunJsonDict() )
+		self.assertEqual( self.conduitRun.model_dump(), self.conduitRunDict )
 	
 	
 	def testDeserialize( self ) -> None:
@@ -147,4 +179,4 @@ class ConduitRunSerializationTests( BaseConduitRunTests ):
 		Test deserialization.
 		'''
 		
-		self.assertEqual( ConduitRun.model_validate( createConduitRunJsonDict() ), self.conduitRun )
+		self.assertEqual( ConduitRun.model_validate( self.conduitRunDict ), self.conduitRun )

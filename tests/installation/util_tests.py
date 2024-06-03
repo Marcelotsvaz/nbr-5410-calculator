@@ -48,7 +48,7 @@ class BaseUniqueSerializableTests( TestCase ):
 		
 		self.testClassJsonDict = {
 			'name': 'Test Instance',
-			'uuid': UUID( 'e3f9a216-774e-46ee-986a-190abdb37b32' ),
+			'uuid': 'e3f9a216-774e-46ee-986a-190abdb37b32',
 		}
 
 
@@ -120,7 +120,7 @@ class NestedUniqueSerializableTests( BaseUniqueSerializableTests ):
 		
 		self.testContainerJsonDict = {
 			'items': [ self.testClassJsonDict, self.testClassJsonDict ],
-			'uuid': UUID( 'd5c04a14-7e60-4b18-bf8b-97b34eaa33a2' ),
+			'uuid': 'd5c04a14-7e60-4b18-bf8b-97b34eaa33a2',
 		}
 	
 	

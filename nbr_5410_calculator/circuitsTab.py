@@ -11,7 +11,6 @@ from nbr_5410_calculator.generic_model_views.views import GenericTreeView
 from nbr_5410_calculator.installation.circuit import (
 	BaseCircuit,
 	BaseCircuitUnion,
-	ReferenceMethod,
 	Circuit,
 	UpstreamCircuit,
 )
@@ -52,9 +51,6 @@ class CircuitsView( GenericTreeView[CircuitsModel, BaseCircuitUnion] ):
 		'supply',
 		'loadType',
 		'power',
-		'referenceMethod',
-		'temperature',
-		'grouping',
 		'wireType',
 		'length',
 		'current',
@@ -79,14 +75,11 @@ class CircuitsView( GenericTreeView[CircuitsModel, BaseCircuitUnion] ):
 			raise Exception( 'TODO' )
 		
 		circuit = Circuit(
-			grouping		= 1,
 			length			= 10.0,
 			loadPower		= 1000,
 			loadType		= defaultLoadType,
 			name			= self.tr('New Circuit'),
-			referenceMethod	= ReferenceMethod.B1,
 			supply			= defaultSupply,
-			temperature		= 30,
 			wireType		= defaultWireType,
 		)
 		
@@ -109,13 +102,10 @@ class CircuitsView( GenericTreeView[CircuitsModel, BaseCircuitUnion] ):
 			raise Exception( 'TODO' )
 		
 		circuit = UpstreamCircuit(
-			grouping		= 1,
 			length			= 10.0,
 			loadType		= defaultLoadType,
 			name			= self.tr('New Upstream Circuit'),
-			referenceMethod	= ReferenceMethod.B1,
 			supply			= defaultSupply,
-			temperature		= 30,
 			wireType		= defaultWireType,
 		)
 		

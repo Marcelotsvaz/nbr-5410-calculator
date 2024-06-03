@@ -2,10 +2,10 @@
 Base Pydantic model for all `Project` models.
 '''
 
-from typing import Any, Self, cast
+from typing import Annotated, Any, Self, cast
 from uuid import UUID, uuid4
 
-from pydantic import BaseModel, ConfigDict, Field, ValidationInfo, model_validator
+from pydantic import BaseModel, ConfigDict, Field, PlainSerializer, ValidationInfo, model_validator
 
 
 
@@ -26,7 +26,11 @@ class UniqueSerializable( BaseModel ):
 	)
 	
 	# Fields.
-	uuid: UUID = Field( default_factory = uuid4 )
+	uuid: Annotated[
+		UUID,
+		Field( default_factory = uuid4 ),
+		PlainSerializer( lambda uuid: str( uuid ) ),	# pylint: disable = unnecessary-lambda
+	]
 	
 	
 	@model_validator( mode = 'after' )

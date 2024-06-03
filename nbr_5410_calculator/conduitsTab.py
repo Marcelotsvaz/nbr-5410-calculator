@@ -6,7 +6,7 @@ from PySide6.QtCore import Slot
 
 from nbr_5410_calculator.generic_model_views.models import GenericItemModel
 from nbr_5410_calculator.generic_model_views.views import GenericTreeView
-from nbr_5410_calculator.installation.conduitRun import ConduitRun
+from nbr_5410_calculator.installation.conduitRun import ConduitRun, ReferenceMethod
 
 
 
@@ -17,7 +17,10 @@ class ConduitRunsView( GenericTreeView[GenericItemModel[ConduitRun], ConduitRun]
 	
 	fieldOrder = [
 		'name',
+		'referenceMethod',
 		'length',
+		'temperature',
+		'grouping',
 		'conduit',
 		'fillFactor',
 	]
@@ -31,6 +34,8 @@ class ConduitRunsView( GenericTreeView[GenericItemModel[ConduitRun], ConduitRun]
 		
 		conduitRun = ConduitRun(
 			name = self.tr('New Conduit Run'),
+			referenceMethod	= ReferenceMethod.B1,
+			temperature = 30,
 			length = 10.0,
 		)
 		

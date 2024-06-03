@@ -1,12 +1,13 @@
-Check ItemField formats
-Power not settable
+move project error
+int or float
 
-Rewrite model adapter to use Pydantic fields
-	Check rowCount parent
-	self.get_datasource(index)
-	https://doc.qt.io/qtforpython-6/PySide6/QtCore/QAbstractItemModel.html#PySide6.QtCore.QAbstractItemModel.checkIndex
+
 Delegates
-Move stuff to conduitrun
+Placeholder rows
+Power not settable
+Check rowCount parent
+self.get_datasource(index)
+https://doc.qt.io/qtforpython-6/PySide6/QtCore/QAbstractItemModel.html#PySide6.QtCore.QAbstractItemModel.checkIndex
 from __feature__ import true_property
 
 
@@ -25,6 +26,8 @@ Fix __pycache__ location
 
 
 Electrical:
+	Breaker type
+	Separate wire and breaker
 	Accumulate errors in property
 	BUG: Test when one wireByCriteria is empty
 	Grouping wire layout
