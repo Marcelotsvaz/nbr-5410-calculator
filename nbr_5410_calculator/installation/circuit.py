@@ -300,7 +300,7 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 	wireType: Annotated[WireType, ItemField( 'Wire Type' )]
 	length: Annotated[float, ItemField( 'Length', format = '{0:,} m' )]
 	
-	conduitRun: Annotated[ConduitRun, Field( exclude = True )]
+	conduitRun: Annotated[ConduitRun | None, Field( exclude = True )] = None
 	
 	
 	@property
@@ -352,11 +352,18 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 		'''
 		
 		wireByCriteria: dict[str, Wire] = {}
-		allWires = self.wireType.getWires(
-			self.conduitRun.referenceMethod,
-			self.supply.loadedWireCount,
-			self.conduitRun.correctionFactor,
-		)
+		if self.conduitRun:
+			allWires = self.wireType.getWires(
+				self.conduitRun.referenceMethod,
+				self.supply.loadedWireCount,
+				self.conduitRun.correctionFactor,
+			)
+		else:
+			allWires = self.wireType.getWires(
+				ReferenceMethod.A1,
+				self.supply.loadedWireCount,
+				1.0,
+			)
 		
 		# Wire section by minimum section.
 		wireByCriteria['minimumSection'] = min( filter(
