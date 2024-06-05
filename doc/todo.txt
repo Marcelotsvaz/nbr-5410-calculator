@@ -1,3 +1,4 @@
+Heterogeneous
 Delegates
 Placeholder rows
 Power not settable
@@ -18,6 +19,10 @@ Add arguments with units to docstrings, including properties
 Refactor tests docstrings
 Mock tests?
 Fix __pycache__ location
+
+https://github.com/python/typing/discussions/999
+https://github.com/python/typing/issues/548
+https://returns.readthedocs.io/en/latest/pages/hkt.html
 
 
 

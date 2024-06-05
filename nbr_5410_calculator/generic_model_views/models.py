@@ -257,7 +257,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 			raise ValueError( 'Parent does not support children.' )
 		
 		if row < 0:
-			row = len( children ) + 2 + row
+			row = len( children ) + 1 + row
 		
 		self.beginInsertRows( parent, row, row )
 		children.insert( row, item )
