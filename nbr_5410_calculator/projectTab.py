@@ -21,9 +21,11 @@ class SupplyView( GenericListView[GenericItemModel[Supply], Supply] ):
 	`QListView` for `SupplyModel`.
 	'''
 	
-	fieldOrder = [
-		'voltage'
-	]
+	fieldOrder = {
+		Supply: [
+			'voltage'
+		],
+	}
 	
 	
 	@Slot()
@@ -47,9 +49,11 @@ class LoadTypeView( GenericListView[GenericItemModel[LoadType], LoadType] ):
 	`QListView` for `LoadTypeModel`.
 	'''
 	
-	fieldOrder = [
-		'name'
-	]
+	fieldOrder = {
+		LoadType: [
+			'name'
+		],
+	}
 	
 	
 	@Slot()
@@ -75,9 +79,11 @@ class WireTypeView( GenericListView[GenericItemModel[WireType], WireType] ):
 	`QListView` for `WireTypeModel`.
 	'''
 	
-	fieldOrder = [
-		'material'
-	]
+	fieldOrder = {
+		WireType: [
+			'material'
+		],
+	}
 	
 	
 	@Slot()

@@ -9,7 +9,7 @@ from PySide6.QtWidgets import QWidget, QMainWindow, QFileDialog, QMessageBox
 
 from nbr_5410_calculator.circuitsTab import CircuitsModel
 from nbr_5410_calculator.generic_model_views.models import GenericItemModel
-from nbr_5410_calculator.installation.circuit import LoadType, Supply, WireType
+from nbr_5410_calculator.installation.circuit import BaseCircuit, LoadType, Supply, WireType
 from nbr_5410_calculator.installation.conduitRun import ConduitRun
 from nbr_5410_calculator.installation.project import Project
 from nbr_5410_calculator.UiMainWindow import Ui_mainWindow as UiMainWindow
@@ -39,11 +39,11 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		
 		self.project = project
 		
-		supplyModel = GenericItemModel( project.supplies, Supply, self )
-		loadTypeModel = GenericItemModel( project.loadTypes, LoadType, self )
-		wireTypeModel = GenericItemModel( project.wireTypes, WireType, self )
+		supplyModel = GenericItemModel( project.supplies, [ Supply ], self )
+		loadTypeModel = GenericItemModel( project.loadTypes, [ LoadType ], self )
+		wireTypeModel = GenericItemModel( project.wireTypes, [ WireType ], self )
 		circuitsModel = CircuitsModel( project, self )
-		conduitRunsModel = GenericItemModel( project.conduitRuns, ConduitRun, self )
+		conduitRunsModel = GenericItemModel( project.conduitRuns, [ ConduitRun, BaseCircuit ], self )
 		
 		self.suppliesListView.setModel( supplyModel )
 		self.loadTypesListView.setModel( loadTypeModel )

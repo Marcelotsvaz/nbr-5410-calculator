@@ -22,7 +22,7 @@ class GenericItemModelIndexTests( TestCase ):
 		
 		self.model = GenericItemModel[GenericItem](
 			datasource = [],
-			dataType = GenericItem,
+			dataTypes = [ GenericItem ],
 		)
 	
 	

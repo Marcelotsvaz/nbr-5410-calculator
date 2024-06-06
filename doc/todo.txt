@@ -1,4 +1,3 @@
-Heterogeneous
 Delegates
 Placeholder rows
 Power not settable

@@ -266,3 +266,8 @@ class ConduitRun( UniqueSerializable, GenericItem ):
 		'''
 		
 		return self.filledSection / self.conduit.section
+	
+	
+	@property
+	def children( self ) -> list[BaseCircuitUnion]:
+		return self.circuits

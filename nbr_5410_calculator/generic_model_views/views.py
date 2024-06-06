@@ -28,7 +28,7 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtGui import QDrag, QPainter, QPixmap
 
-from nbr_5410_calculator.generic_model_views.models import GenericItem, GenericItemModel, ModelIndex
+from nbr_5410_calculator.generic_model_views.models import FieldOrder, GenericItem, GenericItemModel, ModelIndex
 
 
 
@@ -37,7 +37,7 @@ class GenericListView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QListV
 	`QListView` for `GenericItemModel`.
 	'''
 	
-	fieldOrder: list[str] | None = None
+	fieldOrder: FieldOrder[ItemT] | None = None
 	
 	
 	@override
@@ -95,7 +95,7 @@ class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QTreeV
 	`QTreeView` for `GenericItemModel`.
 	'''
 	
-	fieldOrder: list[str] | None = None
+	fieldOrder: FieldOrder[ItemT] | None = None
 	
 	
 	@override

@@ -2,7 +2,7 @@
 Partial implementation of `QAbstractItemModel`.
 '''
 
-from collections.abc import Iterable, Sequence
+from collections.abc import Mapping, Sequence
 from contextlib import suppress
 from typing import Any, cast, overload, override
 
@@ -21,6 +21,7 @@ from nbr_5410_calculator.generic_model_views.items import GenericItem, ItemField
 
 
 type ModelIndex = QModelIndex | QPersistentModelIndex
+type FieldOrder[T] = Mapping[type[T], Sequence[str | None]]
 
 
 
@@ -36,32 +37,38 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 	def __init__(
 		self,
 		datasource: list[ItemT],
-		dataType: type[ItemT],
+		dataTypes: list[type[ItemT]],
 		parent: QObject | None = None,
 	) -> None:
 		super().__init__( parent )
 		
 		self.root = RootItem( items = datasource )
-		self.dataType = dataType
+		self.dataTypes = dataTypes
 		self.updateFieldOrder()
 	
 	
-	def updateFieldOrder( self, fieldOrder: Iterable[str] | None = None ) -> None:
+	def updateFieldOrder( self, fieldOrder: FieldOrder[ItemT] | None = None ) -> None:
 		'''
 		Update which fields are displayed and in which order.
 		'''
 		
-		itemFields = self.dataType.__getItemFields__()
-		
 		if fieldOrder is None:
-			fieldOrder = sorted( itemFields.keys() )
+			fieldOrder = {}
 		
-		self.fields: list[ItemFieldInfo] = []
-		for name in fieldOrder:
-			if name not in itemFields:
-				raise ValueError( f'No definition for field `{name}` in class {self.dataType}.' )
+		self.fields: dict[type[ItemT], list[ItemFieldInfo | None]] = {}
+		for dataType in self.dataTypes:
+			itemFields = dataType.__getItemFields__()
 			
-			self.fields.append( ItemFieldInfo.fromItemFieldList( name, itemFields[name] ) )
+			self.fields[dataType] = []
+			for name in fieldOrder.get( dataType, sorted( itemFields.keys() ) ):
+				if not name:
+					self.fields[dataType].append( None )
+					continue
+				
+				if name not in itemFields:
+					raise ValueError( f'No definition for field `{name}` in class {dataType}.' )
+				
+				self.fields[dataType].append( ItemFieldInfo.fromItemFieldList( name, itemFields[name] ) )
 	
 	
 	def itemFromIndex( self, index: ModelIndex ) -> ItemT:
@@ -73,6 +80,20 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 			return item
 		
 		raise LookupError( 'Index points to `None`.' )
+	
+	
+	def fieldFromIndex( self, index: ModelIndex ) -> ItemFieldInfo | None:
+		'''
+		Return the `ItemFieldInfo` instance associated with the given `index`.
+		'''
+		
+		item = self.itemFromIndex( index )
+		
+		for rowType, fields in self.fields.items():
+			if isinstance( item, rowType ):
+				return fields[index.column()]
+		
+		raise TypeError( f'No field for type `{type( item )}`.' )
 	
 	
 	@override
@@ -139,7 +160,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		
 		_ = parent	# Unused.
 		
-		return len( self.fields )
+		return len( self.fields[self.dataTypes[0]] )
 	
 	
 	@override
@@ -150,6 +171,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		'''
 		
 		if not parent.isValid():
+			# return 0	# TODO: Why?
 			raise ValueError( 'Invalid parent index.' )
 		
 		if children := self.itemFromIndex( parent ).children:
@@ -169,7 +191,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		if not index.isValid():
 			return flags | Qt.ItemFlag.ItemIsDropEnabled
 		
-		field = self.fields[index.column()]
+		field = self.fieldFromIndex( index )
 		if field and field.editable:
 			flags |= Qt.ItemFlag.ItemIsEditable
 		
@@ -192,7 +214,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		if orientation is Qt.Orientation.Vertical:	# TODO: Remove this?
 			return f'{section + 1}'
 		
-		field = self.fields[section]
+		field = self.fields[self.dataTypes[0]][section]
 		assert field is not None
 		
 		return field.label
@@ -208,7 +230,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		if role not in { Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.EditRole }:
 			return None
 		
-		field = self.fields[index.column()]
+		field = self.fieldFromIndex( index )
 		item = self.itemFromIndex( index )
 		
 		# This column is only valid for a parent or child of this item.
@@ -233,7 +255,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		if role is not Qt.ItemDataRole.EditRole or not index.isValid():
 			return False
 		
-		field = self.fields[index.column()]
+		field = self.fieldFromIndex( index )
 		item = self.itemFromIndex( index )
 		assert field is not None
 		
@@ -250,6 +272,9 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		'''
 		Insert an existing item into the model's datasource.
 		'''
+		
+		# if not parent.isValid():
+		# 	parent = self.index( 0, 0 )
 		
 		children = self.itemFromIndex( parent ).children
 		

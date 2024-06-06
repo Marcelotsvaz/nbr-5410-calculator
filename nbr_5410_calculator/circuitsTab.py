@@ -10,7 +10,6 @@ from nbr_5410_calculator.generic_model_views.models import GenericItemModel
 from nbr_5410_calculator.generic_model_views.views import GenericTreeView
 from nbr_5410_calculator.installation.circuit import (
 	BaseCircuit,
-	BaseCircuitUnion,
 	Circuit,
 	UpstreamCircuit,
 )
@@ -21,7 +20,7 @@ from nbr_5410_calculator.installation.project import Project
 # 
 # Models
 #-------------------------------------------------------------------------------
-class CircuitsModel( GenericItemModel[BaseCircuitUnion] ):
+class CircuitsModel( GenericItemModel[BaseCircuit] ):
 	'''
 	Map a list of `Circuit`s to a `QTreeView`.
 	'''
@@ -32,7 +31,7 @@ class CircuitsModel( GenericItemModel[BaseCircuitUnion] ):
 		
 		super().__init__(
 			datasource = self.project.circuits,
-			dataType = BaseCircuit,
+			dataTypes = [ BaseCircuit ],
 			parent = parent,
 		)
 
@@ -41,24 +40,26 @@ class CircuitsModel( GenericItemModel[BaseCircuitUnion] ):
 # 
 # Views
 #-------------------------------------------------------------------------------
-class CircuitsView( GenericTreeView[CircuitsModel, BaseCircuitUnion] ):
+class CircuitsView( GenericTreeView[CircuitsModel, BaseCircuit] ):
 	'''
 	`QTreeView` for `CircuitsModel`.
 	'''
 	
-	fieldOrder = [
-		'name',
-		'supply',
-		'loadType',
-		'power',
-		'wireType',
-		'length',
-		'current',
-		'breaker',
-		'_wireCapacity',
-		'voltageDrop',
-		'wire',
-	]
+	fieldOrder = {
+		BaseCircuit: [
+			'name',
+			'supply',
+			'loadType',
+			'power',
+			'wireType',
+			'length',
+			'current',
+			'breaker',
+			'_wireCapacity',
+			'voltageDrop',
+			'wire',
+		],
+	}
 	
 	
 	@Slot()

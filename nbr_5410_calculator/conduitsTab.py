@@ -6,24 +6,38 @@ from PySide6.QtCore import Slot
 
 from nbr_5410_calculator.generic_model_views.models import GenericItemModel
 from nbr_5410_calculator.generic_model_views.views import GenericTreeView
+from nbr_5410_calculator.installation.circuit import BaseCircuit
 from nbr_5410_calculator.installation.conduitRun import ConduitRun, ReferenceMethod
 
 
 
-class ConduitRunsView( GenericTreeView[GenericItemModel[ConduitRun], ConduitRun] ):
+class ConduitRunsView(
+	GenericTreeView[GenericItemModel[ConduitRun | BaseCircuit], ConduitRun | BaseCircuit],
+):
 	'''
 	`QTreeView` for `ConduitRunsModel`.
 	'''
 	
-	fieldOrder = [
-		'name',
-		'referenceMethod',
-		'temperature',
-		'length',
-		'grouping',
-		'fillFactor',
-		'conduit',
-	]
+	fieldOrder = {
+		ConduitRun: [
+			'name',
+			'referenceMethod',
+			'temperature',
+			'length',
+			'grouping',
+			'fillFactor',
+			'conduit',
+		],
+		BaseCircuit: [
+			'name',
+			None,
+			None,
+			'length',
+			None,
+			None,
+			None,
+		],
+	}
 	
 	
 	@Slot()
