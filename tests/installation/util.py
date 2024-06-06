@@ -236,7 +236,6 @@ def createProjectDict( circuits: list[jsonType] ) -> jsonType:
 	return {
 		'circuits': [ *circuits ],
 		'conduitRuns': [ createConduitRunDict( [ circuit ] ) for circuit in circuits ],
-		'defaultConduitRun': None,
 		'defaultLoadType': None,
 		'defaultSupply': None,
 		'defaultWireType': None,
