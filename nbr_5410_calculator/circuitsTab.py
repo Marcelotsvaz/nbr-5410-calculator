@@ -42,7 +42,7 @@ class CircuitsModel( GenericItemModel[BaseCircuit] ):
 #-------------------------------------------------------------------------------
 class CircuitsView( GenericTreeView[CircuitsModel, BaseCircuit] ):
 	'''
-	`QTreeView` for `CircuitsModel`.
+	Tree view of `BaseCircuit`.
 	'''
 	
 	fieldOrder = {

@@ -176,19 +176,6 @@
         <string>Conduits</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="0">
-         <spacer name="horizontalSpacer_2">
-          <property name="orientation">
-           <enum>Qt::Orientation::Horizontal</enum>
-          </property>
-          <property name="sizeHint" stdset="0">
-           <size>
-            <width>40</width>
-            <height>20</height>
-           </size>
-          </property>
-         </spacer>
-        </item>
         <item row="0" column="2">
          <widget class="QPushButton" name="newConduitRunButton">
           <property name="text">
@@ -209,8 +196,24 @@
           </property>
          </widget>
         </item>
+        <item row="0" column="0">
+         <spacer name="horizontalSpacer5">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
         <item row="1" column="0" colspan="3">
          <widget class="ConduitRunsView" name="conduitsTreeView"/>
+        </item>
+        <item row="2" column="0" colspan="3">
+         <widget class="UnassignedCircuitsView" name="unassignedCircuitsView"/>
         </item>
        </layout>
       </widget>
@@ -359,6 +362,11 @@
     <slot>newConduitRun()</slot>
     <slot>deleteSelectedItems()</slot>
    </slots>
+  </customwidget>
+  <customwidget>
+   <class>UnassignedCircuitsView</class>
+   <extends>QListView</extends>
+   <header>nbr_5410_calculator.conduitsTab</header>
   </customwidget>
  </customwidgets>
  <resources/>

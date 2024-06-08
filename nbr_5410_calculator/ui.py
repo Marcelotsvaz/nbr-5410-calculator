@@ -4,7 +4,7 @@ Main window and project-level stuff.
 
 from typing import override
 
-from PySide6.QtCore import Slot
+from PySide6.QtCore import QSortFilterProxyModel, Slot
 from PySide6.QtWidgets import QWidget, QMainWindow, QFileDialog, QMessageBox
 
 from nbr_5410_calculator.circuitsTab import CircuitsModel
@@ -44,6 +44,8 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		wireTypeModel = GenericItemModel( project.wireTypes, [ WireType ], self )
 		circuitsModel = CircuitsModel( project, self )
 		conduitRunsModel = GenericItemModel( project.conduitRuns, [ ConduitRun, BaseCircuit ], self )
+		unassignedCircuitsModel = QSortFilterProxyModel( self )
+		unassignedCircuitsModel.setSourceModel( circuitsModel )
 		
 		self.suppliesListView.setModel( supplyModel )
 		self.loadTypesListView.setModel( loadTypeModel )
@@ -56,6 +58,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		self.conduitsTreeView.setModel( conduitRunsModel )
 		self.conduitsTreeView.expandAll()
 		self.conduitsTreeView.resizeColumnsToContents()
+		self.unassignedCircuitsView.setModel( unassignedCircuitsModel )
 	
 	
 	@Slot()

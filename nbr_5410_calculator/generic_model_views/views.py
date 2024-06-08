@@ -28,7 +28,12 @@ from PySide6.QtWidgets import (
 )
 from PySide6.QtGui import QDrag, QPainter, QPixmap
 
-from nbr_5410_calculator.generic_model_views.models import FieldOrder, GenericItem, GenericItemModel, ModelIndex
+from nbr_5410_calculator.generic_model_views.models import (
+	FieldOrder,
+	GenericItem,
+	GenericItemModel,
+	ModelIndex,
+)
 
 
 
@@ -49,9 +54,13 @@ class GenericListView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QListV
 	def setModel( self, model: ModelT | None ) -> None:	# pyright: ignore [reportIncompatibleMethodOverride]
 		super().setModel( model )
 		
-		if model:
+		if not model:
+			return
+		
+		if isinstance( model, GenericItemModel ):	# TODO
 			model.updateFieldOrder( self.fieldOrder )
-			self.setRootIndex( model.index( 0, 0 ) )
+		
+		self.setRootIndex( model.index( 0, 0 ) )
 	
 	
 	def appendItem( self, item: ItemT ) -> None:
@@ -154,9 +163,13 @@ class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QTreeV
 	def setModel( self, model: ModelT | None ) -> None:	# pyright: ignore [reportIncompatibleMethodOverride]
 		super().setModel( model )
 		
-		if model:
+		if not model:
+			return
+		
+		if isinstance( model, GenericItemModel ):	# TODO
 			model.updateFieldOrder( self.fieldOrder )
-			self.setRootIndex( model.index( 0, 0 ) )
+		
+		self.setRootIndex( model.index( 0, 0 ) )
 	
 	
 	def appendItem( self, item: ItemT ) -> None:
@@ -171,7 +184,7 @@ class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QTreeV
 			parent = lastSelectedIndex.parent()
 		else:
 			# After last item.
-			row = self.model().rowCount( self.rootIndex() ) + 1
+			row = self.model().rowCount( self.rootIndex() )
 			parent = self.rootIndex()
 		
 		self.model().insertItem( item, row, parent )

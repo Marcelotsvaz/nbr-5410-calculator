@@ -171,8 +171,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		'''
 		
 		if not parent.isValid():
-			# return 0	# TODO: Why?
-			raise ValueError( 'Invalid parent index.' )
+			return 1	# Root item.
 		
 		if children := self.itemFromIndex( parent ).children:
 			return len( children )

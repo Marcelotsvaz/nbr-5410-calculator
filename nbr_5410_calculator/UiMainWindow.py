@@ -22,7 +22,7 @@ from PySide6.QtWidgets import (QApplication, QGridLayout, QHeaderView, QLabel,
     QWidget)
 
 from nbr_5410_calculator.circuitsTab import CircuitsView
-from nbr_5410_calculator.conduitsTab import ConduitRunsView
+from nbr_5410_calculator.conduitsTab import (ConduitRunsView, UnassignedCircuitsView)
 from nbr_5410_calculator.projectTab import (LoadTypeView, SupplyView, WireTypeView)
 
 class Ui_mainWindow(object):
@@ -164,10 +164,6 @@ class Ui_mainWindow(object):
         self.conduitsTab.setObjectName(u"conduitsTab")
         self.gridLayout_3 = QGridLayout(self.conduitsTab)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
-        self.horizontalSpacer_2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
-
-        self.gridLayout_3.addItem(self.horizontalSpacer_2, 0, 0, 1, 1)
-
         self.newConduitRunButton = QPushButton(self.conduitsTab)
         self.newConduitRunButton.setObjectName(u"newConduitRunButton")
         self.newConduitRunButton.setIcon(icon8)
@@ -180,10 +176,19 @@ class Ui_mainWindow(object):
 
         self.gridLayout_3.addWidget(self.deleteConduitRunButton, 0, 1, 1, 1)
 
+        self.horizontalSpacer5 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_3.addItem(self.horizontalSpacer5, 0, 0, 1, 1)
+
         self.conduitsTreeView = ConduitRunsView(self.conduitsTab)
         self.conduitsTreeView.setObjectName(u"conduitsTreeView")
 
         self.gridLayout_3.addWidget(self.conduitsTreeView, 1, 0, 1, 3)
+
+        self.unassignedCircuitsView = UnassignedCircuitsView(self.conduitsTab)
+        self.unassignedCircuitsView.setObjectName(u"unassignedCircuitsView")
+
+        self.gridLayout_3.addWidget(self.unassignedCircuitsView, 2, 0, 1, 3)
 
         self.tabWidget.addTab(self.conduitsTab, "")
 

@@ -18,7 +18,7 @@ from nbr_5410_calculator.installation.circuit import (
 
 class SupplyView( GenericListView[GenericItemModel[Supply], Supply] ):
 	'''
-	`QListView` for `SupplyModel`.
+	List view of `Supply`.
 	'''
 	
 	fieldOrder = {
@@ -46,7 +46,7 @@ class SupplyView( GenericListView[GenericItemModel[Supply], Supply] ):
 
 class LoadTypeView( GenericListView[GenericItemModel[LoadType], LoadType] ):
 	'''
-	`QListView` for `LoadTypeModel`.
+	List view of `LoadType`.
 	'''
 	
 	fieldOrder = {
@@ -76,7 +76,7 @@ class LoadTypeView( GenericListView[GenericItemModel[LoadType], LoadType] ):
 
 class WireTypeView( GenericListView[GenericItemModel[WireType], WireType] ):
 	'''
-	`QListView` for `WireTypeModel`.
+	List view of `WireType`.
 	'''
 	
 	fieldOrder = {
