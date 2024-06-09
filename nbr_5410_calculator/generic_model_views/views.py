@@ -3,7 +3,7 @@ Views for `GenericItemModel`.
 '''
 
 from enum import Enum
-from typing import Any, cast, override
+from typing import TYPE_CHECKING, Any, cast, override
 
 from PySide6 import QtGui
 from PySide6.QtCore import (
@@ -37,9 +37,19 @@ from nbr_5410_calculator.generic_model_views.models import (
 
 
 
-class GenericListView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QListView ):
+# TODO: Figure out proper generic multiple inheritance with Qt.
+if TYPE_CHECKING:
+	class QAbstractItemViewT( QAbstractItemView ):	# pylint: disable = missing-class-docstring
+		pass
+else:
+	class QAbstractItemViewT:	# pylint: disable = missing-class-docstring
+		pass
+
+
+
+class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbstractItemViewT ):
 	'''
-	`QListView` for `GenericItemModel`.
+	Common `QAbstractItemView` overrides for `GenericItemModel`.
 	'''
 	
 	fieldOrder: FieldOrder[ItemT] | None = None
@@ -57,10 +67,22 @@ class GenericListView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QListV
 		if not model:
 			return
 		
-		if isinstance( model, GenericItemModel ):	# TODO
+		if isinstance( model, GenericItemModel ):	# TODO: QSortFilterProxyModel
 			model.updateFieldOrder( self.fieldOrder )
 		
 		self.setRootIndex( model.index( 0, 0 ) )
+	
+	
+	def selectedRowIndexes( self ) -> list[QModelIndex]:
+		'''
+		Return a sorted list of indexes, one for each selected row.
+		'''
+		
+		return [
+			index
+			for index in sorted( self.selectedIndexes(), key = lambda index: index.row() )
+			if index.column() == 0
+		]
 	
 	
 	def appendItem( self, item: ItemT ) -> None:
@@ -68,14 +90,13 @@ class GenericListView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QListV
 		Append `item` after last selected item.
 		'''
 		
-		if selectedIndexes := self.selectedIndexes():
+		if selectedRowIndexes := self.selectedRowIndexes():
 			# After last selected item.
-			lastSelectedIndex = max( selectedIndexes, key = lambda index: index.row() )
-			row = lastSelectedIndex.row() + 1
-			parent = lastSelectedIndex.parent()
+			row = selectedRowIndexes[-1].row() + 1
+			parent = selectedRowIndexes[-1].parent()
 		else:
 			# After last item.
-			row = self.model().rowCount( self.rootIndex() ) + 1
+			row = self.model().rowCount( self.rootIndex() )
 			parent = self.rootIndex()
 		
 		self.model().insertItem( item, row, parent )
@@ -87,25 +108,34 @@ class GenericListView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QListV
 		Delete selected items from table.
 		'''
 		
-		selectedIndexes = [
+		selectedRowIndexes = [
 			QPersistentModelIndex( index )
-			for index in self.selectedIndexes()
-			if index.column() == 0
+			for index in self.selectedRowIndexes()
 		]
 		
-		for index in selectedIndexes:
+		for index in selectedRowIndexes:
 			# TODO: Check deleting parent before child.
 			self.model().removeRow( index.row(), index.parent() )
 
 
 
-class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QTreeView ):
+class GenericListView[ModelT: GenericItemModel[Any], ItemT: GenericItem](	# pyright: ignore [reportIncompatibleMethodOverride]
+	GenericViewMixin[ModelT, ItemT],
+	QListView,
+):
 	'''
-	`QTreeView` for `GenericItemModel`.
+	List view for `GenericItemModel`.
 	'''
-	
-	fieldOrder: FieldOrder[ItemT] | None = None
-	
+
+
+
+class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem](	# pyright: ignore [reportIncompatibleMethodOverride]
+	GenericViewMixin[ModelT, ItemT],
+	QTreeView,
+):
+	'''
+	Tree view for `GenericItemModel`.
+	'''
 	
 	@override
 	def __init__( self, parent: QWidget | None = None ) -> None:
@@ -140,54 +170,6 @@ class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QTreeV
 		# This should avoid invalid calls to `QGenericItemModel.index`.
 		if self.model().rowCount( self.rootIndex() ) > 0:
 			super().expandAll()
-	
-	
-	def selectedRowIndexes( self ) -> list[QModelIndex]:
-		'''
-		Return a sorted list of indexes, one for each selected row.
-		'''
-		
-		return [
-			index
-			for index in sorted( self.selectedIndexes(), key = lambda index: index.row() )
-			if index.column() == 0
-		]
-	
-	
-	@override
-	def model( self ) -> ModelT:
-		return cast( ModelT, super().model() )
-	
-	
-	@override
-	def setModel( self, model: ModelT | None ) -> None:	# pyright: ignore [reportIncompatibleMethodOverride]
-		super().setModel( model )
-		
-		if not model:
-			return
-		
-		if isinstance( model, GenericItemModel ):	# TODO
-			model.updateFieldOrder( self.fieldOrder )
-		
-		self.setRootIndex( model.index( 0, 0 ) )
-	
-	
-	def appendItem( self, item: ItemT ) -> None:
-		'''
-		Append `item` after last selected item.
-		'''
-		
-		if selectedIndexes := self.selectedIndexes():
-			# After last selected item.
-			lastSelectedIndex = max( selectedIndexes, key = lambda index: index.row() )
-			row = lastSelectedIndex.row() + 1
-			parent = lastSelectedIndex.parent()
-		else:
-			# After last item.
-			row = self.model().rowCount( self.rootIndex() )
-			parent = self.rootIndex()
-		
-		self.model().insertItem( item, row, parent )
 	
 	
 	@override
@@ -325,7 +307,7 @@ class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QTreeV
 	
 	
 	@override
-	def paintEvent( self, event: QtGui.QPaintEvent ) -> None:
+	def paintEvent( self, event: QtGui.QPaintEvent ) -> None:	# pyright: ignore [reportIncompatibleMethodOverride]
 		'''
 		Draw view content and drop indicator.
 		TODO: Fix animations.
@@ -346,23 +328,6 @@ class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QTreeV
 				painter,
 				self,
 			)
-	
-	
-	@Slot()
-	def deleteSelectedItems( self ) -> None:
-		'''
-		Delete selected items from table.
-		'''
-		
-		selectedIndexes = [
-			QPersistentModelIndex( index )
-			for index in self.selectedIndexes()
-			if index.column() == 0
-		]
-		
-		for index in selectedIndexes:
-			# TODO: Check deleting parent before child.
-			self.model().removeRow( index.row(), index.parent() )
 
 
 
