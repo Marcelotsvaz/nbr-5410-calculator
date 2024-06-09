@@ -39,14 +39,19 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		
 		self.project = project
 		
+		# Models.
 		supplyModel = GenericItemModel( project.supplies, [ Supply ], self )
 		loadTypeModel = GenericItemModel( project.loadTypes, [ LoadType ], self )
 		wireTypeModel = GenericItemModel( project.wireTypes, [ WireType ], self )
+		
 		circuitsModel = CircuitsModel( project, self )
+		
 		conduitRunsModel = GenericItemModel( project.conduitRuns, [ ConduitRun, BaseCircuit ], self )
 		unassignedCircuitsModel = QSortFilterProxyModel( self )
 		unassignedCircuitsModel.setSourceModel( circuitsModel )
 		
+		
+		# Views.
 		self.suppliesListView.setModel( supplyModel )
 		self.loadTypesListView.setModel( loadTypeModel )
 		self.wireTypesListView.setModel( wireTypeModel )

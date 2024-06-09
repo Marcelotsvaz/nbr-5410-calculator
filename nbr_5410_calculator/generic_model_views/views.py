@@ -56,6 +56,13 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 	
 	
 	@override
+	def __init__( self, parent: QWidget | None = None ) -> None:
+		super().__init__( parent )
+		
+		self.dropIndicatorRect = QRect()
+	
+	
+	@override
 	def model( self ) -> ModelT:
 		return cast( ModelT, super().model() )
 	
@@ -116,60 +123,6 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 		for index in selectedRowIndexes:
 			# TODO: Check deleting parent before child.
 			self.model().removeRow( index.row(), index.parent() )
-
-
-
-class GenericListView[ModelT: GenericItemModel[Any], ItemT: GenericItem](	# pyright: ignore [reportIncompatibleMethodOverride]
-	GenericViewMixin[ModelT, ItemT],
-	QListView,
-):
-	'''
-	List view for `GenericItemModel`.
-	'''
-
-
-
-class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem](	# pyright: ignore [reportIncompatibleMethodOverride]
-	GenericViewMixin[ModelT, ItemT],
-	QTreeView,
-):
-	'''
-	Tree view for `GenericItemModel`.
-	'''
-	
-	@override
-	def __init__( self, parent: QWidget | None = None ) -> None:
-		super().__init__( parent )
-		
-		self.dropIndicatorRect = QRect()
-		
-		self.setItemDelegate( GenericItemDelegate( self ) )
-		
-		self.setUniformRowHeights( True )
-		self.setAllColumnsShowFocus( True )
-		self.setAlternatingRowColors( True )
-		self.setAnimated( True )
-		
-		self.setSelectionMode( QAbstractItemView.SelectionMode.ExtendedSelection )
-		self.setDragDropMode( QAbstractItemView.DragDropMode.InternalMove )
-		self.setDefaultDropAction( Qt.DropAction.MoveAction )
-		# self.setSortingEnabled( True )
-	
-	
-	def resizeColumnsToContents( self ) -> None:
-		'''
-		Resizes all columns given the size of their contents.
-		'''
-		
-		for index in range( self.model().columnCount() ):
-			self.resizeColumnToContents( index )
-	
-	
-	@override
-	def expandAll( self ) -> None:
-		# This should avoid invalid calls to `QGenericItemModel.index`.
-		if self.model().rowCount( self.rootIndex() ) > 0:
-			super().expandAll()
 	
 	
 	@override
@@ -313,11 +266,14 @@ class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem](	# pyri
 		TODO: Fix animations.
 		'''
 		
-		painter = QPainter( self.viewport() )
-		
-		self.drawTree( painter, event.region() )
+		# Temporally disable drop indicator so we can draw it ourselves later.
+		oldShowDropIndicator = self.showDropIndicator()
+		self.setDropIndicatorShown( False )
+		super().paintEvent( event )
+		self.setDropIndicatorShown( oldShowDropIndicator )
 		
 		# Draw drop indicator.
+		painter = QPainter( self.viewport() )
 		if self.state() is QAbstractItemView.State.DraggingState and self.showDropIndicator():
 			styleOption = QStyleOption()
 			styleOption.initFrom( self )
@@ -328,6 +284,71 @@ class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem](	# pyri
 				painter,
 				self,
 			)
+
+
+
+class GenericListView[ModelT: GenericItemModel[Any], ItemT: GenericItem](	# pyright: ignore [reportIncompatibleMethodOverride]
+	GenericViewMixin[ModelT, ItemT],
+	QListView,
+):
+	'''
+	List view for `GenericItemModel`.
+	'''
+	
+	@override
+	def __init__( self, parent: QWidget | None = None ) -> None:
+		super().__init__( parent )
+		
+		self.setItemDelegate( GenericItemDelegate( self ) )
+		
+		self.setAlternatingRowColors( True )
+		
+		self.setSelectionMode( QAbstractItemView.SelectionMode.ExtendedSelection )
+		self.setDragDropMode( QAbstractItemView.DragDropMode.InternalMove )
+		self.setDefaultDropAction( Qt.DropAction.MoveAction )
+		# self.setSortingEnabled( True )
+
+
+
+class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem](	# pyright: ignore [reportIncompatibleMethodOverride]
+	GenericViewMixin[ModelT, ItemT],
+	QTreeView,
+):
+	'''
+	Tree view for `GenericItemModel`.
+	'''
+	
+	@override
+	def __init__( self, parent: QWidget | None = None ) -> None:
+		super().__init__( parent )
+		
+		self.setItemDelegate( GenericItemDelegate( self ) )
+		
+		self.setUniformRowHeights( True )
+		self.setAllColumnsShowFocus( True )
+		self.setAlternatingRowColors( True )
+		self.setAnimated( True )
+		
+		self.setSelectionMode( QAbstractItemView.SelectionMode.ExtendedSelection )
+		self.setDragDropMode( QAbstractItemView.DragDropMode.InternalMove )
+		self.setDefaultDropAction( Qt.DropAction.MoveAction )
+		# self.setSortingEnabled( True )
+	
+	
+	def resizeColumnsToContents( self ) -> None:
+		'''
+		Resizes all columns given the size of their contents.
+		'''
+		
+		for index in range( self.model().columnCount() ):
+			self.resizeColumnToContents( index )
+	
+	
+	@override
+	def expandAll( self ) -> None:
+		# This should avoid invalid calls to `QGenericItemModel.index`.
+		if self.model().rowCount( self.rootIndex() ) > 0:
+			super().expandAll()
 
 
 

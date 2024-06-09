@@ -81,10 +81,11 @@
 [tool.pyright]
 	ignore = [ '*/UiMainWindow.py' ]
 	typeCheckingMode = 'strict'
-	reportMissingTypeStubs = 'none'
-	reportUnnecessaryTypeIgnoreComment = 'error'
+	reportImplicitOverride = 'error'
 	reportMissingSuperCall = 'warning'
+	reportMissingTypeStubs = 'none'
 	reportUnknownLambdaType = 'none'
+	reportUnnecessaryTypeIgnoreComment = 'error'
 
 
 
