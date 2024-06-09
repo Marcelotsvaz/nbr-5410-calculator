@@ -41,7 +41,7 @@
          </widget>
         </item>
         <item row="0" column="4">
-         <spacer name="horizontalSpacer2">
+         <spacer name="loadTypesLabelSpacer">
           <property name="orientation">
            <enum>Qt::Orientation::Horizontal</enum>
           </property>
@@ -81,7 +81,7 @@
          <widget class="SupplyView" name="suppliesListView"/>
         </item>
         <item row="0" column="1">
-         <spacer name="horizontalSpacer1">
+         <spacer name="suppliesLabelSpacer">
           <property name="orientation">
            <enum>Qt::Orientation::Horizontal</enum>
           </property>
@@ -104,7 +104,7 @@
          <widget class="WireTypeView" name="wireTypesListView"/>
         </item>
         <item row="0" column="7">
-         <spacer name="horizontalSpacer3">
+         <spacer name="wireTypesLabelSpacer">
           <property name="orientation">
            <enum>Qt::Orientation::Horizontal</enum>
           </property>
@@ -123,10 +123,7 @@
         <string>Circuits</string>
        </attribute>
        <layout class="QGridLayout" name="gridLayout_2">
-        <item row="1" column="0" colspan="4">
-         <widget class="CircuitsView" name="circuitsTreeView"/>
-        </item>
-        <item row="0" column="1">
+        <item row="0" column="2">
          <widget class="QPushButton" name="deleteCircuitButton">
           <property name="text">
            <string>Delete circuit</string>
@@ -136,8 +133,58 @@
           </property>
          </widget>
         </item>
+        <item row="0" column="1">
+         <spacer name="circuitsLabelSpacer">
+          <property name="orientation">
+           <enum>Qt::Orientation::Horizontal</enum>
+          </property>
+          <property name="sizeHint" stdset="0">
+           <size>
+            <width>40</width>
+            <height>20</height>
+           </size>
+          </property>
+         </spacer>
+        </item>
+        <item row="0" column="4">
+         <widget class="QPushButton" name="newCircuitButton">
+          <property name="text">
+           <string>New circuit</string>
+          </property>
+          <property name="icon">
+           <iconset theme="window-new"/>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="3">
+         <widget class="QPushButton" name="newUpstreamCircuitButton">
+          <property name="text">
+           <string>New upstream circuit</string>
+          </property>
+          <property name="icon">
+           <iconset theme="window-new"/>
+          </property>
+         </widget>
+        </item>
         <item row="0" column="0">
-         <spacer name="horizontalSpacer4">
+         <widget class="QLabel" name="circuitsLabel">
+          <property name="text">
+           <string>Circuits</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="5">
+         <widget class="CircuitsView" name="circuitsTreeView"/>
+        </item>
+       </layout>
+      </widget>
+      <widget class="QWidget" name="conduitsTab">
+       <attribute name="title">
+        <string>Conduits</string>
+       </attribute>
+       <layout class="QGridLayout" name="gridLayout_3">
+        <item row="0" column="1">
+         <spacer name="conduitRunsLabelSpacer">
           <property name="orientation">
            <enum>Qt::Orientation::Horizontal</enum>
           </property>
@@ -150,33 +197,6 @@
          </spacer>
         </item>
         <item row="0" column="3">
-         <widget class="QPushButton" name="newCircuitButton">
-          <property name="text">
-           <string>New circuit</string>
-          </property>
-          <property name="icon">
-           <iconset theme="window-new"/>
-          </property>
-         </widget>
-        </item>
-        <item row="0" column="2">
-         <widget class="QPushButton" name="newUpstreamCircuitButton">
-          <property name="text">
-           <string>New upstream circuit</string>
-          </property>
-          <property name="icon">
-           <iconset theme="window-new"/>
-          </property>
-         </widget>
-        </item>
-       </layout>
-      </widget>
-      <widget class="QWidget" name="conduitsTab">
-       <attribute name="title">
-        <string>Conduits</string>
-       </attribute>
-       <layout class="QGridLayout" name="gridLayout_3">
-        <item row="0" column="2">
          <widget class="QPushButton" name="newConduitRunButton">
           <property name="text">
            <string>New conduit run</string>
@@ -186,7 +206,7 @@
           </property>
          </widget>
         </item>
-        <item row="0" column="1">
+        <item row="0" column="2">
          <widget class="QPushButton" name="deleteConduitRunButton">
           <property name="text">
            <string>Delete conduit run</string>
@@ -197,7 +217,27 @@
          </widget>
         </item>
         <item row="0" column="0">
-         <spacer name="horizontalSpacer5">
+         <widget class="QLabel" name="conduitRunsLabel">
+          <property name="text">
+           <string>Conduit Runs</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0" colspan="4">
+         <widget class="ConduitRunsView" name="conduitsTreeView"/>
+        </item>
+        <item row="3" column="0" colspan="4">
+         <widget class="UnassignedCircuitsView" name="unassignedCircuitsView"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="unassigedCircuitsLabel">
+          <property name="text">
+           <string>Unassigned Circuits</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1" colspan="3">
+         <spacer name="unassigedCircuitsLabelSpacer">
           <property name="orientation">
            <enum>Qt::Orientation::Horizontal</enum>
           </property>
@@ -208,12 +248,6 @@
            </size>
           </property>
          </spacer>
-        </item>
-        <item row="1" column="0" colspan="3">
-         <widget class="ConduitRunsView" name="conduitsTreeView"/>
-        </item>
-        <item row="2" column="0" colspan="3">
-         <widget class="UnassignedCircuitsView" name="unassignedCircuitsView"/>
         </item>
        </layout>
       </widget>

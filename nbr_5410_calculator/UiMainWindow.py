@@ -77,9 +77,9 @@ class Ui_mainWindow(object):
 
         self.gridLayout_4.addWidget(self.newWireTypeButton, 0, 8, 1, 1)
 
-        self.horizontalSpacer2 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.loadTypesLabelSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.gridLayout_4.addItem(self.horizontalSpacer2, 0, 4, 1, 1)
+        self.gridLayout_4.addItem(self.loadTypesLabelSpacer, 0, 4, 1, 1)
 
         self.loadTypesLabel = QLabel(self.projectTab)
         self.loadTypesLabel.setObjectName(u"loadTypesLabel")
@@ -106,9 +106,9 @@ class Ui_mainWindow(object):
 
         self.gridLayout_4.addWidget(self.suppliesListView, 1, 0, 1, 3)
 
-        self.horizontalSpacer1 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.suppliesLabelSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.gridLayout_4.addItem(self.horizontalSpacer1, 0, 1, 1, 1)
+        self.gridLayout_4.addItem(self.suppliesLabelSpacer, 0, 1, 1, 1)
 
         self.newLoadTypeButton = QPushButton(self.projectTab)
         self.newLoadTypeButton.setObjectName(u"newLoadTypeButton")
@@ -121,74 +121,93 @@ class Ui_mainWindow(object):
 
         self.gridLayout_4.addWidget(self.wireTypesListView, 1, 6, 1, 3)
 
-        self.horizontalSpacer3 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.wireTypesLabelSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.gridLayout_4.addItem(self.horizontalSpacer3, 0, 7, 1, 1)
+        self.gridLayout_4.addItem(self.wireTypesLabelSpacer, 0, 7, 1, 1)
 
         self.tabWidget.addTab(self.projectTab, "")
         self.circuitsTab = QWidget()
         self.circuitsTab.setObjectName(u"circuitsTab")
         self.gridLayout_2 = QGridLayout(self.circuitsTab)
         self.gridLayout_2.setObjectName(u"gridLayout_2")
-        self.circuitsTreeView = CircuitsView(self.circuitsTab)
-        self.circuitsTreeView.setObjectName(u"circuitsTreeView")
-
-        self.gridLayout_2.addWidget(self.circuitsTreeView, 1, 0, 1, 4)
-
         self.deleteCircuitButton = QPushButton(self.circuitsTab)
         self.deleteCircuitButton.setObjectName(u"deleteCircuitButton")
         icon7 = QIcon(QIcon.fromTheme(u"delete"))
         self.deleteCircuitButton.setIcon(icon7)
 
-        self.gridLayout_2.addWidget(self.deleteCircuitButton, 0, 1, 1, 1)
+        self.gridLayout_2.addWidget(self.deleteCircuitButton, 0, 2, 1, 1)
 
-        self.horizontalSpacer4 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.circuitsLabelSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
-        self.gridLayout_2.addItem(self.horizontalSpacer4, 0, 0, 1, 1)
+        self.gridLayout_2.addItem(self.circuitsLabelSpacer, 0, 1, 1, 1)
 
         self.newCircuitButton = QPushButton(self.circuitsTab)
         self.newCircuitButton.setObjectName(u"newCircuitButton")
         icon8 = QIcon(QIcon.fromTheme(u"window-new"))
         self.newCircuitButton.setIcon(icon8)
 
-        self.gridLayout_2.addWidget(self.newCircuitButton, 0, 3, 1, 1)
+        self.gridLayout_2.addWidget(self.newCircuitButton, 0, 4, 1, 1)
 
         self.newUpstreamCircuitButton = QPushButton(self.circuitsTab)
         self.newUpstreamCircuitButton.setObjectName(u"newUpstreamCircuitButton")
         self.newUpstreamCircuitButton.setIcon(icon8)
 
-        self.gridLayout_2.addWidget(self.newUpstreamCircuitButton, 0, 2, 1, 1)
+        self.gridLayout_2.addWidget(self.newUpstreamCircuitButton, 0, 3, 1, 1)
+
+        self.circuitsLabel = QLabel(self.circuitsTab)
+        self.circuitsLabel.setObjectName(u"circuitsLabel")
+
+        self.gridLayout_2.addWidget(self.circuitsLabel, 0, 0, 1, 1)
+
+        self.circuitsTreeView = CircuitsView(self.circuitsTab)
+        self.circuitsTreeView.setObjectName(u"circuitsTreeView")
+
+        self.gridLayout_2.addWidget(self.circuitsTreeView, 1, 0, 1, 5)
 
         self.tabWidget.addTab(self.circuitsTab, "")
         self.conduitsTab = QWidget()
         self.conduitsTab.setObjectName(u"conduitsTab")
         self.gridLayout_3 = QGridLayout(self.conduitsTab)
         self.gridLayout_3.setObjectName(u"gridLayout_3")
+        self.conduitRunsLabelSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_3.addItem(self.conduitRunsLabelSpacer, 0, 1, 1, 1)
+
         self.newConduitRunButton = QPushButton(self.conduitsTab)
         self.newConduitRunButton.setObjectName(u"newConduitRunButton")
         self.newConduitRunButton.setIcon(icon8)
 
-        self.gridLayout_3.addWidget(self.newConduitRunButton, 0, 2, 1, 1)
+        self.gridLayout_3.addWidget(self.newConduitRunButton, 0, 3, 1, 1)
 
         self.deleteConduitRunButton = QPushButton(self.conduitsTab)
         self.deleteConduitRunButton.setObjectName(u"deleteConduitRunButton")
         self.deleteConduitRunButton.setIcon(icon7)
 
-        self.gridLayout_3.addWidget(self.deleteConduitRunButton, 0, 1, 1, 1)
+        self.gridLayout_3.addWidget(self.deleteConduitRunButton, 0, 2, 1, 1)
 
-        self.horizontalSpacer5 = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.conduitRunsLabel = QLabel(self.conduitsTab)
+        self.conduitRunsLabel.setObjectName(u"conduitRunsLabel")
 
-        self.gridLayout_3.addItem(self.horizontalSpacer5, 0, 0, 1, 1)
+        self.gridLayout_3.addWidget(self.conduitRunsLabel, 0, 0, 1, 1)
 
         self.conduitsTreeView = ConduitRunsView(self.conduitsTab)
         self.conduitsTreeView.setObjectName(u"conduitsTreeView")
 
-        self.gridLayout_3.addWidget(self.conduitsTreeView, 1, 0, 1, 3)
+        self.gridLayout_3.addWidget(self.conduitsTreeView, 1, 0, 1, 4)
 
         self.unassignedCircuitsView = UnassignedCircuitsView(self.conduitsTab)
         self.unassignedCircuitsView.setObjectName(u"unassignedCircuitsView")
 
-        self.gridLayout_3.addWidget(self.unassignedCircuitsView, 2, 0, 1, 3)
+        self.gridLayout_3.addWidget(self.unassignedCircuitsView, 3, 0, 1, 4)
+
+        self.unassigedCircuitsLabel = QLabel(self.conduitsTab)
+        self.unassigedCircuitsLabel.setObjectName(u"unassigedCircuitsLabel")
+
+        self.gridLayout_3.addWidget(self.unassigedCircuitsLabel, 2, 0, 1, 1)
+
+        self.unassigedCircuitsLabelSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+
+        self.gridLayout_3.addItem(self.unassigedCircuitsLabelSpacer, 2, 1, 1, 3)
 
         self.tabWidget.addTab(self.conduitsTab, "")
 
@@ -270,9 +289,12 @@ class Ui_mainWindow(object):
         self.deleteCircuitButton.setText(QCoreApplication.translate("mainWindow", u"Delete circuit", None))
         self.newCircuitButton.setText(QCoreApplication.translate("mainWindow", u"New circuit", None))
         self.newUpstreamCircuitButton.setText(QCoreApplication.translate("mainWindow", u"New upstream circuit", None))
+        self.circuitsLabel.setText(QCoreApplication.translate("mainWindow", u"Circuits", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.circuitsTab), QCoreApplication.translate("mainWindow", u"Circuits", None))
         self.newConduitRunButton.setText(QCoreApplication.translate("mainWindow", u"New conduit run", None))
         self.deleteConduitRunButton.setText(QCoreApplication.translate("mainWindow", u"Delete conduit run", None))
+        self.conduitRunsLabel.setText(QCoreApplication.translate("mainWindow", u"Conduit Runs", None))
+        self.unassigedCircuitsLabel.setText(QCoreApplication.translate("mainWindow", u"Unassigned Circuits", None))
         self.tabWidget.setTabText(self.tabWidget.indexOf(self.conduitsTab), QCoreApplication.translate("mainWindow", u"Conduits", None))
         self.menuFile.setTitle(QCoreApplication.translate("mainWindow", u"&File", None))
         self.menuHelp.setTitle(QCoreApplication.translate("mainWindow", u"&Help", None))

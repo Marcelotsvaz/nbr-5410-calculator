@@ -1,7 +1,9 @@
-Add titles to tabs
 Factor out view
 Make views accept regular QAbstractItemView
+
+Set properties of unassigned view
 Set up relationships between models
+
 Defaults for conduitrun
 Delegates
 Placeholder rows
