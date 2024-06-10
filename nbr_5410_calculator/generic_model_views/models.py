@@ -377,11 +377,10 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 	def dragActionsForIndex( self, sourceIndex: ModelIndex ) -> Qt.DropAction:
 		'''
 		Return drag actions supported by `sourceIndex`.
-		TODO: Choose default.
 		TODO: Item instead of index?
 		'''
 		
-		return Qt.DropAction.MoveAction
+		return Qt.DropAction.IgnoreAction
 	
 	
 	def dropActionsForIndex(
@@ -391,11 +390,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 	) -> Qt.DropAction:
 		'''
 		Return drop actions supported by `targetIndex`
-		TODO: Choose default.
 		'''
-		
-		if self.itemFromIndex( targetIndex ).children is not None:
-			return Qt.DropAction.MoveAction
 		
 		return Qt.DropAction.IgnoreAction
 	

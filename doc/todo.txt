@@ -1,7 +1,6 @@
 Set properties of unassigned view
 Set up relationships between models
 
-Defaults for conduitrun
 Delegates
 Placeholder rows
 Power not settable

@@ -60,6 +60,9 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 		super().__init__( parent )
 		
 		self.dropIndicatorRect = QRect()
+		
+		self.setDragDropMode( QAbstractItemView.DragDropMode.DragDrop )
+		self.setDefaultDropAction( Qt.DropAction.MoveAction )
 	
 	
 	@override
@@ -319,8 +322,6 @@ class GenericListView[ModelT: GenericItemModel[Any], ItemT: GenericItem](	# pyri
 		self.setAlternatingRowColors( True )
 		
 		self.setSelectionMode( QAbstractItemView.SelectionMode.ExtendedSelection )
-		self.setDragDropMode( QAbstractItemView.DragDropMode.InternalMove )
-		self.setDefaultDropAction( Qt.DropAction.MoveAction )
 		# self.setSortingEnabled( True )
 
 
@@ -345,8 +346,6 @@ class GenericTreeView[ModelT: GenericItemModel[Any], ItemT: GenericItem](	# pyri
 		self.setAnimated( True )
 		
 		self.setSelectionMode( QAbstractItemView.SelectionMode.ExtendedSelection )
-		self.setDragDropMode( QAbstractItemView.DragDropMode.InternalMove )
-		self.setDefaultDropAction( Qt.DropAction.MoveAction )
 		# self.setSortingEnabled( True )
 	
 	
