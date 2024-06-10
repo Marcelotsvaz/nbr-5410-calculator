@@ -8,7 +8,7 @@ from PySide6.QtCore import Slot
 from PySide6.QtWidgets import QWidget, QMainWindow, QFileDialog, QMessageBox
 
 from nbr_5410_calculator.circuitsTab import CircuitsModel
-from nbr_5410_calculator.conduitsTab import ConduitRunsModel
+from nbr_5410_calculator.conduitsTab import ConduitRunsModel, UnassignedCircuitsModel
 from nbr_5410_calculator.generic_model_views.models import GenericItemModel
 from nbr_5410_calculator.installation.circuit import BaseCircuit, LoadType, Supply, WireType
 from nbr_5410_calculator.installation.conduitRun import ConduitRun
@@ -48,6 +48,11 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		circuitsModel = CircuitsModel( project, self )
 		
 		conduitRunsModel = ConduitRunsModel( project.conduitRuns, [ ConduitRun, BaseCircuit ], self )
+		# TODO: Save unassigned circuits.
+		unassignedCircuitsModel = UnassignedCircuitsModel( [], [ BaseCircuit ], self )
+		
+		circuitsModel.rowsInserted.connect( unassignedCircuitsModel.addCircuit )
+		circuitsModel.rowsAboutToBeRemoved.connect( unassignedCircuitsModel.removeCircuit )
 		
 		# Views.
 		self.suppliesListView.setModel( supplyModel )
@@ -61,7 +66,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		self.conduitsTreeView.setModel( conduitRunsModel )
 		self.conduitsTreeView.expandAll()
 		self.conduitsTreeView.resizeColumnsToContents()
-		# self.unassignedCircuitsView.setModel( circuitsModel )
+		self.unassignedCircuitsView.setModel( unassignedCircuitsModel )
 	
 	
 	@Slot()

@@ -270,13 +270,13 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		return False
 	
 	
-	def insertItem( self, item: ItemT, row: int = -1, parent: ModelIndex = QModelIndex() ) -> None:
+	def insertItem( self, item: ItemT, row: int = -1, parent: ModelIndex | None = None ) -> None:
 		'''
 		Insert an existing item into the model's datasource.
 		'''
 		
-		# if not parent.isValid():
-		# 	parent = self.index( 0, 0 )
+		if parent is None:
+			parent = self.index( 0, 0 )
 		
 		children = self.itemFromIndex( parent ).children
 		

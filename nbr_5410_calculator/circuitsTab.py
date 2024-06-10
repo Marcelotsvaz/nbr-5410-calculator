@@ -22,7 +22,7 @@ from nbr_5410_calculator.installation.project import Project
 #-------------------------------------------------------------------------------
 class CircuitsModel( GenericItemModel[BaseCircuit] ):
 	'''
-	Map a list of `Circuit`s to a `QTreeView`.
+	Recursive model of `BaseCircuit`.
 	'''
 	
 	@override
