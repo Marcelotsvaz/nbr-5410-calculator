@@ -143,6 +143,15 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 		if not selectedIndexes:
 			return
 		
+		# Get actions common to all items.
+		actions = Qt.DropAction.ActionMask
+		for index in selectedIndexes:
+			actions &= self.model().dragActionsForIndex( index )
+		
+		if not actions:
+			# TODO: Ignore this?
+			return
+		
 		# Set up drag with model's MIME data.
 		drag = QDrag( self )
 		data = self.model().mimeData( selectedIndexes )
@@ -155,7 +164,9 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 		drag.setHotSpot( pixmap.rect().center() )
 		
 		# Execute drag.
-		action = drag.exec( supportedActions, self.defaultDropAction() )
+		# TODO: Should we care about supportedActions? Default should be based on what?
+		# action = drag.exec( supportedActions, self.defaultDropAction() )
+		action = drag.exec( actions )
 		
 		# Delete moved items.
 		if action is Qt.DropAction.MoveAction and drag.target() and drag.target() not in self.children():
@@ -212,6 +223,10 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 	def dragMoveEvent( self, event: QtGui.QDragMoveEvent ) -> None:
 		'''
 		Draw drop indicator.
+		TODO:
+		Get drag action from source index and not method.
+		Get all drop actions in target view/model
+		From overlap of source drag and target drop per index show rect.
 		'''
 		
 		_, _, dropIndicator = self.dropTargetForPosition( event.position().toPoint() )

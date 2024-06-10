@@ -194,10 +194,13 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		if field and field.editable:
 			flags |= Qt.ItemFlag.ItemIsEditable
 		
-		if self.itemFromIndex( index ).children is not None:
+		if self.dragActionsForIndex( index ):
+			flags |= Qt.ItemFlag.ItemIsDragEnabled
+		
+		if self.dropActionsForIndex( index ):
 			flags |= Qt.ItemFlag.ItemIsDropEnabled
 		
-		return flags | Qt.ItemFlag.ItemIsDragEnabled
+		return flags
 	
 	
 	@override
@@ -371,6 +374,52 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 	# 	self.layoutChanged.emit()
 	
 	
+	def dragActionsForIndex( self, sourceIndex: ModelIndex ) -> Qt.DropAction:
+		'''
+		Return drag actions supported by `sourceIndex`.
+		TODO: Choose default.
+		TODO: Item instead of index?
+		'''
+		
+		return Qt.DropAction.MoveAction
+	
+	
+	def dropActionsForIndex(
+		self,
+		targetIndex: ModelIndex,
+		mimeData: QMimeData | None = None,
+	) -> Qt.DropAction:
+		'''
+		Return drop actions supported by `targetIndex`
+		TODO: Choose default.
+		'''
+		
+		if self.itemFromIndex( targetIndex ).children is not None:
+			return Qt.DropAction.MoveAction
+		
+		return Qt.DropAction.IgnoreAction
+	
+	
+	@override
+	def supportedDragActions( self ) -> Qt.DropAction:
+		'''
+		Return supported drag actions.
+		TODO: Choose default.
+		'''
+		
+		return Qt.DropAction.MoveAction
+	
+	
+	@override
+	def supportedDropActions( self ) -> Qt.DropAction:
+		'''
+		Return supported drop actions.
+		TODO: Choose default.
+		'''
+		
+		return Qt.DropAction.MoveAction
+	
+	
 	@override
 	def mimeTypes( self ) -> list[str]:
 		'''
@@ -396,6 +445,16 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		return mimeData
 	
 	
+	def itemsFromMimeData( self, mimeData: QMimeData ) -> list[ItemT]:
+		'''
+		Parse `QMimeData` using default MIME type.
+		'''
+		
+		jsonBytes = mimeData.data( self.jsonMimeType ).data()
+		
+		return TypeAdapter( list[ItemT] ).validate_json( bytes( jsonBytes ) )
+	
+	
 	@override
 	def dropMimeData(
 		self,
@@ -416,8 +475,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 				return True
 			
 			case Qt.DropAction.MoveAction | Qt.DropAction.CopyAction if data.hasFormat( self.jsonMimeType ):
-				jsonBytes = data.data( self.jsonMimeType ).data()
-				items = TypeAdapter( list[ItemT] ).validate_json( bytes( jsonBytes ) )
+				items = self.itemsFromMimeData( data )
 				
 				for item in reversed( items ):
 					self.insertItem( item, row, parent )
@@ -426,21 +484,3 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 			
 			case _:
 				return False
-	
-	
-	@override
-	def supportedDropActions( self ) -> Qt.DropAction:
-		'''
-		Return supported drop actions.
-		'''
-		
-		return Qt.DropAction.MoveAction
-	
-	
-	@override
-	def supportedDragActions( self ) -> Qt.DropAction:
-		'''
-		Return supported drag actions.
-		'''
-		
-		return Qt.DropAction.MoveAction

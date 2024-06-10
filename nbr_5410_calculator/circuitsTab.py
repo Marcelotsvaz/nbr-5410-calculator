@@ -4,9 +4,9 @@ Models and view for the circuits tab.
 
 from typing import override
 
-from PySide6.QtCore import QObject, Slot
+from PySide6.QtCore import QMimeData, QObject, Qt, Slot
 
-from nbr_5410_calculator.generic_model_views.models import GenericItemModel
+from nbr_5410_calculator.generic_model_views.models import GenericItemModel, ModelIndex
 from nbr_5410_calculator.generic_model_views.views import GenericTreeView
 from nbr_5410_calculator.installation.circuit import (
 	BaseCircuit,
@@ -34,6 +34,23 @@ class CircuitsModel( GenericItemModel[BaseCircuit] ):
 			dataTypes = [ BaseCircuit ],
 			parent = parent,
 		)
+	
+	
+	@override
+	def dragActionsForIndex( self, sourceIndex: ModelIndex ) -> Qt.DropAction:
+		return Qt.DropAction.MoveAction
+	
+	
+	@override
+	def dropActionsForIndex(
+		self,
+		targetIndex: ModelIndex,
+		mimeData: QMimeData | None = None,
+	) -> Qt.DropAction:
+		if isinstance( self.itemFromIndex( targetIndex ), UpstreamCircuit ):
+			return Qt.DropAction.MoveAction
+		
+		return Qt.DropAction.IgnoreAction
 
 
 
