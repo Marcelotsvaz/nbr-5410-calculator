@@ -127,11 +127,19 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 	
 	
 	@override
-	def indexAt(self, point: QPoint ) -> QModelIndex:
+	def indexAt( self, point: QPoint ) -> QModelIndex:
 		if ( index := super().indexAt( point ) ).isValid():
 			return index
 		
 		return self.rootIndex()
+	
+	
+	@override
+	def visualRect( self, index: ModelIndex ) -> QRect:
+		if index == self.rootIndex():
+			return self.viewport().rect().adjusted( 0, 0, -1, -1 )
+		
+		return super().visualRect( index )
 	
 	
 	@override
