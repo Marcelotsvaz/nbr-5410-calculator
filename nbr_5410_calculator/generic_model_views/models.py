@@ -187,8 +187,11 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		
 		flags = super().flags( index )
 		
-		if not index.isValid():
-			return flags | Qt.ItemFlag.ItemIsDropEnabled
+		if self.dropActionsForIndex( index ):
+			flags |= Qt.ItemFlag.ItemIsDropEnabled
+		
+		if self.itemFromIndex( index ) is self.root:
+			return flags
 		
 		field = self.fieldFromIndex( index )
 		if field and field.editable:
@@ -196,9 +199,6 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		
 		if self.dragActionsForIndex( index ):
 			flags |= Qt.ItemFlag.ItemIsDragEnabled
-		
-		if self.dropActionsForIndex( index ):
-			flags |= Qt.ItemFlag.ItemIsDropEnabled
 		
 		return flags
 	

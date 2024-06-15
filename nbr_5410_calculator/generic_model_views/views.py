@@ -53,13 +53,11 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 	'''
 	
 	fieldOrder: FieldOrder[ItemT] | None = None
-	
+	dropIndicatorRect: QRect | None = None
 	
 	@override
 	def __init__( self, parent: QWidget | None = None ) -> None:
 		super().__init__( parent )
-		
-		self.dropIndicatorRect = QRect()
 		
 		self.setDragDropMode( QAbstractItemView.DragDropMode.DragDrop )
 		self.setDefaultDropAction( Qt.DropAction.MoveAction )
@@ -129,6 +127,14 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 	
 	
 	@override
+	def indexAt(self, point: QPoint ) -> QModelIndex:
+		if ( index := super().indexAt( point ) ).isValid():
+			return index
+		
+		return self.rootIndex()
+	
+	
+	@override
 	def startDrag( self, supportedActions: Qt.DropAction ) -> None:
 		'''
 		Starts a drag by calling `drag.exec()` using the given `supportedActions`.
@@ -177,20 +183,20 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 				self.model().removeRow( index.row(), index.parent() )
 	
 	
-	def dropTargetForPosition( self, position: QPoint ) -> tuple[int, QModelIndex, QRect]:
+	def dropTargetForPosition( self, position: QPoint ) -> tuple[bool, int, QModelIndex, QRect | None]:
 		'''
 		Calculate drop index and drop indicator based on vertical position.
 		'''
 		
 		index = self.indexAt( position )
 		
-		# Dropped on viewport.
-		if not index.isValid():
-			index = self.model().index(
-				self.model().rowCount( self.rootIndex() ) - 1,
-				0,
-				self.rootIndex(),
-			)
+		# Use root index as viewport index.
+		if index == self.rootIndex():
+			if Qt.ItemFlag.ItemIsDropEnabled not in self.model().flags( index ):
+				return False, -1, QModelIndex(), None
+			
+			# Append to root index when dropped on viewport.
+			index = self.model().index( self.model().rowCount( index ) - 1, 0, index )
 		
 		parent = index.parent()
 		row = index.row()
@@ -219,7 +225,7 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 			parent = index
 			row = self.model().rowCount( parent )
 		
-		return row, parent, dropIndicator
+		return True, row, parent, dropIndicator
 	
 	
 	@override
@@ -232,19 +238,22 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 		From overlap of source drag and target drop per index show rect.
 		'''
 		
-		_, _, dropIndicator = self.dropTargetForPosition( event.position().toPoint() )
-		self.dropIndicatorRect = dropIndicator
+		canDrop, _, _, self.dropIndicatorRect = self.dropTargetForPosition( event.position().toPoint() )
 		
-		event.acceptProposedAction()
+		if canDrop:
+			event.acceptProposedAction()
+		else:
+			event.ignore()
+		
 		self.viewport().update()
 	
 	
 	@override
 	def dropEvent( self, event: QtGui.QDropEvent ) -> None:
-		if event.proposedAction() not in self.model().supportedDropActions():
-			return
+		canDrop, dropRow, dropParent, _ = self.dropTargetForPosition( event.position().toPoint() )
 		
-		dropRow, dropParent, _ = self.dropTargetForPosition( event.position().toPoint() )
+		assert canDrop
+		assert event.proposedAction() in self.model().supportedDropActions()
 		
 		# Internal move.
 		if event.proposedAction() is Qt.DropAction.MoveAction and event.source() is self:
@@ -271,7 +280,6 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 			):
 				event.acceptProposedAction()
 		
-		# TODO: Is this necessary?
 		self.stopAutoScroll()
 		self.setState( QAbstractItemView.State.NoState )
 		self.viewport().update()
@@ -292,7 +300,11 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 		
 		# Draw drop indicator.
 		painter = QPainter( self.viewport() )
-		if self.state() is QAbstractItemView.State.DraggingState and self.showDropIndicator():
+		if (
+			self.dropIndicatorRect
+			and self.state() is QAbstractItemView.State.DraggingState
+			and self.showDropIndicator()
+		):
 			styleOption = QStyleOption()
 			styleOption.initFrom( self )
 			styleOption.rect = self.dropIndicatorRect	# pyright: ignore [reportAttributeAccessIssue]

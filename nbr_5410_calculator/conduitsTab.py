@@ -25,10 +25,7 @@ class ConduitRunsModel( GenericItemModel[ConduitRun | BaseCircuit] ):
 	
 	@override
 	def dragActionsForIndex( self, sourceIndex: ModelIndex ) -> Qt.DropAction:
-		if isinstance( self.itemFromIndex( sourceIndex ), BaseCircuit ):
-			return Qt.DropAction.MoveAction
-		
-		return Qt.DropAction.IgnoreAction
+		return Qt.DropAction.MoveAction
 	
 	
 	@override
@@ -38,6 +35,9 @@ class ConduitRunsModel( GenericItemModel[ConduitRun | BaseCircuit] ):
 		mimeData: QMimeData | None = None,
 	) -> Qt.DropAction:
 		targetItem = self.itemFromIndex( targetIndex )
+		
+		if targetItem is self.root:
+			return Qt.DropAction.MoveAction
 		
 		if mimeData is not None:
 			sourceItems = self.itemsFromMimeData( mimeData )
@@ -61,7 +61,7 @@ class UnassignedCircuitsModel( GenericItemModel[BaseCircuit] ):
 	
 	@override
 	def dragActionsForIndex( self, sourceIndex: ModelIndex ) -> Qt.DropAction:
-		return Qt.DropAction.LinkAction
+		return Qt.DropAction.MoveAction
 	
 	
 	@override
@@ -70,10 +70,7 @@ class UnassignedCircuitsModel( GenericItemModel[BaseCircuit] ):
 		targetIndex: ModelIndex,
 		mimeData: QMimeData | None = None,
 	) -> Qt.DropAction:
-		if mimeData is None:
-			return Qt.DropAction.IgnoreAction
-		
-		return Qt.DropAction.LinkAction
+		return Qt.DropAction.IgnoreAction
 	
 	
 	@Slot()

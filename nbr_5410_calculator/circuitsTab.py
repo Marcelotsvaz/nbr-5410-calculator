@@ -47,7 +47,12 @@ class CircuitsModel( GenericItemModel[BaseCircuit] ):
 		targetIndex: ModelIndex,
 		mimeData: QMimeData | None = None,
 	) -> Qt.DropAction:
-		if isinstance( self.itemFromIndex( targetIndex ), UpstreamCircuit ):
+		targetItem = self.itemFromIndex( targetIndex )
+		
+		if targetItem is self.root:
+			return Qt.DropAction.MoveAction
+		
+		if isinstance( targetItem, UpstreamCircuit ):
 			return Qt.DropAction.MoveAction
 		
 		return Qt.DropAction.IgnoreAction
