@@ -170,8 +170,10 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		An invalid `parent` returns the number of top-level rows.
 		'''
 		
+		# Root item.
+		# TODO: Remove this.
 		if not parent.isValid():
-			return 1	# Root item.
+			return 1
 		
 		if children := self.itemFromIndex( parent ).children:
 			return len( children )
@@ -187,7 +189,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		
 		flags = super().flags( index )
 		
-		if self.dropActionsForIndex( index ):
+		if True:#self.dropActionsForIndex( index ):
 			flags |= Qt.ItemFlag.ItemIsDropEnabled
 		
 		if self.itemFromIndex( index ) is self.root:
@@ -254,7 +256,8 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		'''
 		
 		role = Qt.ItemDataRole( role )
-		if role is not Qt.ItemDataRole.EditRole or not index.isValid():
+		
+		if role is not Qt.ItemDataRole.EditRole:
 			return False
 		
 		field = self.fieldFromIndex( index )
@@ -383,18 +386,6 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		return Qt.DropAction.IgnoreAction
 	
 	
-	def dropActionsForIndex(
-		self,
-		targetIndex: ModelIndex,
-		mimeData: QMimeData | None = None,
-	) -> Qt.DropAction:
-		'''
-		Return drop actions supported by `targetIndex`
-		'''
-		
-		return Qt.DropAction.IgnoreAction
-	
-	
 	@override
 	def supportedDragActions( self ) -> Qt.DropAction:
 		'''
@@ -479,3 +470,15 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 			
 			case _:
 				return False
+	
+	
+	@override
+	def canDropMimeData(
+		self,
+		data: QMimeData,
+		action: Qt.DropAction,
+		row: int,
+		column: int,
+		parent: ModelIndex,
+	) -> bool:
+		return False

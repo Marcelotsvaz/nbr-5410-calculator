@@ -191,49 +191,119 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 				self.model().removeRow( index.row(), index.parent() )
 	
 	
-	def dropTargetForPosition( self, position: QPoint ) -> tuple[bool, int, QModelIndex, QRect | None]:
+	def dropIndicatorPositionForIndex(
+		self,
+		index: ModelIndex,
+		point: QPoint,
+		includeCenter: bool,
+	) -> QAbstractItemView.DropIndicatorPosition:
 		'''
-		Calculate drop index and drop indicator based on vertical position.
+		Return in which position `point` is in relative to the `index` row.
 		'''
 		
-		index = self.indexAt( position )
+		threshold = 0.25 if includeCenter else 0.5
+		rect = self.visualRect( index )
+		topThreshold = rect.y() + rect.height() * threshold
+		bottomThreshold = rect.y() + rect.height() * ( 1.0 - threshold )
 		
-		# Use root index as viewport index.
-		if index == self.rootIndex():
-			if Qt.ItemFlag.ItemIsDropEnabled not in self.model().flags( index ):
-				return False, -1, QModelIndex(), None
-			
-			# Append to root index when dropped on viewport.
-			index = self.model().index( self.model().rowCount( index ) - 1, 0, index )
+		if point.y() < topThreshold:
+			return QAbstractItemView.DropIndicatorPosition.AboveItem
 		
-		parent = index.parent()
-		row = index.row()
-				
+		if point.y() >= bottomThreshold:
+			return QAbstractItemView.DropIndicatorPosition.BelowItem
+		
+		return QAbstractItemView.DropIndicatorPosition.OnItem
+	
+	
+	def dropIndicatorForIndex(
+		self,
+		index: ModelIndex,
+		position: QAbstractItemView.DropIndicatorPosition
+	) -> QRect:
+		'''
+		Return the drop indicator rect for a given `index` and `position` relative to this index.
+		'''
+		
 		dropIndicator = self.visualRect( index )
 		dropIndicator.setLeft( self.viewport().rect().left() )
 		dropIndicator.setRight( self.viewport().rect().right() )
 		
-		if Qt.ItemFlag.ItemIsDropEnabled in self.model().flags( index ):
-			threshold = 0.25
-		else:
-			threshold = 0.5
+		if position is QAbstractItemView.DropIndicatorPosition.AboveItem:
+			dropIndicator.setBottom( dropIndicator.top() - 1 )
+		elif position is QAbstractItemView.DropIndicatorPosition.BelowItem:
+			dropIndicator.setTop( dropIndicator.bottom() + 1 )
 		
-		itemBounds = self.visualRect( index )
-		topThreshold = itemBounds.y() + itemBounds.height() * threshold
-		bottomThreshold = itemBounds.y() + itemBounds.height() * ( 1.0 - threshold )
+		return dropIndicator
+	
+	
+	def dropTargetForEvent(
+		self,
+		event: QtGui.QDropEvent,
+	) -> tuple[int | None, QModelIndex, QRect | None]:
+		'''
+		Calculate drop index and drop indicator based on vertical position.
+		'''
 		
-		if position.y() < topThreshold:
-			dropIndicator.setTop( itemBounds.top() )
-			dropIndicator.setBottom( itemBounds.top() - 1 )
-		elif position.y() >= bottomThreshold:
-			dropIndicator.setTop( itemBounds.bottom() + 1 )
-			dropIndicator.setBottom( itemBounds.bottom() )
-			row += 1
-		else:
-			parent = index
-			row = self.model().rowCount( parent )
+		position = event.position().toPoint()
+		indexAtCursor = self.indexAt( position )
 		
-		return True, row, parent, dropIndicator
+		# Append to root index when dropped on viewport.
+		if indexAtCursor == self.rootIndex():
+			indexAtCursor = self.model().index(
+				self.model().rowCount( indexAtCursor ) - 1,
+				0,
+				indexAtCursor,
+			)
+		
+		# Drop as child of `indexAtCursor`.
+		canDropOnItem = self.model().canDropMimeData(
+			event.mimeData(),
+			event.dropAction(),
+			0,
+			indexAtCursor.column(),
+			indexAtCursor,
+		)
+		
+		# Drop as sibling of `indexAtCursor`.
+		canDropBesidesItem = self.model().canDropMimeData(
+			event.mimeData(),
+			event.dropAction(),
+			indexAtCursor.row(),
+			indexAtCursor.column(),
+			indexAtCursor.parent(),
+		)
+		
+		aboveItem = QAbstractItemView.DropIndicatorPosition.AboveItem
+		onItem = QAbstractItemView.DropIndicatorPosition.OnItem
+		belowItem = QAbstractItemView.DropIndicatorPosition.BelowItem
+		
+		cursorOnTop = self.dropIndicatorPositionForIndex( indexAtCursor, position, False ) is aboveItem
+		cursorOnCenter = self.dropIndicatorPositionForIndex( indexAtCursor, position, True ) is onItem
+		cursorOnBottom = self.dropIndicatorPositionForIndex( indexAtCursor, position, False ) is belowItem
+		
+		# If we can't drop besides then the whole cell goes to "on item".
+		if canDropOnItem and ( cursorOnCenter or not canDropBesidesItem ):
+			return (
+				0,
+				indexAtCursor,
+				self.dropIndicatorForIndex( indexAtCursor, onItem ),
+			)
+		
+		if canDropBesidesItem and cursorOnTop:
+			return (
+				indexAtCursor.row(),
+				indexAtCursor.parent(),
+				self.dropIndicatorForIndex( indexAtCursor, aboveItem ),
+			)
+		
+		if canDropBesidesItem and cursorOnBottom:
+			return (
+				indexAtCursor.row() + 1,
+				indexAtCursor.parent(),
+				self.dropIndicatorForIndex( indexAtCursor, belowItem ),
+			)
+		
+		return None, QModelIndex(), None
 	
 	
 	@override
@@ -246,9 +316,9 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 		From overlap of source drag and target drop per index show rect.
 		'''
 		
-		canDrop, _, _, self.dropIndicatorRect = self.dropTargetForPosition( event.position().toPoint() )
+		dropRow, _, self.dropIndicatorRect = self.dropTargetForEvent( event )
 		
-		if canDrop:
+		if dropRow is not None:
 			event.acceptProposedAction()
 		else:
 			event.ignore()
@@ -258,13 +328,13 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 	
 	@override
 	def dropEvent( self, event: QtGui.QDropEvent ) -> None:
-		canDrop, dropRow, dropParent, _ = self.dropTargetForPosition( event.position().toPoint() )
+		dropRow, dropParent, self.dropIndicatorRect = self.dropTargetForEvent( event )
 		
-		assert canDrop
+		assert dropRow is not None
 		assert event.proposedAction() in self.model().supportedDropActions()
 		
-		# Internal move.
 		if event.proposedAction() is Qt.DropAction.MoveAction and event.source() is self:
+			# Internal move.
 			selectedIndexes = [
 				QPersistentModelIndex( index )
 				for index in self.selectedRowIndexes()
@@ -276,9 +346,8 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 				for index in selectedIndexes
 			):
 				event.acceptProposedAction()
-		
-		# All drop actions supported by the model.
 		else:
+			# All drop actions supported by the model.
 			if self.model().dropMimeData(
 				event.mimeData(),
 				event.proposedAction(),
