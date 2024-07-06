@@ -6,6 +6,7 @@
 
 
 
+from typing import override
 from unittest import TestCase
 from uuid import UUID
 
@@ -36,6 +37,7 @@ class BaseUniqueSerializableTests( TestCase ):
 	Base class for all `uniqueSerializable` tests.
 	'''
 	
+	@override
 	def setUp( self ) -> None:
 		'''
 		Setup for all tests.
@@ -106,6 +108,7 @@ class NestedUniqueSerializableTests( BaseUniqueSerializableTests ):
 	Test serialization of nested sub-class of `uniqueSerializable`.
 	'''
 	
+	@override
 	def setUp( self ) -> None:
 		'''
 		Setup for all tests.

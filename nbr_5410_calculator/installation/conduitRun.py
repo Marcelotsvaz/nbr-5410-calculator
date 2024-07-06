@@ -7,7 +7,7 @@ from __future__ import annotations
 from enum import StrEnum, auto
 from functools import cache
 from math import pi
-from typing import Annotated, Any, Self
+from typing import Annotated, Any, Self, override
 
 from pydantic import BaseModel, Field
 from pyjson5 import decode_buffer
@@ -269,5 +269,6 @@ class ConduitRun( UniqueSerializable, GenericItem ):
 	
 	
 	@property
+	@override
 	def children( self ) -> list[BaseCircuitUnion]:
 		return self.circuits

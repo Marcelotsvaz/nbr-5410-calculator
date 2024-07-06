@@ -6,6 +6,7 @@
 
 
 
+from typing import override
 from unittest import TestCase
 
 from nbr_5410_calculator.installation.project import Project
@@ -19,6 +20,7 @@ class BaseProjectTests( TestCase ):
 	Base class for all `Project` tests.
 	'''
 	
+	@override
 	def setUp( self ) -> None:
 		'''
 		Setup for all tests.

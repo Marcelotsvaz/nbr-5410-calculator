@@ -1,4 +1,3 @@
-@override
 Implement proper schema for models, get rid of init or class schema.
 Use generic item because of complex nesting
 Use less type annotations

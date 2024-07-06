@@ -2,6 +2,7 @@
 Tests for `nbr_5410_calculator.generic_model_views.models`.
 '''
 
+from typing import override
 from unittest import TestCase
 
 from PySide6.QtCore import QModelIndex
@@ -15,6 +16,7 @@ class GenericItemModelIndexTests( TestCase ):
 	Tests for `index` and `parent` methods of `GenericItemModelTests`.
 	'''
 	
+	@override
 	def setUp( self ) -> None:
 		'''
 		Setup for all tests.

@@ -29,6 +29,7 @@ class Supply( UniqueSerializable, GenericItem ):
 	hasGround: bool = True
 	
 	
+	@override
 	def __str__( self ) -> str:
 		neutral = '+N' if self.hasNeutral else ''
 		
@@ -119,9 +120,9 @@ class WireType( UniqueSerializable, GenericItem ):
 			return decode_buffer( file.read() )
 	
 	
-	# TODO: Fix signature.
-	def __init__( self, **kwargs: Any ) -> None:
-		super().__init__( **kwargs )
+	@override
+	def model_post_init( self, __context: Any ) -> None:
+		super().model_post_init( __context )
 		
 		wires = self.loadWires( self.material, self.insulation )
 		
@@ -132,6 +133,7 @@ class WireType( UniqueSerializable, GenericItem ):
 		self._referenceMethods = wires['referenceMethods']
 	
 	
+	@override
 	def __str__( self ) -> str:
 		return f'{self.insulation.value}-insulated {self.material.value} wire'
 	
@@ -205,6 +207,7 @@ class Wire( BaseModel ):
 	correctionFactor: float = 1.0
 	
 	
+	@override
 	def __str__( self ) -> str:
 		return f'{self.type}, {self.section:.2f}mm²'
 	
@@ -275,6 +278,7 @@ class Breaker( BaseModel ):
 		return [ cls( current = current, curve = curve ) for current in breakers[curve] ]
 	
 	
+	@override
 	def __str__( self ) -> str:
 		return f'{self.curve}{self.current} Breaker'
 	
@@ -434,6 +438,7 @@ class Circuit( BaseCircuit ):
 	
 	
 	@property
+	@override
 	def power( self ) -> float:
 		return self.loadPower
 	
@@ -459,6 +464,7 @@ class UpstreamCircuit( BaseCircuit ):
 	
 	
 	@property
+	@override
 	def power( self ) -> float:
 		'''
 		Total power consumed by all downstream circuits, corrected by each circuit's demand factor.

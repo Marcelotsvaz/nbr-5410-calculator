@@ -6,6 +6,7 @@
 
 
 
+from typing import override
 from unittest import TestCase
 
 from nbr_5410_calculator.installation.circuit import Circuit, UpstreamCircuit
@@ -24,6 +25,7 @@ class BaseCircuitTests( TestCase ):
 	Base class for all `Circuit` tests.
 	'''
 	
+	@override
 	def setUp( self ) -> None:
 		'''
 		Setup for all tests.
@@ -208,6 +210,7 @@ class UpstreamCircuitTests( BaseCircuitTests ):
 	Basic tests for `UpstreamCircuit` class.
 	'''
 	
+	@override
 	def setUp( self ) -> None:
 		super().setUp()
 		

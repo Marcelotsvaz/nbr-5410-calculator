@@ -6,6 +6,7 @@
 
 
 
+from typing import override
 from unittest import TestCase
 
 from nbr_5410_calculator.installation.conduitRun import (
@@ -49,6 +50,7 @@ class BaseConduitRunTests( TestCase ):
 	Base class for all `ConduitRun` tests.
 	'''
 	
+	@override
 	def setUp( self ) -> None:
 		'''
 		Setup for all tests.
