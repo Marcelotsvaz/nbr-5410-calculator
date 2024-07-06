@@ -498,18 +498,12 @@ class Circuit( BaseCircuit ):
 
 
 
-# For Pydantic serialization of derived classes.
-# TODO:
-type BaseCircuitUnion = 'Circuit | UpstreamCircuit'
-
-
-
 class UpstreamCircuit( BaseCircuit ):
 	'''
 	Represents a circuit whose load is a group of downstream circuits.
 	'''
 	
-	circuits: list[BaseCircuitUnion] = Field( default_factory = list )
+	circuits: list[BaseCircuit] = Field( default_factory = list )
 	
 	
 	@property
@@ -524,7 +518,7 @@ class UpstreamCircuit( BaseCircuit ):
 	
 	@property
 	@override
-	def children( self ) -> list[BaseCircuitUnion]:
+	def children( self ) -> list[BaseCircuit]:
 		return self.circuits
 	
 	

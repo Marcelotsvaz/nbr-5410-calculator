@@ -14,7 +14,7 @@ from pyjson5 import decode_buffer
 
 from nbr_5410_calculator.generic_model_views.items import ItemField
 from nbr_5410_calculator.generic_model_views.models import GenericItem
-from nbr_5410_calculator.installation.circuit import BaseCircuit, BaseCircuitUnion
+from nbr_5410_calculator.installation.circuit import BaseCircuit
 from nbr_5410_calculator.installation.util import ProjectError, UniqueSerializable
 
 
@@ -201,7 +201,7 @@ class ConduitRun( UniqueSerializable, GenericItem ):
 	temperature: Annotated[int, ItemField( 'Temperature', format = '{0}°C' )]
 	length: Annotated[float, ItemField( 'Length', format = '{0:,} m' )]
 	
-	circuits: list[BaseCircuitUnion] = Field( default_factory = list )
+	circuits: list[BaseCircuit] = Field( default_factory = list )
 	
 	
 	@property
@@ -270,7 +270,7 @@ class ConduitRun( UniqueSerializable, GenericItem ):
 	
 	@property
 	@override
-	def children( self ) -> list[BaseCircuitUnion]:
+	def children( self ) -> list[BaseCircuit]:
 		return self.circuits
 	
 	
