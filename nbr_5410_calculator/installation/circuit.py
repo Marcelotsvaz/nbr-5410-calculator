@@ -522,15 +522,15 @@ class UpstreamCircuit( BaseCircuit ):
 		return sum( circuit.power * circuit.loadType.demandFactor for circuit in self.circuits )
 	
 	
-	@override
-	def isValidChildren( self, item: GenericItem ) -> bool:
-		return isinstance( item, BaseCircuit )
-	
-	
 	@property
 	@override
 	def children( self ) -> list[BaseCircuitUnion]:
 		return self.circuits
+	
+	
+	@override
+	def isChildValid( self, item: GenericItem ) -> bool:
+		return isinstance( item, BaseCircuit )
 
 
 

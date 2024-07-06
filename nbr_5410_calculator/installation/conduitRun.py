@@ -268,12 +268,24 @@ class ConduitRun( UniqueSerializable, GenericItem ):
 		return self.filledSection / self.conduit.section
 	
 	
-	@override
-	def isValidChildren( self, item: GenericItem ) -> bool:
-		return isinstance( item, BaseCircuit )
-	
-	
 	@property
 	@override
 	def children( self ) -> list[BaseCircuitUnion]:
 		return self.circuits
+	
+	
+	@override
+	def isChildValid( self, item: GenericItem ) -> bool:
+		return isinstance( item, BaseCircuit )
+	
+	
+	@override
+	def insertChild( self, index: int, item: BaseCircuit ) -> None:
+		super().insertChild( index, item )
+		item.conduitRun = self
+	
+	
+	@override
+	def removeChild( self, index: int, item: BaseCircuit ) -> None:
+		super().removeChild( index, item )
+		item.conduitRun = None

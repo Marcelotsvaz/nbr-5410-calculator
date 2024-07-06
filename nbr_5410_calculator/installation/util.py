@@ -33,6 +33,7 @@ class UniqueSerializable( BaseModel ):
 	]
 	
 	
+	# TODO: Wrap so we don't construct the class unnecessarily.
 	@model_validator( mode = 'after' )
 	def shareInstanceByUuid( self, info: ValidationInfo ) -> Self:
 		'''

@@ -2,10 +2,13 @@
 Models and view for the conduits tab.
 '''
 
+from collections.abc import Generator
 from typing import override
-from PySide6.QtCore import Qt, Slot
+
+from PySide6.QtCore import QObject, Qt, Slot
 
 from nbr_5410_calculator.circuitsTab import CircuitsModel
+from nbr_5410_calculator.generic_model_views.items import GenericItem
 from nbr_5410_calculator.generic_model_views.models import GenericItemModel, ModelIndex
 from nbr_5410_calculator.generic_model_views.views import GenericListView, GenericTreeView
 from nbr_5410_calculator.installation.circuit import BaseCircuit
@@ -35,53 +38,51 @@ class UnassignedCircuitsModel( GenericItemModel[BaseCircuit] ):
 	'''
 	
 	@override
+	def __init__( self, circuitsModel: CircuitsModel, parent: QObject | None = None, ) -> None:
+		super().__init__(
+			datasource = [],
+			dataTypes = [ BaseCircuit ],
+			parent = parent,
+		)
+		
+		self.circuitsModel = circuitsModel
+		self.circuitsModel.rowsInserted.connect( self._refresh )
+		self.circuitsModel.rowsRemoved.connect( self._refresh )
+		self._refresh()
+	
+	
+	@override
 	def dragActionsForIndex( self, sourceIndex: ModelIndex ) -> Qt.DropAction:
 		return Qt.DropAction.MoveAction
 	
 	
 	@Slot()
-	def addCircuit( self, parent: ModelIndex, first: int, last: int ) -> None:
+	def _refresh( self ) -> None:
 		'''
-		Insert circuit if it's not assigned to any conduit run.
-		'''
-		
-		circuitModel = parent.model()
-		
-		if not isinstance( circuitModel, CircuitsModel ):
-			raise TypeError( 'Signal from unsupported model.' )
-		
-		circuit = circuitModel.itemFromIndex( circuitModel.index( first, 0, parent ) )
-		
-		if not circuit.conduitRun:
-			self.insertItem( circuit )
-	
-	
-	@Slot()
-	def removeCircuit( self, parent: ModelIndex, first: int, last: int ) -> None:
-		'''
-		Remove deleted circuit.
+		Display all circuits not assigned to any conduit run.
 		'''
 		
-		circuitModel = parent.model()
+		def iterCircuits( topCircuit: GenericItem ) -> Generator[BaseCircuit, None, None]:
+			if isinstance( topCircuit, BaseCircuit ):
+				yield topCircuit
+			
+			for circuit in topCircuit.children:
+				yield from iterCircuits( circuit )
 		
-		if not isinstance( circuitModel, CircuitsModel ):
-			raise TypeError( 'Signal from unsupported model.' )
-		
-		removedCircuit = circuitModel.itemFromIndex( circuitModel.index( first, 0, parent ) )
-		
-		for index, circuit in enumerate( self.root.children ):
-			if circuit is removedCircuit:
-				self.removeRow( index, self.index( 0, 0 ) )
-				break
+		self.layoutAboutToBeChanged.emit()
+		self.root.items = [
+			circuit
+			for circuit in iterCircuits( self.circuitsModel.root )
+			if not circuit.conduitRun
+		]
+		self.layoutChanged.emit()
 
 
 
 # 
 # Views
 #-------------------------------------------------------------------------------
-class ConduitRunsView(
-	GenericTreeView[ConduitRunsModel, ConduitRun | BaseCircuit],
-):
+class ConduitRunsView( GenericTreeView[ConduitRunsModel, ConduitRun | BaseCircuit] ):
 	'''
 	Tree view of `ConduitRun`.
 	'''

@@ -180,14 +180,6 @@ class GenericItem( BaseModel ):
 		return self.getQualifiedName()
 	
 	
-	def isValidChildren( self, item: GenericItem ) -> bool:	# pylint: disable = unused-argument
-		'''
-		Return `True` if `item` can be inserted as a child of this item.
-		'''
-		
-		return False
-	
-	
 	@property
 	def children( self ) -> list[GenericItem]:
 		'''
@@ -195,6 +187,30 @@ class GenericItem( BaseModel ):
 		'''
 		
 		return []
+	
+	
+	def isChildValid( self, item: GenericItem ) -> bool:	# pylint: disable = unused-argument
+		'''
+		Return `True` if `item` can be inserted as a child of this item.
+		'''
+		
+		return False
+	
+	
+	def insertChild( self, index: int, item: GenericItem ) -> None:
+		'''
+		Insert child into item. Hook for subclasses.
+		'''
+		
+		self.children.insert( index, item )
+	
+	
+	def removeChild( self, index: int, item: GenericItem ) -> None:	# pylint: disable = unused-argument
+		'''
+		Remove child from item. Hook for subclasses.
+		'''
+		
+		self.children.pop( index )
 	
 	
 	@classmethod
@@ -269,12 +285,12 @@ class RootItem( GenericItem ):
 	items: list[GenericItem]
 	
 	
-	@override
-	def isValidChildren( self, item: GenericItem ) -> bool:
-		return isinstance( item, self.childrenType )
-	
-	
 	@property
 	@override
 	def children( self ) -> list[GenericItem]:
 		return self.items
+	
+	
+	@override
+	def isChildValid( self, item: GenericItem ) -> bool:
+		return isinstance( item, self.childrenType )

@@ -48,11 +48,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		circuitsModel = CircuitsModel( project, self )
 		
 		conduitRunsModel = ConduitRunsModel( project.conduitRuns, [ ConduitRun, BaseCircuit ], self )
-		# TODO: Save unassigned circuits.
-		unassignedCircuitsModel = UnassignedCircuitsModel( [], [ BaseCircuit ], self )
-		
-		circuitsModel.rowsInserted.connect( unassignedCircuitsModel.addCircuit )
-		circuitsModel.rowsAboutToBeRemoved.connect( unassignedCircuitsModel.removeCircuit )
+		unassignedCircuitsModel = UnassignedCircuitsModel( circuitsModel, self )
 		
 		# Views.
 		self.suppliesListView.setModel( supplyModel )

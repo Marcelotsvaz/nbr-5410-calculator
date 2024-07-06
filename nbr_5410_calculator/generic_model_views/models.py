@@ -285,14 +285,14 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		
 		parentItem = self.itemFromIndex( parent )
 		
-		if not parentItem.isValidChildren( item ):
+		if not parentItem.isChildValid( item ):
 			raise ValueError( '`Item` is not a valid child or parent does not support children.' )
 		
 		if row < 0:
 			row = len( parentItem.children ) + 1 + row
 		
 		self.beginInsertRows( parent, row, row )
-		parentItem.children.insert( row, item )
+		parentItem.insertChild( row, item )
 		self.endInsertRows()
 	
 	
@@ -306,7 +306,8 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		
 		self.beginRemoveRows( parent, row, row + count - 1 )
 		for _ in range( count ):
-			parentItem.children.pop( row )
+			item = parentItem.children[row]
+			parentItem.removeChild( row, item )
 		self.endRemoveRows()
 		
 		return True
@@ -349,7 +350,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		
 		destinationParentItem = self.itemFromIndex( destinationParent )
 		for item in reversed( items ):
-			if not destinationParentItem.isValidChildren( item ):
+			if not destinationParentItem.isChildValid( item ):
 				raise ValueError( 'Source item is not a valid children of destination.' )
 			destinationParentItem.children.insert( destinationChild, item )
 		
@@ -481,4 +482,4 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 	) -> bool:
 		parentItem = self.itemFromIndex( parent )
 		
-		return all( parentItem.isValidChildren( item ) for item in self.itemsFromMimeData( data ) )
+		return all( parentItem.isChildValid( item ) for item in self.itemsFromMimeData( data ) )
