@@ -296,19 +296,68 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 	Abstract base class for a circuit in an electrical installation.
 	'''
 	
-	name: Annotated[str, ItemField( 'Name' )]
-	description: Annotated[str, ItemField( 'Description' )] = ''
+	name: Annotated[
+		str,
+		ItemField(
+			'Name',
+			description = 'Name identifying the circuit.',
+		),
+	]
 	
-	supply: Annotated[Supply, ItemField( 'Supply' )]
-	loadType: Annotated[LoadType, ItemField( 'Load Type', format = lambda value: value.name )]
-	wireType: Annotated[WireType, ItemField( 'Wire Type' )]
-	length: Annotated[float, ItemField( 'Length', format = '{0:,} m' )]
+	description: Annotated[
+		str,
+		ItemField(
+			'Description',
+			description = 'Description for this circuit.',
+		),
+	] = ''
+	
+	supply: Annotated[
+		Supply,
+		ItemField(
+			'Supply',
+			description = 'The supply for this circuit.',
+		),
+	]
+	
+	loadType: Annotated[
+		LoadType,
+		ItemField(
+			'Load Type',
+			description = 'The type of load for this circuit.',
+			format = lambda value: value.name,
+		),
+	]
+	
+	wireType: Annotated[
+		WireType,
+		ItemField(
+			'Wire Type',
+			description = '',
+		),
+	]
+	
+	length: Annotated[
+		float,
+		ItemField(
+			'Length',
+			description = '',
+			format = '{0:,} m',
+		),
+	]
 	
 	conduitRun: Annotated[ConduitRun | None, Field( exclude = True )] = None
 	
 	
 	@property
-	def power( self ) -> Annotated[float, ItemField( 'Power', format = '{0:,} VA' )]:
+	def power( self ) -> Annotated[
+		float,
+		ItemField(
+			'Power',
+			description = 'Apparent power consumed by this circuit.',
+			format = '{0:,} VA',
+		),
+	]:
 		'''
 		Apparent power consumed by this circuit.
 		'''

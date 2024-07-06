@@ -36,6 +36,7 @@ class ItemField:
 	
 	label: str | None = None
 	_ = KW_ONLY
+	description: str | None = None
 	format: str | Callable[[Any], str] | None = None
 	editable: bool | None = None
 
@@ -51,6 +52,7 @@ class ItemFieldInfo:
 	name: str
 	label: str
 	_ = KW_ONLY
+	description: str | None = None
 	format: str | Callable[[Any], str] = '{0}'
 	editable: bool = False
 	
@@ -67,6 +69,7 @@ class ItemFieldInfo:
 		
 		fieldNames = [
 			'label',
+			'description',
 			'format',
 			'editable',
 		]

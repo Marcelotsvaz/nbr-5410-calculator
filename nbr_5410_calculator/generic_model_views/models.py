@@ -206,17 +206,21 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		Return data for table headers.
 		'''
 		
-		role = Qt.ItemDataRole( role )
-		if role is not Qt.ItemDataRole.DisplayRole:
-			return None
-		
-		if orientation is Qt.Orientation.Vertical:	# TODO: Remove this?
+		if orientation is Qt.Orientation.Vertical:
 			return f'{section + 1}'
 		
 		field = self.fields[self.dataTypes[0]][section]
 		assert field is not None
 		
-		return field.label
+		match Qt.ItemDataRole( role ):
+			case Qt.ItemDataRole.DisplayRole:
+				return field.label
+			
+			case Qt.ItemDataRole.ToolTipRole:
+				return field.description
+			
+			case _:
+				return None
 	
 	
 	@override
@@ -225,23 +229,26 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		Return data for table cells.
 		'''
 		
-		role = Qt.ItemDataRole( role )
-		if role not in { Qt.ItemDataRole.DisplayRole, Qt.ItemDataRole.EditRole }:
+		try:
+			field = self.fieldFromIndex( index )
+		except TypeError:
 			return None
 		
-		field = self.fieldFromIndex( index )
 		item = self.itemFromIndex( index )
 		
-		# This column is only valid for a parent or child of this item.
-		if not field:
-			return None
-		
-		# Edit role.
-		if role is Qt.ItemDataRole.EditRole:
-			return field.valueForEdition( item )
-		
-		# Display role.
-		return field.valueForDisplay( item )
+		match Qt.ItemDataRole( role ):
+			# This column is only valid for a parent or child of this item.
+			case _ if not field:
+				return None
+			
+			case Qt.ItemDataRole.DisplayRole:
+				return field.valueForDisplay( item )
+			
+			case Qt.ItemDataRole.EditRole:
+				return field.valueForEdition( item )
+			
+			case _:
+				return None
 	
 	
 	@override

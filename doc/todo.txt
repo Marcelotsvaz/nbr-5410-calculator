@@ -5,7 +5,6 @@ Use generic item because of complex nesting
 Use less type annotations
 Check children invariant
 
-Header tooltip
 Delegates
 Placeholder rows
 Power not settable
