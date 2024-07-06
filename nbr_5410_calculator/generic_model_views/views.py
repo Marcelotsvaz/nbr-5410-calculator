@@ -215,7 +215,7 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 		return QAbstractItemView.DropIndicatorPosition.OnItem
 	
 	
-	def dropIndicatorForIndex(
+	def _dropIndicatorForIndex(
 		self,
 		index: ModelIndex,
 		position: QAbstractItemView.DropIndicatorPosition
@@ -236,7 +236,7 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 		return dropIndicator
 	
 	
-	def dropTargetForEvent(
+	def _dropTargetForEvent(
 		self,
 		event: QtGui.QDropEvent,
 	) -> tuple[int | None, QModelIndex, QRect | None]:
@@ -286,21 +286,21 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 			return (
 				0,
 				indexAtCursor,
-				self.dropIndicatorForIndex( indexAtCursor, onItem ),
+				self._dropIndicatorForIndex( indexAtCursor, onItem ),
 			)
 		
 		if canDropBesidesItem and cursorOnTop:
 			return (
 				indexAtCursor.row(),
 				indexAtCursor.parent(),
-				self.dropIndicatorForIndex( indexAtCursor, aboveItem ),
+				self._dropIndicatorForIndex( indexAtCursor, aboveItem ),
 			)
 		
 		if canDropBesidesItem and cursorOnBottom:
 			return (
 				indexAtCursor.row() + 1,
 				indexAtCursor.parent(),
-				self.dropIndicatorForIndex( indexAtCursor, belowItem ),
+				self._dropIndicatorForIndex( indexAtCursor, belowItem ),
 			)
 		
 		return None, QModelIndex(), None
@@ -316,7 +316,7 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 		From overlap of source drag and target drop per index show rect.
 		'''
 		
-		dropRow, _, self.dropIndicatorRect = self.dropTargetForEvent( event )
+		dropRow, _, self.dropIndicatorRect = self._dropTargetForEvent( event )
 		
 		if dropRow is not None:
 			event.acceptProposedAction()
@@ -328,7 +328,7 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 	
 	@override
 	def dropEvent( self, event: QtGui.QDropEvent ) -> None:
-		dropRow, dropParent, self.dropIndicatorRect = self.dropTargetForEvent( event )
+		dropRow, dropParent, self.dropIndicatorRect = self._dropTargetForEvent( event )
 		
 		assert dropRow is not None
 		assert event.proposedAction() in self.model().supportedDropActions()

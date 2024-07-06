@@ -132,7 +132,7 @@ class GenericItem( BaseModel ):
 	
 	@model_validator( mode = 'wrap' )
 	@classmethod
-	def deserializeAsSubclass(
+	def _deserializeAsSubclass(
 		cls,
 		data: Any | dict[str, Any],
 		handler: ValidatorFunctionWrapHandler,
@@ -156,14 +156,14 @@ class GenericItem( BaseModel ):
 				yield from iterSubclasses( subclass )
 		
 		for subclass in iterSubclasses( cls ):
-			if qualifiedName == subclass.getQualifiedName():
+			if qualifiedName == subclass.__getQualifiedName__():
 				return subclass.model_validate( data )
 		
-		raise TypeError( f'`{qualifiedName}` is not a valid subclass of `{cls.getQualifiedName()}`.' )
+		raise TypeError( f'`{qualifiedName}` is not a valid subclass of `{cls.__getQualifiedName__()}`.' )
 	
 	
 	@classmethod
-	def getQualifiedName( cls ) -> str:
+	def __getQualifiedName__( cls ) -> str:
 		'''
 		Qualified name of this class.
 		'''
@@ -177,40 +177,7 @@ class GenericItem( BaseModel ):
 		Serialize qualified name.
 		'''
 		
-		return self.getQualifiedName()
-	
-	
-	@property
-	def children( self ) -> list[GenericItem]:
-		'''
-		List of child `GenericItem` instances.
-		'''
-		
-		return []
-	
-	
-	def isChildValid( self, item: GenericItem ) -> bool:	# pylint: disable = unused-argument
-		'''
-		Return `True` if `item` can be inserted as a child of this item.
-		'''
-		
-		return False
-	
-	
-	def insertChild( self, index: int, item: GenericItem ) -> None:
-		'''
-		Insert child into item. Hook for subclasses.
-		'''
-		
-		self.children.insert( index, item )
-	
-	
-	def removeChild( self, index: int, item: GenericItem ) -> None:	# pylint: disable = unused-argument
-		'''
-		Remove child from item. Hook for subclasses.
-		'''
-		
-		self.children.pop( index )
+		return self.__getQualifiedName__()
 	
 	
 	@classmethod
@@ -273,6 +240,39 @@ class GenericItem( BaseModel ):
 			)
 		
 		return itemFields
+	
+	
+	@property
+	def children( self ) -> list[GenericItem]:
+		'''
+		List of child `GenericItem` instances.
+		'''
+		
+		return []
+	
+	
+	def isChildValid( self, item: GenericItem ) -> bool:	# pylint: disable = unused-argument
+		'''
+		Return `True` if `item` can be inserted as a child of this item.
+		'''
+		
+		return False
+	
+	
+	def insertChild( self, index: int, item: GenericItem ) -> None:
+		'''
+		Insert child into item. Hook for subclasses.
+		'''
+		
+		self.children.insert( index, item )
+	
+	
+	def removeChild( self, index: int, item: GenericItem ) -> None:	# pylint: disable = unused-argument
+		'''
+		Remove child from item. Hook for subclasses.
+		'''
+		
+		self.children.pop( index )
 
 
 

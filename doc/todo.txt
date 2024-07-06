@@ -1,6 +1,4 @@
 Fix drop on empty view
-Make some methods private
-	______getQualifiedName
 Annotations for generititem child ttype
 
 Implement proper schema for models, get rid of init or class schema.
