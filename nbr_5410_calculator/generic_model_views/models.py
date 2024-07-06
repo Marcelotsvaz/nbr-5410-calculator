@@ -4,6 +4,7 @@ Partial implementation of `QAbstractItemModel`.
 
 from collections.abc import Mapping, Sequence
 from contextlib import suppress
+from functools import cache
 from typing import Any, cast, overload, override
 
 from PySide6.QtCore import (
@@ -42,7 +43,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 	) -> None:
 		super().__init__( parent )
 		
-		self.root = RootItem( items = datasource )
+		self.root = RootItem( childrenType = dataTypes[0], items = datasource )
 		self.dataTypes = dataTypes
 		self.updateFieldOrder()
 	
@@ -170,15 +171,9 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		An invalid `parent` returns the number of top-level rows.
 		'''
 		
-		# Root item.
-		# TODO: Remove this.
-		if not parent.isValid():
-			return 1
+		assert parent.isValid()
 		
-		if children := self.itemFromIndex( parent ).children:
-			return len( children )
-		
-		return 0
+		return len( self.itemFromIndex( parent ).children )
 	
 	
 	@override
@@ -189,8 +184,8 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		
 		flags = super().flags( index )
 		
-		if True:#self.dropActionsForIndex( index ):
-			flags |= Qt.ItemFlag.ItemIsDropEnabled
+		# TODO: Filter here on top of canDropMimeData?
+		flags |= Qt.ItemFlag.ItemIsDropEnabled
 		
 		if self.itemFromIndex( index ) is self.root:
 			return flags
@@ -281,16 +276,16 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		if parent is None:
 			parent = self.index( 0, 0 )
 		
-		children = self.itemFromIndex( parent ).children
+		parentItem = self.itemFromIndex( parent )
 		
-		if children is None:
-			raise ValueError( 'Parent does not support children.' )
+		if not parentItem.isValidChildren( item ):
+			raise ValueError( '`Item` is not a valid child or parent does not support children.' )
 		
 		if row < 0:
-			row = len( children ) + 1 + row
+			row = len( parentItem.children ) + 1 + row
 		
 		self.beginInsertRows( parent, row, row )
-		children.insert( row, item )
+		parentItem.children.insert( row, item )
 		self.endInsertRows()
 	
 	
@@ -300,14 +295,11 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		Delete existing items.
 		'''
 		
-		children = self.itemFromIndex( parent ).children
-		
-		if children is None:
-			raise ValueError( 'Parent does not support children.' )
+		parentItem = self.itemFromIndex( parent )
 		
 		self.beginRemoveRows( parent, row, row + count - 1 )
 		for _ in range( count ):
-			children.pop( row )
+			parentItem.children.pop( row )
 		self.endRemoveRows()
 		
 		return True
@@ -339,22 +331,20 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		) or destinationChild < 0 or destinationChild > self.rowCount( destinationParent ):
 			return False
 		
-		sourceChildren = self.itemFromIndex( sourceParent ).children
-		destinationChildren = self.itemFromIndex( destinationParent ).children
-		
-		if sourceChildren is None or destinationChildren is None:
-			raise ValueError( 'Parent does not support children.' )
-		
+		sourceParentItem = self.itemFromIndex( sourceParent )
 		items: list[ItemT] = []
 		for _ in range( count ):
-			items.append( sourceChildren.pop( sourceRow ) )
+			items.append( sourceParentItem.children.pop( sourceRow ) )
 		
 		# Update destination after we removed items from the list.
 		if destinationParent == sourceParent and destinationChild >= sourceRow:
 			destinationChild -= count
 		
+		destinationParentItem = self.itemFromIndex( destinationParent )
 		for item in reversed( items ):
-			destinationChildren.insert( destinationChild, item )
+			if not destinationParentItem.isValidChildren( item ):
+				raise ValueError( 'Source item is not a valid children of destination.' )
+			destinationParentItem.children.insert( destinationChild, item )
 		
 		self.endMoveRows()
 		
@@ -431,6 +421,7 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		return mimeData
 	
 	
+	@cache	# TODO
 	def itemsFromMimeData( self, mimeData: QMimeData ) -> list[ItemT]:
 		'''
 		Parse `QMimeData` using default MIME type.
@@ -481,4 +472,6 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		column: int,
 		parent: ModelIndex,
 	) -> bool:
-		return False
+		parentItem = self.itemFromIndex( parent )
+		
+		return all( parentItem.isValidChildren( item ) for item in self.itemsFromMimeData( data ) )

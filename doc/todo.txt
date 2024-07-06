@@ -1,6 +1,10 @@
-Set properties of unassigned view
-Set up relationships between models
+@override
+Implement proper schema for models, get rid of init or class schema.
+Use generic item because of complex nesting
+Use less type annotations
+Check children invariant
 
+Header tooltip
 Delegates
 Placeholder rows
 Power not settable
@@ -8,7 +12,7 @@ https://doc.qt.io/qtforpython-6/PySide6/QtCore/QAbstractItemModel.html#PySide6.Q
 from __feature__ import true_property
 
 
-
+Make some methods private
 Use Pydantic for shared data
 Use Pydantic validators for circuit data
 Fix sort for fields without __gt__
@@ -36,3 +40,19 @@ Electrical:
 	Overload
 	Short circuit
 	Rename cable?
+
+
+
+# subclasses = [ self.dataTypes[0] ] + self.dataTypes[0].__subclasses__()
+# annotatedSubclasses = [
+# 	Annotated[subclass, Tag( subclass.getQualifiedName() )]
+# 	for subclass in subclasses
+# ]
+
+# union = cast( type[ItemT], Union[*annotatedSubclasses] )	# pyright: ignore
+# discriminator = Discriminator( lambda item: item['__type__'] )
+# discriminatedUnion = cast( type[ItemT], Annotated[union, discriminator] )
+
+# adapter = TypeAdapter( list[discriminatedUnion] )
+
+# return adapter.validate_json( bytes( jsonBytes ) )

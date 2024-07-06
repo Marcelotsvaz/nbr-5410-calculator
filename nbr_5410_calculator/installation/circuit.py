@@ -7,7 +7,7 @@ from __future__ import annotations
 from enum import Enum, StrEnum, auto
 from functools import cache
 from math import pi
-from typing import Annotated, Any, Self
+from typing import Annotated, Any, Self, override
 
 from pydantic import BaseModel, Field
 from pyjson5 import decode_buffer
@@ -467,7 +467,13 @@ class UpstreamCircuit( BaseCircuit ):
 		return sum( circuit.power * circuit.loadType.demandFactor for circuit in self.circuits )
 	
 	
+	@override
+	def isValidChildren( self, item: GenericItem ) -> bool:
+		return isinstance( item, BaseCircuit )
+	
+	
 	@property
+	@override
 	def children( self ) -> list[BaseCircuitUnion]:
 		return self.circuits
 

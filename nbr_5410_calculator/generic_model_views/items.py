@@ -5,12 +5,12 @@ Items and fields for `GenericItemModel`.
 from __future__ import annotations
 
 from collections import defaultdict
-from collections.abc import Callable, Iterable
+from collections.abc import Callable, Generator, Iterable
 from dataclasses import KW_ONLY, dataclass
 from inspect import classify_class_attrs
-from typing import Annotated, Any, Self, cast, get_origin, get_type_hints
+from typing import Annotated, Any, Self, cast, get_origin, get_type_hints, override
 
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidatorFunctionWrapHandler, computed_field, model_validator
 
 
 
@@ -127,13 +127,71 @@ class GenericItem( BaseModel ):
 	Attributes and properties annotated with `ItemField` are available in the model.
 	'''
 	
-	@property
-	def children( self ) -> list[GenericItem] | None:
+	@model_validator( mode = 'wrap' )
+	@classmethod
+	def deserializeAsSubclass(
+		cls,
+		data: Any | dict[str, Any],
+		handler: ValidatorFunctionWrapHandler,
+	) -> Self:
 		'''
-		List of child `GenericItem` instances, if this item supports children.
+		Always deserialize instances of subclasses of this class as their actual class.
 		'''
 		
-		return None
+		if not isinstance( data, dict ) or '__type__' not in data:
+			return handler( data )
+		
+		qualifiedName = data.pop( '__type__' )
+		
+		if not isinstance( qualifiedName, str ):
+			raise TypeError( '`__type__` is not a valid class name.' )
+		
+		def iterSubclasses( baseClass: type[Self] ) -> Generator[type[Self], None, None]:
+			yield baseClass
+			
+			for subclass in baseClass.__subclasses__():
+				yield from iterSubclasses( subclass )
+		
+		for subclass in iterSubclasses( cls ):
+			if qualifiedName == subclass.getQualifiedName():
+				return subclass.model_validate( data )
+		
+		raise TypeError( f'`{qualifiedName}` is not a valid subclass of `{cls.getQualifiedName()}`.' )
+	
+	
+	@classmethod
+	def getQualifiedName( cls ) -> str:
+		'''
+		Qualified name of this class.
+		'''
+		
+		return f'{cls.__module__}.{cls.__qualname__}'
+	
+	
+	@computed_field
+	def __type__( self ) -> str:
+		'''
+		Serialize qualified name.
+		'''
+		
+		return self.getQualifiedName()
+	
+	
+	def isValidChildren( self, item: GenericItem ) -> bool:	# pylint: disable = unused-argument
+		'''
+		Return `True` if `item` can be inserted as a child of this item.
+		'''
+		
+		return False
+	
+	
+	@property
+	def children( self ) -> list[GenericItem]:
+		'''
+		List of child `GenericItem` instances.
+		'''
+		
+		return []
 	
 	
 	@classmethod
@@ -204,9 +262,16 @@ class RootItem( GenericItem ):
 	Root item for a `GenericItemModel`.
 	'''
 	
+	childrenType: type[GenericItem]
 	items: list[GenericItem]
 	
 	
+	@override
+	def isValidChildren( self, item: GenericItem ) -> bool:
+		return isinstance( item, self.childrenType )
+	
+	
 	@property
+	@override
 	def children( self ) -> list[GenericItem]:
 		return self.items
