@@ -3,7 +3,7 @@ Models and view for the conduits tab.
 '''
 
 from typing import override
-from PySide6.QtCore import QMimeData, Qt, Slot
+from PySide6.QtCore import Qt, Slot
 
 from nbr_5410_calculator.circuitsTab import CircuitsModel
 from nbr_5410_calculator.generic_model_views.models import GenericItemModel, ModelIndex
@@ -26,31 +26,6 @@ class ConduitRunsModel( GenericItemModel[ConduitRun | BaseCircuit] ):
 	@override
 	def dragActionsForIndex( self, sourceIndex: ModelIndex ) -> Qt.DropAction:
 		return Qt.DropAction.MoveAction
-	
-	
-	@override
-	def dropActionsForIndex(
-		self,
-		targetIndex: ModelIndex,
-		mimeData: QMimeData | None = None,
-	) -> Qt.DropAction:
-		targetItem = self.itemFromIndex( targetIndex )
-		
-		if targetItem is self.root:
-			return Qt.DropAction.MoveAction
-		
-		if mimeData is not None:
-			sourceItems = self.itemsFromMimeData( mimeData )
-		
-			if sourceItems and isinstance( targetItem, ConduitRun ):
-				return Qt.DropAction.MoveAction
-			
-			return Qt.DropAction.IgnoreAction
-		
-		if isinstance( targetItem, ConduitRun ):
-			return Qt.DropAction.MoveAction
-		
-		return Qt.DropAction.IgnoreAction
 
 
 
@@ -62,15 +37,6 @@ class UnassignedCircuitsModel( GenericItemModel[BaseCircuit] ):
 	@override
 	def dragActionsForIndex( self, sourceIndex: ModelIndex ) -> Qt.DropAction:
 		return Qt.DropAction.MoveAction
-	
-	
-	@override
-	def dropActionsForIndex(
-		self,
-		targetIndex: ModelIndex,
-		mimeData: QMimeData | None = None,
-	) -> Qt.DropAction:
-		return Qt.DropAction.IgnoreAction
 	
 	
 	@Slot()
@@ -93,7 +59,7 @@ class UnassignedCircuitsModel( GenericItemModel[BaseCircuit] ):
 	@Slot()
 	def removeCircuit( self, parent: ModelIndex, first: int, last: int ) -> None:
 		'''
-		Insert circuit if it's not assigned to any conduit run.
+		Remove deleted circuit.
 		'''
 		
 		circuitModel = parent.model()
