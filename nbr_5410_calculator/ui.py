@@ -105,7 +105,7 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		
 		try:
 			with open( fileName, 'rb' ) as file:
-				project = Project.model_validate_json( file.read(), context = {} )
+				project = Project.model_validate_json( file.read() )
 			
 			self.setProject( project )
 		except FileNotFoundError as error:

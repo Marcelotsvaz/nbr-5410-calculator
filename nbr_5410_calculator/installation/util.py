@@ -2,10 +2,17 @@
 Base Pydantic model for all `Project` models.
 '''
 
-from typing import Annotated, Any, Self, cast
+from typing import Annotated, Any, ClassVar, Self
 from uuid import UUID, uuid4
 
-from pydantic import BaseModel, ConfigDict, Field, PlainSerializer, ValidationInfo, model_validator
+from pydantic import (
+	BaseModel,
+	ConfigDict,
+	Field,
+	model_validator,
+	PlainSerializer,
+	ValidatorFunctionWrapHandler,
+)
 
 
 
@@ -26,6 +33,7 @@ class UniqueSerializable( BaseModel ):
 	)
 	
 	# Fields.
+	__uuids__: ClassVar[dict[str, Self]] = {}
 	uuid: Annotated[
 		UUID,
 		Field( default_factory = uuid4 ),
@@ -33,30 +41,25 @@ class UniqueSerializable( BaseModel ):
 	]
 	
 	
-	# TODO: Wrap so we don't construct the class unnecessarily.
-	@model_validator( mode = 'after' )
-	def shareInstanceByUuid( self, info: ValidationInfo ) -> Self:
+	@model_validator( mode = 'wrap' )
+	@classmethod
+	def _shareInstanceByUuid(
+		cls,
+		data: Any | dict[str, Any],
+		handler: ValidatorFunctionWrapHandler,
+	) -> Self:
 		'''
 		Reuse previously deserialized instances with the same UUID.
 		'''
 		
-		context = cast( dict[str, Self] | Any, info.context )
+		if isinstance( data, dict ) and 'uuid' in data and data['uuid'] in cls.__uuids__:
+			return cls.__uuids__[data['uuid']]
 		
-		# No context used.
-		if not isinstance( context, dict ):
-			return self
+		instance: Self = handler( data )
 		
-		# New UUID.
-		if self.uuid.hex not in context:
-			context[self.uuid.hex] = self
-			return self
+		cls.__uuids__[str( instance.uuid )] = instance
 		
-		# Invalid instance.
-		if self != context[self.uuid.hex]:
-			raise ValueError( 'A different instance with this UUID was already registered.' )
-		
-		# Return existing instance.
-		return context[self.uuid.hex]
+		return instance
 
 
 
