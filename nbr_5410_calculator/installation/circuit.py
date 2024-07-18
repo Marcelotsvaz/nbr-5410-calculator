@@ -365,6 +365,11 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 		raise NotImplementedError()
 	
 	
+	@power.setter
+	def power( self, value: float ) -> None:
+		raise NotImplementedError()
+	
+	
 	@property
 	def current( self ) -> Annotated[float, ItemField( 'Current', format = '{0:,.1f} A' )]:
 		'''
@@ -483,7 +488,7 @@ class Circuit( BaseCircuit ):
 	Represents a single terminal circuit in an electrical installation.
 	'''
 	
-	loadPower: float
+	loadPower: float	# TODO: Pydantic alias.
 	
 	
 	@property
@@ -493,6 +498,7 @@ class Circuit( BaseCircuit ):
 	
 	
 	@power.setter
+	@override
 	def power( self, value: float ) -> None:
 		self.loadPower = value
 
@@ -514,6 +520,12 @@ class UpstreamCircuit( BaseCircuit ):
 		'''
 		
 		return sum( circuit.power * circuit.loadType.demandFactor for circuit in self.circuits )
+	
+	
+	@power.setter
+	@override
+	def power( self, value: float ) -> None:
+		raise NotImplementedError()
 	
 	
 	@property

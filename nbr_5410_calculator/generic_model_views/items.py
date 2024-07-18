@@ -101,7 +101,7 @@ class ItemFieldInfo:
 		value = getattr( instance, self.name )
 		
 		if callable( self.format ):
-			return str( self.format( value ) )
+			return self.format( value )
 		
 		return self.format.format( value )
 	

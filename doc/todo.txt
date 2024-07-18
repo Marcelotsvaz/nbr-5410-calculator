@@ -1,5 +1,4 @@
 Format wire capacity
-Power not settable
 Fix drop on empty view
 Annotations for generititem child ttype
 
@@ -19,6 +18,7 @@ https://doc.qt.io/qtforpython-6/PySide6/QtCore/QAbstractItemModel.html#PySide6.Q
 from __feature__ import true_property
 
 
+Fix power settable on UpstreamCircuit
 Use Pydantic for shared data
 Use Pydantic validators for circuit data
 Fix sort for fields without __gt__
