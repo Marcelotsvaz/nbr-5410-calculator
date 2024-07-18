@@ -3,7 +3,6 @@ Partial implementation of `QAbstractItemModel`.
 '''
 
 from collections.abc import Mapping, Sequence
-from contextlib import suppress
 from functools import cache
 from typing import Any, cast, overload, override
 
@@ -15,7 +14,7 @@ from PySide6.QtCore import (
 	QPersistentModelIndex,
 	Qt,
 )
-from pydantic import TypeAdapter
+from pydantic import TypeAdapter, ValidationError
 
 from nbr_5410_calculator.generic_model_views.items import GenericItem, ItemFieldInfo, RootItem
 
@@ -266,13 +265,12 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 		item = self.itemFromIndex( index )
 		assert field is not None
 		
-		with suppress( ValueError ):
+		try:
 			field.setValue( item, value )
 			self.dataChanged.emit( index, index, [ role ] )
-			
 			return True
-		
-		return False
+		except ValidationError:
+			return False
 	
 	
 	def insertItem( self, item: ItemT, row: int = -1, parent: ModelIndex | None = None ) -> None:

@@ -9,6 +9,7 @@ from functools import cache
 from math import pi
 from typing import Annotated, Any, Self, override
 
+from annotated_types import Ge
 from pydantic import BaseModel, Field, SerializeAsAny
 from pyjson5 import decode_buffer
 
@@ -23,8 +24,8 @@ class Supply( UniqueSerializable, GenericItem ):
 	Power supply feeding a `Circuit`. Eg.: 3 Phase 220V.
 	'''
 	
-	voltage: Annotated[int, ItemField( 'Voltage', format = '{0} V' )]
-	phases: int = 1
+	voltage: Annotated[int, Ge( 0 ), ItemField( 'Voltage', format = '{0} V' )]
+	phases: Annotated[int, Ge( 1 ), ItemField( 'Phases' )] = 1
 	hasNeutral: bool = True
 	hasGround: bool = True
 	
@@ -339,6 +340,7 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 	
 	length: Annotated[
 		float,
+		Ge( 0.0 ),
 		ItemField(
 			'Length',
 			description = '',
@@ -492,7 +494,7 @@ class Circuit( BaseCircuit ):
 	Represents a single terminal circuit in an electrical installation.
 	'''
 	
-	loadPower: float	# TODO: Pydantic alias.
+	loadPower: Annotated[float, Ge( 0.0 )]	# TODO: Pydantic alias.
 	
 	
 	@property

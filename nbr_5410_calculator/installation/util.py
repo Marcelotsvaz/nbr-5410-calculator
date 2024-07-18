@@ -26,9 +26,8 @@ class UniqueSerializable( BaseModel ):
 		# TODO:
 		# 'sort_keys': True,
 		# 'indent': '\t',
-		# strict = True,
-		# strip_privates = True,
-		# strip_properties = True,
+		validate_assignment = True,
+		strict = True,
 		extra = 'forbid',
 	)
 	
