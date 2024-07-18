@@ -456,7 +456,11 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 	
 	
 	@property
-	def _wireCapacity( self ) -> Annotated[float, ItemField( 'Wire Capacity', format = '{0:,} A' )]:
+	def _wireCapacity( self ) -> Annotated[float, ItemField( 'Wire Capacity', format = '{0:,.1f} A' )]:
+		'''
+		Wire capacity, as a direct field.
+		'''
+		
 		return self.wire.capacity
 	
 	
