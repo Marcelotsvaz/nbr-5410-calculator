@@ -247,14 +247,6 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 		position = event.position().toPoint()
 		indexAtCursor = self.indexAt( position )
 		
-		# Append to root index when dropped on viewport.
-		if indexAtCursor == self.rootIndex():
-			indexAtCursor = self.model().index(
-				self.model().rowCount( indexAtCursor ) - 1,
-				0,
-				indexAtCursor,
-			)
-		
 		# Drop as child of `indexAtCursor`.
 		canDropOnItem = self.model().canDropMimeData(
 			event.mimeData(),
@@ -265,13 +257,16 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 		)
 		
 		# Drop as sibling of `indexAtCursor`.
-		canDropBesidesItem = self.model().canDropMimeData(
-			event.mimeData(),
-			event.dropAction(),
-			indexAtCursor.row(),
-			indexAtCursor.column(),
-			indexAtCursor.parent(),
-		)
+		if indexAtCursor == self.rootIndex():
+			canDropBesidesItem = False
+		else:
+			canDropBesidesItem = self.model().canDropMimeData(
+				event.mimeData(),
+				event.dropAction(),
+				indexAtCursor.row(),
+				indexAtCursor.column(),
+				indexAtCursor.parent(),
+			)
 		
 		aboveItem = QAbstractItemView.DropIndicatorPosition.AboveItem
 		onItem = QAbstractItemView.DropIndicatorPosition.OnItem
@@ -284,7 +279,7 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 		# If we can't drop besides then the whole cell goes to "on item".
 		if canDropOnItem and ( cursorOnCenter or not canDropBesidesItem ):
 			return (
-				0,
+				-1,
 				indexAtCursor,
 				self._dropIndicatorForIndex( indexAtCursor, onItem ),
 			)

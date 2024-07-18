@@ -1,4 +1,4 @@
-Fix drop on empty view
+Fix delete circuit in conduit run
 Annotations for generititem child ttype
 
 Support headers for nested items
