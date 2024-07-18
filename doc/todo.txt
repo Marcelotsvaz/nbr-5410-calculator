@@ -1,3 +1,4 @@
+Table for project panel
 Delegates
 Support headers for nested items
 	Nested item drag-and-drop already is get from GenericItem

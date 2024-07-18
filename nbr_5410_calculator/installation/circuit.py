@@ -390,15 +390,15 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 		Suitable breaker for this circuit.
 		'''
 		
-		breaker = min( filter(
+		breakers = list( filter(
 			lambda breaker: breaker.current >= self.current,
 			Breaker.getBreakers( 'C' ),
 		) )
 		
-		if not breaker:	# TODO: This check is wrong. filter raises.
+		if not breakers:
 			raise ProjectError( 'No suitable breaker found.' )
 		
-		return breaker
+		return min( breakers )
 	
 	
 	@property
