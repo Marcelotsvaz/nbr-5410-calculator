@@ -50,7 +50,6 @@ class ProjectSerializationTests( BaseProjectTests ):
 	Tests for `Project` serialization with Pydantic.
 	'''
 	
-	# TODO: Pydantic handle base class
 	def testSerialize( self ) -> None:
 		'''
 		Test serialization.

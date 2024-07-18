@@ -9,7 +9,7 @@ from functools import cache
 from math import pi
 from typing import Annotated, Any, Self, override
 
-from pydantic import BaseModel, Field
+from pydantic import BaseModel, Field, SerializeAsAny
 from pyjson5 import decode_buffer
 
 from nbr_5410_calculator.generic_model_views.items import ItemField
@@ -503,7 +503,7 @@ class UpstreamCircuit( BaseCircuit ):
 	Represents a circuit whose load is a group of downstream circuits.
 	'''
 	
-	circuits: list[BaseCircuit] = Field( default_factory = list )
+	circuits: list[SerializeAsAny[BaseCircuit]] = Field( default_factory = list )
 	
 	
 	@property

@@ -167,7 +167,6 @@ class ConduitRunSerializationTests( BaseConduitRunTests ):
 	Tests for `ConduitRun` serialization with Pydantic.
 	'''
 	
-	# TODO: Pydantic handle base class
 	def testSerialize( self ) -> None:
 		'''
 		Test serialization.

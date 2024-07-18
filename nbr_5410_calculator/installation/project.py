@@ -2,7 +2,7 @@
 Top-level project model.
 '''
 
-from pydantic import Field
+from pydantic import Field, SerializeAsAny
 
 from nbr_5410_calculator.installation.circuit import BaseCircuit, Supply, LoadType, WireType
 from nbr_5410_calculator.installation.conduitRun import ConduitRun
@@ -25,5 +25,5 @@ class Project( UniqueSerializable ):
 	defaultLoadType: LoadType | None = None
 	defaultWireType: WireType | None = None
 	
-	circuits: list[BaseCircuit] = Field( default_factory = list )
+	circuits: list[SerializeAsAny[BaseCircuit]] = Field( default_factory = list )
 	conduitRuns: list[ConduitRun] = Field( default_factory = list )

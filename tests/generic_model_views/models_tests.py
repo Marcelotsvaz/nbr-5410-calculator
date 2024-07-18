@@ -111,11 +111,14 @@ class GenericItemModelIndexTests( TestCase ):
 		Test children of top-level index.
 		'''
 		
-		container = RootItem( items = [
-			GenericItem(),
-			GenericItem(),
-			GenericItem(),
-		] )
+		container = RootItem(
+			childrenType = GenericItem,
+			items = [
+				GenericItem(),
+				GenericItem(),
+				GenericItem(),
+			],
+		)
 		
 		self.model.root.children.append( container )
 		

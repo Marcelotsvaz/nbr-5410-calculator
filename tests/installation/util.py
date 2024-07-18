@@ -17,9 +17,7 @@ from nbr_5410_calculator.installation.project import Project
 
 
 
-type jsonType = (
-	dict[str, jsonType | str | int | float | None] | list[jsonType | str | int | float | None]
-)
+type JsonType = dict[str, JsonType] | list[JsonType] | str | int | float | bool | None
 
 
 
@@ -140,12 +138,13 @@ def createProject() -> Project:
 # 
 # JSON.
 #-------------------------------------------------------------------------------
-def createLoadTypeDict() -> jsonType:
+def createLoadTypeDict() -> JsonType:
 	'''
 	Create JSON dict for `LoadType`.
 	'''
 	
 	return {
+		'__type__': 'nbr_5410_calculator.installation.circuit.LoadType',
 		'demandFactor': 1.0,
 		'minimumWireSection': 2.5,
 		'name': 'Power',
@@ -153,12 +152,13 @@ def createLoadTypeDict() -> jsonType:
 	}
 
 
-def createSupplyDict() -> jsonType:
+def createSupplyDict() -> JsonType:
 	'''
 	Create JSON dict for `Supply`.
 	'''
 	
 	return {
+		'__type__': 'nbr_5410_calculator.installation.circuit.Supply',
 		'hasGround': True,
 		'hasNeutral': True,
 		'phases': 1,
@@ -167,24 +167,26 @@ def createSupplyDict() -> jsonType:
 	}
 
 
-def createWireTypeDict() -> jsonType:
+def createWireTypeDict() -> JsonType:
 	'''
 	Create JSON dict for `WireType`.
 	'''
 	
 	return {
+		'__type__': 'nbr_5410_calculator.installation.circuit.WireType',
 		'insulation': WireInsulation.PVC,
 		'material': WireMaterial.COPPER,
 		'uuid': '31373e68-bb79-44b9-9227-c87ff4f46db3',
 	}
 
 
-def createCircuitDict() -> jsonType:
+def createCircuitDict() -> JsonType:
 	'''
 	Create JSON dict for `Circuit`.
 	'''
 	
 	return {
+		'__type__': 'nbr_5410_calculator.installation.circuit.Circuit',
 		'description': '',
 		'length': 10.0,
 		'loadPower': 5000.0,
@@ -196,12 +198,13 @@ def createCircuitDict() -> jsonType:
 	}
 
 
-def createUpstreamCircuitDict( circuits: list[jsonType] ) -> jsonType:
+def createUpstreamCircuitDict( circuits: list[JsonType] ) -> JsonType:
 	'''
 	Create JSON dict for `UpstreamCircuit`.
 	'''
 	
 	return {
+		'__type__': 'nbr_5410_calculator.installation.circuit.UpstreamCircuit',
 		'circuits': [ *circuits ],
 		'description': '',
 		'length': 10.0,
@@ -213,12 +216,13 @@ def createUpstreamCircuitDict( circuits: list[jsonType] ) -> jsonType:
 	}
 
 
-def createConduitRunDict( circuits: list[jsonType] ) -> jsonType:
+def createConduitRunDict( circuits: list[JsonType] ) -> JsonType:
 	'''
 	Create JSON dict for `ConduitRun`.
 	'''
 	
 	return {
+		'__type__': 'nbr_5410_calculator.installation.conduitRun.ConduitRun',
 		'circuits': [ *circuits ],
 		'length': 10.0,
 		'name': 'Test Conduit Run',
@@ -228,7 +232,7 @@ def createConduitRunDict( circuits: list[jsonType] ) -> jsonType:
 	}
 
 
-def createProjectDict( circuits: list[jsonType] ) -> jsonType:
+def createProjectDict( circuits: list[JsonType] ) -> JsonType:
 	'''
 	Create JSON dict for `Project`.
 	'''
