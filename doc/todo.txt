@@ -1,6 +1,4 @@
 QMessageBox.critical( self, self.tr('Error'), str( error ) )
-Table for project panel
-Delegates
 Support headers for nested items
 	Nested item drag-and-drop already is get from GenericItem
 	Model has base item, rest of schema is from GenericItem?
@@ -10,6 +8,7 @@ Flags
 	Allow editing
 	Allow drop on root
 Check children invariant
+Merge ItemField and ItemFieldInfo
 Fix power settable on UpstreamCircuit
 Fix delete circuit in conduit run
 Annotations for generititem child ttype

@@ -466,7 +466,23 @@ class GenericItemDelegate( QStyledItemDelegate ):
 		Returns the editor to be used for editing the data item with the given `index`.
 		'''
 		
-		match value := index.model().data( index, Qt.ItemDataRole.EditRole ):
+		model = cast( GenericItemModel[Any], index.model() )
+		assert isinstance( model, GenericItemModel )
+		
+		item = model.itemFromIndex( index )
+		field = model.fieldFromIndex( index )
+		assert field is not None
+		
+		if field.choices:
+			editor = QComboBox( parent )
+				
+			for choice in field.choices( item ):
+				editor.addItem( str( choice ), choice )
+			
+			return editor
+		
+		# TODO: Move this to field logic.
+		match value := model.data( index, Qt.ItemDataRole.EditRole ):
 			case Enum():
 				editor = QComboBox( parent )
 				
@@ -485,9 +501,11 @@ class GenericItemDelegate( QStyledItemDelegate ):
 		Sets the contents of the given `editor` to the data for the item at the given `index`.
 		'''
 		
-		match value := index.model().data( index, Qt.ItemDataRole.EditRole ), editor:
-			case Enum(), QComboBox() as enumEditor:
-				enumEditor.setCurrentText( value.name )
+		match editor:
+			case QComboBox() as editor:
+				value = index.model().data( index, Qt.ItemDataRole.EditRole )
+				itemIndex = editor.findData( value, Qt.ItemDataRole.UserRole )
+				editor.setCurrentIndex( itemIndex )
 			
 			case _:
 				super().setEditorData( editor, index )
@@ -500,9 +518,9 @@ class GenericItemDelegate( QStyledItemDelegate ):
 		`editor`.
 		'''
 		
-		match index.model().data( index, Qt.ItemDataRole.EditRole ), editor:
-			case Enum(), QComboBox() as enumEditor:
-				model.setData( index, enumEditor.currentData(), Qt.ItemDataRole.EditRole )
+		match editor:
+			case QComboBox() as editor:
+				model.setData( index, editor.currentData(), Qt.ItemDataRole.EditRole )
 			
 			case _:
 				super().setModelData( editor, model, index )

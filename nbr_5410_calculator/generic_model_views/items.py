@@ -39,6 +39,7 @@ class ItemField:
 	description: str | None = None
 	format: str | Callable[[Any], str] | None = None
 	editable: bool | None = None
+	choices: Callable[[Any], Iterable[Any]] | None = None
 
 
 
@@ -55,6 +56,7 @@ class ItemFieldInfo:
 	description: str | None = None
 	format: str | Callable[[Any], str] = '{0}'
 	editable: bool = False
+	choices: Callable[[Any], Iterable[Any]] | None = None
 	
 	
 	@classmethod
@@ -72,6 +74,7 @@ class ItemFieldInfo:
 			'description',
 			'format',
 			'editable',
+			'choices',
 		]
 		
 		for field in fields:
@@ -83,14 +86,6 @@ class ItemFieldInfo:
 			fieldInfoArgs['label'] = fieldInfoArgs['name']
 		
 		return cls( **fieldInfoArgs )
-	
-	
-	def valueType( self, instance: Any ) -> type:
-		'''
-		Return type of field in `instance`.
-		'''
-		
-		return cast( type[Any], type( self.valueForEdition( instance ) ) )
 	
 	
 	def valueForDisplay( self, instance: Any ) -> str:
@@ -119,7 +114,7 @@ class ItemFieldInfo:
 		Set value of field in `instance`.
 		'''
 		
-		setattr( instance, self.name, self.valueType( instance )( value ) )
+		setattr( instance, self.name, value )
 
 
 
