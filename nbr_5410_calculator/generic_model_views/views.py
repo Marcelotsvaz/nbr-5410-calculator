@@ -191,7 +191,7 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 				self.model().removeRow( index.row(), index.parent() )
 	
 	
-	def dropIndicatorPositionForIndex(
+	def _dropIndicatorPositionForIndex(
 		self,
 		index: ModelIndex,
 		point: QPoint,
@@ -272,9 +272,9 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 		onItem = QAbstractItemView.DropIndicatorPosition.OnItem
 		belowItem = QAbstractItemView.DropIndicatorPosition.BelowItem
 		
-		cursorOnTop = self.dropIndicatorPositionForIndex( indexAtCursor, position, False ) is aboveItem
-		cursorOnCenter = self.dropIndicatorPositionForIndex( indexAtCursor, position, True ) is onItem
-		cursorOnBottom = self.dropIndicatorPositionForIndex( indexAtCursor, position, False ) is belowItem
+		cursorOnTop = self._dropIndicatorPositionForIndex( indexAtCursor, position, False ) is aboveItem
+		cursorOnCenter = self._dropIndicatorPositionForIndex( indexAtCursor, position, True ) is onItem
+		cursorOnBottom = self._dropIndicatorPositionForIndex( indexAtCursor, position, False ) is belowItem
 		
 		# If we can't drop besides then the whole cell goes to "on item".
 		if canDropOnItem and ( cursorOnCenter or not canDropBesidesItem ):

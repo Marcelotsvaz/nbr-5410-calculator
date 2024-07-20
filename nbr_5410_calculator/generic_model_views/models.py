@@ -42,7 +42,8 @@ class GenericItemModel[ItemT: GenericItem]( QAbstractItemModel ):
 	) -> None:
 		super().__init__( parent )
 		
-		self.root = RootItem( childrenType = dataTypes[0], items = datasource )
+		self.root = RootItem( childrenType = dataTypes[0], items = [] )
+		self.root.items = datasource	# TODO: Don't copy list in constructor.
 		self.dataTypes = dataTypes
 		self.updateFieldOrder()
 	

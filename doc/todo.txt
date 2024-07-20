@@ -1,3 +1,4 @@
+QMessageBox.critical( self, self.tr('Error'), str( error ) )
 Table for project panel
 Delegates
 Support headers for nested items
