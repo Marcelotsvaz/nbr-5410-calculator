@@ -27,7 +27,7 @@ class UniqueSerializable( BaseModel ):
 		# 'sort_keys': True,
 		# 'indent': '\t',
 		validate_assignment = True,
-		strict = True,
+		# strict = True,	# TODO: Fix deserialization of StrEnum.
 		extra = 'forbid',
 	)
 	
