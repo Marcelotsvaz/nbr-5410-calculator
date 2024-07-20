@@ -1,4 +1,3 @@
-QMessageBox.critical( self, self.tr('Error'), str( error ) )
 Support headers for nested items
 	Nested item drag-and-drop already is get from GenericItem
 	Model has base item, rest of schema is from GenericItem?

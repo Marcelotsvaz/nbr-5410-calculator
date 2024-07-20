@@ -9,7 +9,7 @@ from functools import cache
 from math import pi
 from typing import Annotated, Any, Self, override
 
-from annotated_types import Ge
+from annotated_types import Ge, MinLen
 from pydantic import BaseModel, Field, SerializeAsAny
 from pyjson5 import decode_buffer
 
@@ -63,7 +63,7 @@ class LoadType( UniqueSerializable, GenericItem ):
 	See NBR 5410 6.2.6.1.1.
 	'''
 	
-	name: Annotated[str, ItemField( 'Name' )]
+	name: Annotated[str, MinLen( 1 ), ItemField( 'Name' )]
 	minimumWireSection: float
 	demandFactor: float
 
@@ -299,6 +299,7 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 	
 	name: Annotated[
 		str,
+		MinLen( 1 ),
 		ItemField(
 			'Name',
 			description = 'Name identifying the circuit.',

@@ -9,7 +9,7 @@ from functools import cache
 from math import pi
 from typing import Annotated, Any, Self, override
 
-from annotated_types import Ge
+from annotated_types import Ge, MinLen
 from pydantic import BaseModel, Field, SerializeAsAny
 from pyjson5 import decode_buffer
 
@@ -197,7 +197,7 @@ class ConduitRun( UniqueSerializable, GenericItem ):
 	Represents a conduit run containing multiple circuits.
 	'''
 	
-	name: Annotated[str, ItemField( 'Name' )]
+	name: Annotated[ str, MinLen( 1 ), ItemField( 'Name' ) ]
 	referenceMethod: Annotated[ReferenceMethod, ItemField( 'Ref. Method' )]
 	temperature: Annotated[int, ItemField( 'Temperature', format = '{0}°C' )]
 	length: Annotated[float, Ge( 0.0 ), ItemField( 'Length', format = '{0:,} m' )]

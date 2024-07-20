@@ -19,6 +19,7 @@ from PySide6.QtWidgets import (
 	QAbstractItemView,
 	QComboBox,
 	QListView,
+	QMessageBox,
 	QStyle,
 	QStyledItemDelegate,
 	QStyleOption,
@@ -520,7 +521,16 @@ class GenericItemDelegate( QStyledItemDelegate ):
 		
 		match editor:
 			case QComboBox() as editor:
-				model.setData( index, editor.currentData(), Qt.ItemDataRole.EditRole )
+				value = editor.currentData()
 			
 			case _:
-				super().setModelData( editor, model, index )
+				userProperty = cast( str, editor.metaObject().userProperty().name() )
+				value = editor.property( userProperty )
+		
+		if not model.setData( index, value, Qt.ItemDataRole.EditRole ):
+			# TODO: Display field constraints.
+			QMessageBox.warning(
+				editor,
+				self.tr('Invalid value'),
+				self.tr('Invalid value for field.'),
+			)
