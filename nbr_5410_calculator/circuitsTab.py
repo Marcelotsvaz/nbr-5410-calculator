@@ -83,6 +83,7 @@ class CircuitsView( GenericTreeView[CircuitsModel, BaseCircuit] ):
 			loadPower		= 1000,
 			loadType		= project.defaultLoadType,
 			name			= self.tr('New Circuit'),
+			project			= project,
 			supply			= project.defaultSupply,
 			wireType		= project.defaultWireType,
 		)

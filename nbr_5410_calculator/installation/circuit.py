@@ -319,6 +319,7 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 		ItemField(
 			'Supply',
 			description = 'The supply for this circuit.',
+			choices = lambda self: self.project.supplies
 		),
 	]
 	
@@ -328,6 +329,7 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 			'Load Type',
 			description = 'The type of load for this circuit.',
 			format = lambda value: value.name,
+			choices = lambda self: self.project.loadTypes
 		),
 	]
 	
@@ -335,7 +337,8 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 		WireType,
 		ItemField(
 			'Wire Type',
-			description = '',
+			description = 'Type of wire for this circuit.',
+			choices = lambda self: self.project.wireTypes
 		),
 	]
 	
@@ -349,6 +352,7 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 		),
 	]
 	
+	project: Annotated[Project | None, Field( exclude = True )] = None
 	conduitRun: Annotated[ConduitRun | None, Field( exclude = True )] = None
 	
 	
@@ -550,3 +554,5 @@ class UpstreamCircuit( BaseCircuit ):
 # Import last due to circular dependencies.
 # pylint: disable-next = wrong-import-position
 from nbr_5410_calculator.installation.conduitRun import ConduitRun, ReferenceMethod
+# pylint: disable-next = wrong-import-position
+from nbr_5410_calculator.installation.project import Project
