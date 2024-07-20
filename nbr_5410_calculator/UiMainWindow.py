@@ -91,20 +91,20 @@ class Ui_mainWindow(object):
 
         self.gridLayout_4.addWidget(self.wireTypesLabel, 0, 6, 1, 1)
 
-        self.loadTypesListView = LoadTypeView(self.projectTab)
-        self.loadTypesListView.setObjectName(u"loadTypesListView")
+        self.loadTypesView = LoadTypeView(self.projectTab)
+        self.loadTypesView.setObjectName(u"loadTypesView")
 
-        self.gridLayout_4.addWidget(self.loadTypesListView, 1, 3, 1, 3)
+        self.gridLayout_4.addWidget(self.loadTypesView, 1, 3, 1, 3)
 
         self.suppliesLabel = QLabel(self.projectTab)
         self.suppliesLabel.setObjectName(u"suppliesLabel")
 
         self.gridLayout_4.addWidget(self.suppliesLabel, 0, 0, 1, 1)
 
-        self.suppliesListView = SupplyView(self.projectTab)
-        self.suppliesListView.setObjectName(u"suppliesListView")
+        self.suppliesView = SupplyView(self.projectTab)
+        self.suppliesView.setObjectName(u"suppliesView")
 
-        self.gridLayout_4.addWidget(self.suppliesListView, 1, 0, 1, 3)
+        self.gridLayout_4.addWidget(self.suppliesView, 1, 0, 1, 3)
 
         self.suppliesLabelSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -116,10 +116,10 @@ class Ui_mainWindow(object):
 
         self.gridLayout_4.addWidget(self.newLoadTypeButton, 0, 5, 1, 1)
 
-        self.wireTypesListView = WireTypeView(self.projectTab)
-        self.wireTypesListView.setObjectName(u"wireTypesListView")
+        self.wireTypesView = WireTypeView(self.projectTab)
+        self.wireTypesView.setObjectName(u"wireTypesView")
 
-        self.gridLayout_4.addWidget(self.wireTypesListView, 1, 6, 1, 3)
+        self.gridLayout_4.addWidget(self.wireTypesView, 1, 6, 1, 3)
 
         self.wireTypesLabelSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
 
@@ -159,10 +159,10 @@ class Ui_mainWindow(object):
 
         self.gridLayout_2.addWidget(self.circuitsLabel, 0, 0, 1, 1)
 
-        self.circuitsTreeView = CircuitsView(self.circuitsTab)
-        self.circuitsTreeView.setObjectName(u"circuitsTreeView")
+        self.circuitsView = CircuitsView(self.circuitsTab)
+        self.circuitsView.setObjectName(u"circuitsView")
 
-        self.gridLayout_2.addWidget(self.circuitsTreeView, 1, 0, 1, 5)
+        self.gridLayout_2.addWidget(self.circuitsView, 1, 0, 1, 5)
 
         self.tabWidget.addTab(self.circuitsTab, "")
         self.conduitsTab = QWidget()
@@ -190,10 +190,10 @@ class Ui_mainWindow(object):
 
         self.gridLayout_3.addWidget(self.conduitRunsLabel, 0, 0, 1, 1)
 
-        self.conduitsTreeView = ConduitRunsView(self.conduitsTab)
-        self.conduitsTreeView.setObjectName(u"conduitsTreeView")
+        self.conduitsView = ConduitRunsView(self.conduitsTab)
+        self.conduitsView.setObjectName(u"conduitsView")
 
-        self.gridLayout_3.addWidget(self.conduitsTreeView, 1, 0, 1, 4)
+        self.gridLayout_3.addWidget(self.conduitsView, 1, 0, 1, 4)
 
         self.unassignedCircuitsView = UnassignedCircuitsView(self.conduitsTab)
         self.unassignedCircuitsView.setObjectName(u"unassignedCircuitsView")
@@ -241,17 +241,17 @@ class Ui_mainWindow(object):
         self.actionSave.triggered.connect(mainWindow.saveProject)
         self.actionOpen.triggered.connect(mainWindow.loadProject)
         self.actionSaveAs.triggered.connect(mainWindow.saveProject)
-        self.newCircuitButton.clicked.connect(self.circuitsTreeView.newCircuit)
+        self.newCircuitButton.clicked.connect(self.circuitsView.newCircuit)
         self.actionNew.triggered.connect(mainWindow.newProject)
         self.actionAbout.triggered.connect(mainWindow.showAbout)
         self.actionQuit.triggered.connect(mainWindow.close)
-        self.deleteCircuitButton.clicked.connect(self.circuitsTreeView.deleteSelectedItems)
-        self.newConduitRunButton.clicked.connect(self.conduitsTreeView.newConduitRun)
-        self.deleteConduitRunButton.clicked.connect(self.conduitsTreeView.deleteSelectedItems)
-        self.newUpstreamCircuitButton.clicked.connect(self.circuitsTreeView.newUpstreamCircuit)
-        self.newSupplyButton.clicked.connect(self.suppliesListView.newSupply)
-        self.newLoadTypeButton.clicked.connect(self.loadTypesListView.newLoadType)
-        self.newWireTypeButton.clicked.connect(self.wireTypesListView.newWireType)
+        self.deleteCircuitButton.clicked.connect(self.circuitsView.deleteSelectedItems)
+        self.newConduitRunButton.clicked.connect(self.conduitsView.newConduitRun)
+        self.deleteConduitRunButton.clicked.connect(self.conduitsView.deleteSelectedItems)
+        self.newUpstreamCircuitButton.clicked.connect(self.circuitsView.newUpstreamCircuit)
+        self.newSupplyButton.clicked.connect(self.suppliesView.newSupply)
+        self.newLoadTypeButton.clicked.connect(self.loadTypesView.newLoadType)
+        self.newWireTypeButton.clicked.connect(self.wireTypesView.newWireType)
 
         self.tabWidget.setCurrentIndex(0)
 

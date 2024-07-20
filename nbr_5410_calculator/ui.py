@@ -51,17 +51,17 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		unassignedCircuitsModel = UnassignedCircuitsModel( circuitsModel, self )
 		
 		# Views.
-		self.suppliesListView.setModel( supplyModel )
-		self.loadTypesListView.setModel( loadTypeModel )
-		self.wireTypesListView.setModel( wireTypeModel )
+		self.suppliesView.setModel( supplyModel )
+		self.loadTypesView.setModel( loadTypeModel )
+		self.wireTypesView.setModel( wireTypeModel )
 		
-		self.circuitsTreeView.setModel( circuitsModel )
-		self.circuitsTreeView.expandAll()
-		self.circuitsTreeView.resizeColumnsToContents()
+		self.circuitsView.setModel( circuitsModel )
+		self.circuitsView.expandAll()
+		self.circuitsView.resizeColumnsToContents()
 		
-		self.conduitsTreeView.setModel( conduitRunsModel )
-		self.conduitsTreeView.expandAll()
-		self.conduitsTreeView.resizeColumnsToContents()
+		self.conduitsView.setModel( conduitRunsModel )
+		self.conduitsView.expandAll()
+		self.conduitsView.resizeColumnsToContents()
 		self.unassignedCircuitsView.setModel( unassignedCircuitsModel )
 	
 	
@@ -75,17 +75,17 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		
 		self.setProject( project )
 		
-		project.defaultSupply = self.suppliesListView.newSupply()
-		project.defaultLoadType = self.loadTypesListView.newLoadType()
-		project.defaultWireType = self.wireTypesListView.newWireType()
+		project.defaultSupply = self.suppliesView.newSupply()
+		project.defaultLoadType = self.loadTypesView.newLoadType()
+		project.defaultWireType = self.wireTypesView.newWireType()
 		
-		self.circuitsTreeView.newCircuit()
-		self.circuitsTreeView.expandAll()
-		self.circuitsTreeView.resizeColumnsToContents()
+		self.circuitsView.newCircuit()
+		self.circuitsView.expandAll()
+		self.circuitsView.resizeColumnsToContents()
 		
-		self.conduitsTreeView.newConduitRun()
-		self.conduitsTreeView.expandAll()
-		self.conduitsTreeView.resizeColumnsToContents()
+		self.conduitsView.newConduitRun()
+		self.conduitsView.expandAll()
+		self.conduitsView.resizeColumnsToContents()
 	
 	
 	@Slot()

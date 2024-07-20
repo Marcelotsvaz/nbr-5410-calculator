@@ -5,7 +5,7 @@ Models and view for the project tab.
 from PySide6.QtCore import Slot
 
 from nbr_5410_calculator.generic_model_views.models import GenericItemModel
-from nbr_5410_calculator.generic_model_views.views import GenericListView
+from nbr_5410_calculator.generic_model_views.views import GenericTreeView
 from nbr_5410_calculator.installation.circuit import (
 	LoadType, 
 	Supply, 
@@ -16,14 +16,15 @@ from nbr_5410_calculator.installation.circuit import (
 
 
 
-class SupplyView( GenericListView[GenericItemModel[Supply], Supply] ):
+class SupplyView( GenericTreeView[GenericItemModel[Supply], Supply] ):
 	'''
 	List view of `Supply`.
 	'''
 	
 	fieldOrder = {
 		Supply: [
-			'voltage'
+			'voltage',
+			'phases',
 		],
 	}
 	
@@ -44,14 +45,14 @@ class SupplyView( GenericListView[GenericItemModel[Supply], Supply] ):
 
 
 
-class LoadTypeView( GenericListView[GenericItemModel[LoadType], LoadType] ):
+class LoadTypeView( GenericTreeView[GenericItemModel[LoadType], LoadType] ):
 	'''
 	List view of `LoadType`.
 	'''
 	
 	fieldOrder = {
 		LoadType: [
-			'name'
+			'name',
 		],
 	}
 	
@@ -74,14 +75,14 @@ class LoadTypeView( GenericListView[GenericItemModel[LoadType], LoadType] ):
 
 
 
-class WireTypeView( GenericListView[GenericItemModel[WireType], WireType] ):
+class WireTypeView( GenericTreeView[GenericItemModel[WireType], WireType] ):
 	'''
 	List view of `WireType`.
 	'''
 	
 	fieldOrder = {
 		WireType: [
-			'material'
+			'material',
 		],
 	}
 	

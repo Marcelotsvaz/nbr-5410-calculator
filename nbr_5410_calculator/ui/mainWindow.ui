@@ -68,7 +68,7 @@
          </widget>
         </item>
         <item row="1" column="3" colspan="3">
-         <widget class="LoadTypeView" name="loadTypesListView"/>
+         <widget class="LoadTypeView" name="loadTypesView"/>
         </item>
         <item row="0" column="0">
          <widget class="QLabel" name="suppliesLabel">
@@ -78,7 +78,7 @@
          </widget>
         </item>
         <item row="1" column="0" colspan="3">
-         <widget class="SupplyView" name="suppliesListView"/>
+         <widget class="SupplyView" name="suppliesView"/>
         </item>
         <item row="0" column="1">
          <spacer name="suppliesLabelSpacer">
@@ -101,7 +101,7 @@
          </widget>
         </item>
         <item row="1" column="6" colspan="3">
-         <widget class="WireTypeView" name="wireTypesListView"/>
+         <widget class="WireTypeView" name="wireTypesView"/>
         </item>
         <item row="0" column="7">
          <spacer name="wireTypesLabelSpacer">
@@ -174,7 +174,7 @@
          </widget>
         </item>
         <item row="1" column="0" colspan="5">
-         <widget class="CircuitsView" name="circuitsTreeView"/>
+         <widget class="CircuitsView" name="circuitsView"/>
         </item>
        </layout>
       </widget>
@@ -224,7 +224,7 @@
          </widget>
         </item>
         <item row="1" column="0" colspan="4">
-         <widget class="ConduitRunsView" name="conduitsTreeView"/>
+         <widget class="ConduitRunsView" name="conduitsView"/>
         </item>
         <item row="3" column="0" colspan="4">
          <widget class="UnassignedCircuitsView" name="unassignedCircuitsView"/>
@@ -456,7 +456,7 @@
   <connection>
    <sender>newCircuitButton</sender>
    <signal>clicked()</signal>
-   <receiver>circuitsTreeView</receiver>
+   <receiver>circuitsView</receiver>
    <slot>newCircuit()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -520,7 +520,7 @@
   <connection>
    <sender>deleteCircuitButton</sender>
    <signal>clicked()</signal>
-   <receiver>circuitsTreeView</receiver>
+   <receiver>circuitsView</receiver>
    <slot>deleteSelectedItems()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -536,7 +536,7 @@
   <connection>
    <sender>newConduitRunButton</sender>
    <signal>clicked()</signal>
-   <receiver>conduitsTreeView</receiver>
+   <receiver>conduitsView</receiver>
    <slot>newConduitRun()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -552,7 +552,7 @@
   <connection>
    <sender>deleteConduitRunButton</sender>
    <signal>clicked()</signal>
-   <receiver>conduitsTreeView</receiver>
+   <receiver>conduitsView</receiver>
    <slot>deleteSelectedItems()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -568,7 +568,7 @@
   <connection>
    <sender>newUpstreamCircuitButton</sender>
    <signal>clicked()</signal>
-   <receiver>circuitsTreeView</receiver>
+   <receiver>circuitsView</receiver>
    <slot>newUpstreamCircuit()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -584,7 +584,7 @@
   <connection>
    <sender>newSupplyButton</sender>
    <signal>clicked()</signal>
-   <receiver>suppliesListView</receiver>
+   <receiver>suppliesView</receiver>
    <slot>newSupply()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -600,7 +600,7 @@
   <connection>
    <sender>newLoadTypeButton</sender>
    <signal>clicked()</signal>
-   <receiver>loadTypesListView</receiver>
+   <receiver>loadTypesView</receiver>
    <slot>newLoadType()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -616,7 +616,7 @@
   <connection>
    <sender>newWireTypeButton</sender>
    <signal>clicked()</signal>
-   <receiver>wireTypesListView</receiver>
+   <receiver>wireTypesView</receiver>
    <slot>newWireType()</slot>
    <hints>
     <hint type="sourcelabel">
