@@ -4,6 +4,7 @@ Utility functions for `nbr_5410_calculator.installation` tests.
 
 from uuid import UUID
 from nbr_5410_calculator.installation.circuit import (
+	BreakerCurve,
 	Circuit,
 	LoadType,
 	Supply,
@@ -66,6 +67,7 @@ def createCircuit( conduitRun: ConduitRun ) -> Circuit:
 	'''
 	
 	circuit = Circuit(
+		breakerCurve		= BreakerCurve.C,
 		conduitRun			= conduitRun,
 		length				= 10.0,
 		loadPower			= 5000,
@@ -87,6 +89,7 @@ def createUpstreamCircuit( conduitRun: ConduitRun ) -> UpstreamCircuit:
 	'''
 	
 	circuit = UpstreamCircuit(
+		breakerCurve		= BreakerCurve.C,
 		circuits			= [ createCircuit( conduitRun ) ] * 3,
 		conduitRun			= conduitRun,
 		length				= 10.0,
@@ -187,6 +190,7 @@ def createCircuitDict() -> JsonType:
 	
 	return {
 		'__type__': 'nbr_5410_calculator.installation.circuit.Circuit',
+		'breakerCurve': 'c',
 		'description': '',
 		'length': 10.0,
 		'loadPower': 5000.0,
@@ -205,6 +209,7 @@ def createUpstreamCircuitDict( circuits: list[JsonType] ) -> JsonType:
 	
 	return {
 		'__type__': 'nbr_5410_calculator.installation.circuit.UpstreamCircuit',
+		'breakerCurve': 'c',
 		'circuits': [ *circuits ],
 		'description': '',
 		'length': 10.0,

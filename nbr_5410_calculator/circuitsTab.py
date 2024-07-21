@@ -10,6 +10,7 @@ from nbr_5410_calculator.generic_model_views.models import GenericItemModel, Mod
 from nbr_5410_calculator.generic_model_views.views import GenericTreeView
 from nbr_5410_calculator.installation.circuit import (
 	BaseCircuit,
+	BreakerCurve,
 	Circuit,
 	UpstreamCircuit,
 )
@@ -57,6 +58,7 @@ class CircuitsView( GenericTreeView[CircuitsModel, BaseCircuit] ):
 			'loadType',
 			'power',
 			'wireType',
+			'breakerCurve',
 			'length',
 			'current',
 			'breaker',
@@ -79,6 +81,7 @@ class CircuitsView( GenericTreeView[CircuitsModel, BaseCircuit] ):
 			raise Exception( 'TODO' )
 		
 		circuit = Circuit(
+			breakerCurve	= BreakerCurve.C,
 			length			= 10.0,
 			loadPower		= 1000,
 			loadType		= project.defaultLoadType,
@@ -107,6 +110,7 @@ class CircuitsView( GenericTreeView[CircuitsModel, BaseCircuit] ):
 			raise Exception( 'TODO' )
 		
 		circuit = UpstreamCircuit(
+			breakerCurve	= BreakerCurve.C,
 			length			= 10.0,
 			loadType		= defaultLoadType,
 			name			= self.tr('New Upstream Circuit'),

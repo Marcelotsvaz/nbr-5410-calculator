@@ -26,7 +26,6 @@ https://returns.readthedocs.io/en/latest/pages/hkt.html
 
 
 Electrical:
-	Breaker type
 	Accumulate errors in property
 	BUG: Test when one wireByCriteria is empty
 	Grouping wire layout

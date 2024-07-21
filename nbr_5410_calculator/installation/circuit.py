@@ -252,13 +252,26 @@ class Wire( BaseModel ):
 
 
 
+class BreakerCurve( StrEnum ):
+	'''
+	Breaker curve.
+	
+	TODO: See NBR 5410 x.x.x.x.
+	'''
+	
+	B = auto()
+	C = auto()
+	D = auto()
+
+
+
 class Breaker( BaseModel ):
 	'''
 	Circuit breaker of a specific capacity.
 	'''
 	
 	current: int
-	curve: str
+	curve: BreakerCurve
 	
 	
 	@classmethod
@@ -273,14 +286,14 @@ class Breaker( BaseModel ):
 	
 	
 	@classmethod
-	def getBreakers( cls, curve: str ) -> list[Self]:
+	def getBreakers( cls, curve: BreakerCurve ) -> list[Self]:
 		'''
 		Return breakers by curve.
 		'''
 		
 		breakers = cls.loadBreakers()
 		
-		return [ cls( current = current, curve = curve ) for current in breakers[curve] ]
+		return [ cls( current = current, curve = curve ) for current in breakers[curve.value] ]
 	
 	
 	@override
@@ -289,7 +302,7 @@ class Breaker( BaseModel ):
 	
 	
 	def __gt__( self, other: Self ) -> bool:
-		if self.curve != other.curve:
+		if self.curve is not other.curve:
 			return NotImplemented
 		
 		return self.current > other.current
@@ -342,6 +355,14 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 			'Wire Type',
 			description = 'Type of wire for this circuit.',
 			choices = lambda self: self.project.wireTypes
+		),
+	]
+	
+	breakerCurve: Annotated[
+		BreakerCurve,
+		ItemField(
+			'Breaker Curve',
+			description = 'Breaker curve for this circuit.',
 		),
 	]
 	
@@ -400,7 +421,7 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 		
 		breakers = list( filter(
 			lambda breaker: breaker.current >= self.current,
-			Breaker.getBreakers( 'C' ),
+			Breaker.getBreakers( self.breakerCurve ),
 		) )
 		
 		if not breakers:
