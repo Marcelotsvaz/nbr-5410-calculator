@@ -2,13 +2,11 @@
 Models and view for the conduits tab.
 '''
 
-from collections.abc import Generator
 from typing import override
 
 from PySide6.QtCore import QModelIndex, QObject, Qt, Slot
 
 from nbr_5410_calculator.circuitsTab import CircuitsModel
-from nbr_5410_calculator.generic_model_views.items import GenericItem
 from nbr_5410_calculator.generic_model_views.models import GenericItemModel, ModelIndex
 from nbr_5410_calculator.generic_model_views.views import GenericListView, GenericTreeView
 from nbr_5410_calculator.installation.circuit import BaseCircuit
@@ -70,17 +68,10 @@ class UnassignedCircuitsModel( GenericItemModel[BaseCircuit] ):
 		Display all circuits not assigned to any conduit run.
 		'''
 		
-		def iterCircuits( topCircuit: GenericItem ) -> Generator[BaseCircuit, None, None]:
-			if isinstance( topCircuit, BaseCircuit ):
-				yield topCircuit
-			
-			for circuit in topCircuit.children:
-				yield from iterCircuits( circuit )
-		
 		self.layoutAboutToBeChanged.emit()
 		self.root.items = [
 			circuit
-			for circuit in iterCircuits( self.circuitsModel.root )
+			for circuit in self.circuitsModel.project.iterCircuits()
 			if not circuit.conduitRun
 		]
 		self.layoutChanged.emit()

@@ -10,7 +10,7 @@ from math import pi
 from typing import Annotated, Any, Self, override
 
 from annotated_types import Ge, Gt, MinLen
-from pydantic import BaseModel, Field, SerializeAsAny
+from pydantic import BaseModel, Field, SerializeAsAny, SkipValidation
 from pyjson5 import decode_buffer
 
 from nbr_5410_calculator.generic_model_views.items import ItemField
@@ -376,7 +376,7 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 		),
 	]
 	
-	project: Annotated[Project | None, Field( exclude = True )] = None
+	project: Annotated[SkipValidation[Project] | None, Field( exclude = True )] = None
 	conduitRun: Annotated[ConduitRun | None, Field( exclude = True )] = None
 	
 	

@@ -1,0 +1,902 @@
+{
+	"uuid": "762086cc-6ddf-4249-b06a-2f51612e0ba4",
+	"name": "New Project",
+	"supplies": [
+		{
+			"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+			"voltage": 220,
+			"phases": 2,
+			"hasNeutral": false,
+			"hasGround": true,
+			"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+		}
+	],
+	"loadTypes": [
+		{
+			"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+			"name": "Potência",
+			"minimumWireSection": 2.5,
+			"demandFactor": 0.5,
+			"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+		},
+		{
+			"uuid": "d7df9f3a-b622-4133-9b56-ab37eb82fa1a",
+			"name": "Iluminação",
+			"minimumWireSection": 1.5,
+			"demandFactor": 1.0,
+			"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+		},
+		{
+			"uuid": "b8dc286e-7f17-43be-9362-7a376ebfb638",
+			"name": "Tomadas",
+			"minimumWireSection": 2.5,
+			"demandFactor": 1.0,
+			"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+		}
+	],
+	"wireTypes": [
+		{
+			"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+			"material": "copper",
+			"insulation": "pvc",
+			"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+		}
+	],
+	"defaultSupply": {
+		"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+		"voltage": 220,
+		"phases": 2,
+		"hasNeutral": false,
+		"hasGround": true,
+		"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+	},
+	"defaultLoadType": {
+		"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+		"name": "Potência",
+		"minimumWireSection": 2.5,
+		"demandFactor": 0.5,
+		"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+	},
+	"defaultWireType": {
+		"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+		"material": "copper",
+		"insulation": "pvc",
+		"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+	},
+	"circuits": [
+		{
+			"uuid": "9676eaf3-63a3-42a5-ae2a-68d3fb1a2571",
+			"name": "Alimentação",
+			"description": "",
+			"supply": {
+				"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+				"voltage": 220,
+				"phases": 2,
+				"hasNeutral": false,
+				"hasGround": true,
+				"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+			},
+			"loadType": {
+				"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+				"name": "Potência",
+				"minimumWireSection": 2.5,
+				"demandFactor": 0.5,
+				"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+			},
+			"wireType": {
+				"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+				"material": "copper",
+				"insulation": "pvc",
+				"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+			},
+			"breakerCurve": "c",
+			"length": 10.0,
+			"circuits": [
+				{
+					"uuid": "61427e69-027f-448f-88f6-82a4d54ce35f",
+					"name": "Ar Condicionado - Quarto Casal",
+					"description": "",
+					"supply": {
+						"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+						"voltage": 220,
+						"phases": 2,
+						"hasNeutral": false,
+						"hasGround": true,
+						"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+					},
+					"loadType": {
+						"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+						"name": "Potência",
+						"minimumWireSection": 2.5,
+						"demandFactor": 0.5,
+						"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+					},
+					"wireType": {
+						"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+						"material": "copper",
+						"insulation": "pvc",
+						"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+					},
+					"breakerCurve": "c",
+					"length": 10.0,
+					"loadPower": 1500.0,
+					"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+				},
+				{
+					"uuid": "209f15b9-ec68-482b-8dab-32cd9d1a4882",
+					"name": "Ar Condicionado - Quarto",
+					"description": "",
+					"supply": {
+						"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+						"voltage": 220,
+						"phases": 2,
+						"hasNeutral": false,
+						"hasGround": true,
+						"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+					},
+					"loadType": {
+						"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+						"name": "Potência",
+						"minimumWireSection": 2.5,
+						"demandFactor": 0.5,
+						"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+					},
+					"wireType": {
+						"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+						"material": "copper",
+						"insulation": "pvc",
+						"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+					},
+					"breakerCurve": "c",
+					"length": 10.0,
+					"loadPower": 1500.0,
+					"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+				},
+				{
+					"uuid": "e4a2e69f-a112-4f0e-ba1f-69e55cdbfe77",
+					"name": "Ar Condicionado - Sala de Jantar",
+					"description": "",
+					"supply": {
+						"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+						"voltage": 220,
+						"phases": 2,
+						"hasNeutral": false,
+						"hasGround": true,
+						"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+					},
+					"loadType": {
+						"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+						"name": "Potência",
+						"minimumWireSection": 2.5,
+						"demandFactor": 0.5,
+						"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+					},
+					"wireType": {
+						"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+						"material": "copper",
+						"insulation": "pvc",
+						"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+					},
+					"breakerCurve": "c",
+					"length": 10.0,
+					"loadPower": 1500.0,
+					"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+				},
+				{
+					"uuid": "aa95c2e4-f105-45fd-99df-4d20c751a375",
+					"name": "Chuveiro",
+					"description": "",
+					"supply": {
+						"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+						"voltage": 220,
+						"phases": 2,
+						"hasNeutral": false,
+						"hasGround": true,
+						"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+					},
+					"loadType": {
+						"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+						"name": "Potência",
+						"minimumWireSection": 2.5,
+						"demandFactor": 0.5,
+						"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+					},
+					"wireType": {
+						"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+						"material": "copper",
+						"insulation": "pvc",
+						"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+					},
+					"breakerCurve": "c",
+					"length": 10.0,
+					"loadPower": 8000.0,
+					"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+				},
+				{
+					"uuid": "6e2f17e9-7dd0-499c-ae9b-1aa9b30f20e3",
+					"name": "Lava-Roupas",
+					"description": "",
+					"supply": {
+						"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+						"voltage": 220,
+						"phases": 2,
+						"hasNeutral": false,
+						"hasGround": true,
+						"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+					},
+					"loadType": {
+						"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+						"name": "Potência",
+						"minimumWireSection": 2.5,
+						"demandFactor": 0.5,
+						"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+					},
+					"wireType": {
+						"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+						"material": "copper",
+						"insulation": "pvc",
+						"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+					},
+					"breakerCurve": "c",
+					"length": 10.0,
+					"loadPower": 800.0,
+					"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+				},
+				{
+					"uuid": "7a29a289-2f13-4cd8-a705-07e304b4249c",
+					"name": "Secadora",
+					"description": "",
+					"supply": {
+						"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+						"voltage": 220,
+						"phases": 2,
+						"hasNeutral": false,
+						"hasGround": true,
+						"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+					},
+					"loadType": {
+						"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+						"name": "Potência",
+						"minimumWireSection": 2.5,
+						"demandFactor": 0.5,
+						"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+					},
+					"wireType": {
+						"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+						"material": "copper",
+						"insulation": "pvc",
+						"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+					},
+					"breakerCurve": "c",
+					"length": 10.0,
+					"loadPower": 1500.0,
+					"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+				},
+				{
+					"uuid": "6c171a47-4108-459c-ae75-3e7f40b7ca32",
+					"name": "Lava-Louças",
+					"description": "",
+					"supply": {
+						"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+						"voltage": 220,
+						"phases": 2,
+						"hasNeutral": false,
+						"hasGround": true,
+						"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+					},
+					"loadType": {
+						"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+						"name": "Potência",
+						"minimumWireSection": 2.5,
+						"demandFactor": 0.5,
+						"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+					},
+					"wireType": {
+						"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+						"material": "copper",
+						"insulation": "pvc",
+						"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+					},
+					"breakerCurve": "c",
+					"length": 10.0,
+					"loadPower": 1800.0,
+					"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+				},
+				{
+					"uuid": "af61273f-8c64-403f-bd8f-37d3e1df6fed",
+					"name": "Torneira Elétrica",
+					"description": "",
+					"supply": {
+						"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+						"voltage": 220,
+						"phases": 2,
+						"hasNeutral": false,
+						"hasGround": true,
+						"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+					},
+					"loadType": {
+						"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+						"name": "Potência",
+						"minimumWireSection": 2.5,
+						"demandFactor": 0.5,
+						"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+					},
+					"wireType": {
+						"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+						"material": "copper",
+						"insulation": "pvc",
+						"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+					},
+					"breakerCurve": "c",
+					"length": 10.0,
+					"loadPower": 6000.0,
+					"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+				},
+				{
+					"uuid": "0974302d-c620-4ad3-afaa-d652ab593acc",
+					"name": "Tomadas Cozinha",
+					"description": "",
+					"supply": {
+						"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+						"voltage": 220,
+						"phases": 2,
+						"hasNeutral": false,
+						"hasGround": true,
+						"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+					},
+					"loadType": {
+						"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+						"name": "Potência",
+						"minimumWireSection": 2.5,
+						"demandFactor": 0.5,
+						"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+					},
+					"wireType": {
+						"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+						"material": "copper",
+						"insulation": "pvc",
+						"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+					},
+					"breakerCurve": "c",
+					"length": 10.0,
+					"loadPower": 1000.0,
+					"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+				},
+				{
+					"uuid": "ce05a47e-0380-4966-94d8-3e67bc1a39c9",
+					"name": "Area Externa",
+					"description": "",
+					"supply": {
+						"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+						"voltage": 220,
+						"phases": 2,
+						"hasNeutral": false,
+						"hasGround": true,
+						"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+					},
+					"loadType": {
+						"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+						"name": "Potência",
+						"minimumWireSection": 2.5,
+						"demandFactor": 0.5,
+						"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+					},
+					"wireType": {
+						"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+						"material": "copper",
+						"insulation": "pvc",
+						"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+					},
+					"breakerCurve": "c",
+					"length": 10.0,
+					"loadPower": 1000.0,
+					"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+				},
+				{
+					"uuid": "6da1995b-1ffe-43b1-aaf2-75f9b483ba3f",
+					"name": "Sala / Quarto Casal / Escritório",
+					"description": "",
+					"supply": {
+						"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+						"voltage": 220,
+						"phases": 2,
+						"hasNeutral": false,
+						"hasGround": true,
+						"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+					},
+					"loadType": {
+						"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+						"name": "Potência",
+						"minimumWireSection": 2.5,
+						"demandFactor": 0.5,
+						"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+					},
+					"wireType": {
+						"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+						"material": "copper",
+						"insulation": "pvc",
+						"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+					},
+					"breakerCurve": "c",
+					"length": 10.0,
+					"loadPower": 1000.0,
+					"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+				},
+				{
+					"uuid": "b7a8e970-26f9-4cc7-b934-f8f15966a04a",
+					"name": "Quarto / Banheiro / Sala de Jantar / Cozinha",
+					"description": "",
+					"supply": {
+						"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+						"voltage": 220,
+						"phases": 2,
+						"hasNeutral": false,
+						"hasGround": true,
+						"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+					},
+					"loadType": {
+						"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+						"name": "Potência",
+						"minimumWireSection": 2.5,
+						"demandFactor": 0.5,
+						"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+					},
+					"wireType": {
+						"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+						"material": "copper",
+						"insulation": "pvc",
+						"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+					},
+					"breakerCurve": "c",
+					"length": 10.0,
+					"loadPower": 1000.0,
+					"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+				}
+			],
+			"__type__": "nbr_5410_calculator.installation.circuit.UpstreamCircuit"
+		}
+	],
+	"conduitRuns": [
+		{
+			"uuid": "35f68c5c-b446-41e2-970a-f83a8c8cc3c4",
+			"name": "Alimentação",
+			"referenceMethod": "b2",
+			"temperature": 30,
+			"length": 10.0,
+			"circuits": [
+				{
+					"uuid": "9676eaf3-63a3-42a5-ae2a-68d3fb1a2571",
+					"name": "Alimentação",
+					"description": "",
+					"supply": {
+						"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+						"voltage": 220,
+						"phases": 2,
+						"hasNeutral": false,
+						"hasGround": true,
+						"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+					},
+					"loadType": {
+						"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+						"name": "Potência",
+						"minimumWireSection": 2.5,
+						"demandFactor": 0.5,
+						"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+					},
+					"wireType": {
+						"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+						"material": "copper",
+						"insulation": "pvc",
+						"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+					},
+					"breakerCurve": "c",
+					"length": 10.0,
+					"circuits": [
+						{
+							"uuid": "61427e69-027f-448f-88f6-82a4d54ce35f",
+							"name": "Ar Condicionado - Quarto Casal",
+							"description": "",
+							"supply": {
+								"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+								"voltage": 220,
+								"phases": 2,
+								"hasNeutral": false,
+								"hasGround": true,
+								"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+							},
+							"loadType": {
+								"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+								"name": "Potência",
+								"minimumWireSection": 2.5,
+								"demandFactor": 0.5,
+								"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+							},
+							"wireType": {
+								"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+								"material": "copper",
+								"insulation": "pvc",
+								"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+							},
+							"breakerCurve": "c",
+							"length": 10.0,
+							"loadPower": 1500.0,
+							"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+						},
+						{
+							"uuid": "209f15b9-ec68-482b-8dab-32cd9d1a4882",
+							"name": "Ar Condicionado - Quarto",
+							"description": "",
+							"supply": {
+								"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+								"voltage": 220,
+								"phases": 2,
+								"hasNeutral": false,
+								"hasGround": true,
+								"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+							},
+							"loadType": {
+								"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+								"name": "Potência",
+								"minimumWireSection": 2.5,
+								"demandFactor": 0.5,
+								"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+							},
+							"wireType": {
+								"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+								"material": "copper",
+								"insulation": "pvc",
+								"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+							},
+							"breakerCurve": "c",
+							"length": 10.0,
+							"loadPower": 1500.0,
+							"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+						},
+						{
+							"uuid": "e4a2e69f-a112-4f0e-ba1f-69e55cdbfe77",
+							"name": "Ar Condicionado - Sala de Jantar",
+							"description": "",
+							"supply": {
+								"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+								"voltage": 220,
+								"phases": 2,
+								"hasNeutral": false,
+								"hasGround": true,
+								"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+							},
+							"loadType": {
+								"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+								"name": "Potência",
+								"minimumWireSection": 2.5,
+								"demandFactor": 0.5,
+								"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+							},
+							"wireType": {
+								"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+								"material": "copper",
+								"insulation": "pvc",
+								"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+							},
+							"breakerCurve": "c",
+							"length": 10.0,
+							"loadPower": 1500.0,
+							"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+						},
+						{
+							"uuid": "aa95c2e4-f105-45fd-99df-4d20c751a375",
+							"name": "Chuveiro",
+							"description": "",
+							"supply": {
+								"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+								"voltage": 220,
+								"phases": 2,
+								"hasNeutral": false,
+								"hasGround": true,
+								"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+							},
+							"loadType": {
+								"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+								"name": "Potência",
+								"minimumWireSection": 2.5,
+								"demandFactor": 0.5,
+								"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+							},
+							"wireType": {
+								"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+								"material": "copper",
+								"insulation": "pvc",
+								"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+							},
+							"breakerCurve": "c",
+							"length": 10.0,
+							"loadPower": 8000.0,
+							"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+						},
+						{
+							"uuid": "6e2f17e9-7dd0-499c-ae9b-1aa9b30f20e3",
+							"name": "Lava-Roupas",
+							"description": "",
+							"supply": {
+								"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+								"voltage": 220,
+								"phases": 2,
+								"hasNeutral": false,
+								"hasGround": true,
+								"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+							},
+							"loadType": {
+								"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+								"name": "Potência",
+								"minimumWireSection": 2.5,
+								"demandFactor": 0.5,
+								"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+							},
+							"wireType": {
+								"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+								"material": "copper",
+								"insulation": "pvc",
+								"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+							},
+							"breakerCurve": "c",
+							"length": 10.0,
+							"loadPower": 800.0,
+							"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+						},
+						{
+							"uuid": "7a29a289-2f13-4cd8-a705-07e304b4249c",
+							"name": "Secadora",
+							"description": "",
+							"supply": {
+								"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+								"voltage": 220,
+								"phases": 2,
+								"hasNeutral": false,
+								"hasGround": true,
+								"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+							},
+							"loadType": {
+								"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+								"name": "Potência",
+								"minimumWireSection": 2.5,
+								"demandFactor": 0.5,
+								"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+							},
+							"wireType": {
+								"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+								"material": "copper",
+								"insulation": "pvc",
+								"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+							},
+							"breakerCurve": "c",
+							"length": 10.0,
+							"loadPower": 1500.0,
+							"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+						},
+						{
+							"uuid": "6c171a47-4108-459c-ae75-3e7f40b7ca32",
+							"name": "Lava-Louças",
+							"description": "",
+							"supply": {
+								"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+								"voltage": 220,
+								"phases": 2,
+								"hasNeutral": false,
+								"hasGround": true,
+								"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+							},
+							"loadType": {
+								"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+								"name": "Potência",
+								"minimumWireSection": 2.5,
+								"demandFactor": 0.5,
+								"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+							},
+							"wireType": {
+								"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+								"material": "copper",
+								"insulation": "pvc",
+								"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+							},
+							"breakerCurve": "c",
+							"length": 10.0,
+							"loadPower": 1800.0,
+							"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+						},
+						{
+							"uuid": "af61273f-8c64-403f-bd8f-37d3e1df6fed",
+							"name": "Torneira Elétrica",
+							"description": "",
+							"supply": {
+								"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+								"voltage": 220,
+								"phases": 2,
+								"hasNeutral": false,
+								"hasGround": true,
+								"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+							},
+							"loadType": {
+								"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+								"name": "Potência",
+								"minimumWireSection": 2.5,
+								"demandFactor": 0.5,
+								"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+							},
+							"wireType": {
+								"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+								"material": "copper",
+								"insulation": "pvc",
+								"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+							},
+							"breakerCurve": "c",
+							"length": 10.0,
+							"loadPower": 6000.0,
+							"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+						},
+						{
+							"uuid": "0974302d-c620-4ad3-afaa-d652ab593acc",
+							"name": "Tomadas Cozinha",
+							"description": "",
+							"supply": {
+								"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+								"voltage": 220,
+								"phases": 2,
+								"hasNeutral": false,
+								"hasGround": true,
+								"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+							},
+							"loadType": {
+								"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+								"name": "Potência",
+								"minimumWireSection": 2.5,
+								"demandFactor": 0.5,
+								"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+							},
+							"wireType": {
+								"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+								"material": "copper",
+								"insulation": "pvc",
+								"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+							},
+							"breakerCurve": "c",
+							"length": 10.0,
+							"loadPower": 1000.0,
+							"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+						},
+						{
+							"uuid": "ce05a47e-0380-4966-94d8-3e67bc1a39c9",
+							"name": "Area Externa",
+							"description": "",
+							"supply": {
+								"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+								"voltage": 220,
+								"phases": 2,
+								"hasNeutral": false,
+								"hasGround": true,
+								"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+							},
+							"loadType": {
+								"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+								"name": "Potência",
+								"minimumWireSection": 2.5,
+								"demandFactor": 0.5,
+								"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+							},
+							"wireType": {
+								"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+								"material": "copper",
+								"insulation": "pvc",
+								"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+							},
+							"breakerCurve": "c",
+							"length": 10.0,
+							"loadPower": 1000.0,
+							"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+						},
+						{
+							"uuid": "6da1995b-1ffe-43b1-aaf2-75f9b483ba3f",
+							"name": "Sala / Quarto Casal / Escritório",
+							"description": "",
+							"supply": {
+								"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+								"voltage": 220,
+								"phases": 2,
+								"hasNeutral": false,
+								"hasGround": true,
+								"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+							},
+							"loadType": {
+								"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+								"name": "Potência",
+								"minimumWireSection": 2.5,
+								"demandFactor": 0.5,
+								"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+							},
+							"wireType": {
+								"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+								"material": "copper",
+								"insulation": "pvc",
+								"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+							},
+							"breakerCurve": "c",
+							"length": 10.0,
+							"loadPower": 1000.0,
+							"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+						},
+						{
+							"uuid": "b7a8e970-26f9-4cc7-b934-f8f15966a04a",
+							"name": "Quarto / Banheiro / Sala de Jantar / Cozinha",
+							"description": "",
+							"supply": {
+								"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+								"voltage": 220,
+								"phases": 2,
+								"hasNeutral": false,
+								"hasGround": true,
+								"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+							},
+							"loadType": {
+								"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+								"name": "Potência",
+								"minimumWireSection": 2.5,
+								"demandFactor": 0.5,
+								"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+							},
+							"wireType": {
+								"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+								"material": "copper",
+								"insulation": "pvc",
+								"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+							},
+							"breakerCurve": "c",
+							"length": 10.0,
+							"loadPower": 1000.0,
+							"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+						}
+					],
+					"__type__": "nbr_5410_calculator.installation.circuit.UpstreamCircuit"
+				}
+			],
+			"__type__": "nbr_5410_calculator.installation.conduitRun.ConduitRun"
+		},
+		{
+			"uuid": "e1a48994-0d84-4752-8d92-530d7ea89ae8",
+			"name": "Chuveiro",
+			"referenceMethod": "b1",
+			"temperature": 30,
+			"length": 10.0,
+			"circuits": [
+				{
+					"uuid": "aa95c2e4-f105-45fd-99df-4d20c751a375",
+					"name": "Chuveiro",
+					"description": "",
+					"supply": {
+						"uuid": "83ae5287-fd74-4cae-92a2-f4645dd27702",
+						"voltage": 220,
+						"phases": 2,
+						"hasNeutral": false,
+						"hasGround": true,
+						"__type__": "nbr_5410_calculator.installation.circuit.Supply"
+					},
+					"loadType": {
+						"uuid": "14204df8-5211-44e3-89af-2a46e89325bc",
+						"name": "Potência",
+						"minimumWireSection": 2.5,
+						"demandFactor": 0.5,
+						"__type__": "nbr_5410_calculator.installation.circuit.LoadType"
+					},
+					"wireType": {
+						"uuid": "ac9356be-7b07-4c9c-a47d-147e57589352",
+						"material": "copper",
+						"insulation": "pvc",
+						"__type__": "nbr_5410_calculator.installation.circuit.WireType"
+					},
+					"breakerCurve": "c",
+					"length": 10.0,
+					"loadPower": 8000.0,
+					"__type__": "nbr_5410_calculator.installation.circuit.Circuit"
+				}
+			],
+			"__type__": "nbr_5410_calculator.installation.conduitRun.ConduitRun"
+		}
+	]
+}
