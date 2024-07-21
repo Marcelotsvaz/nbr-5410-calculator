@@ -17,6 +17,7 @@ from PySide6.QtCore import (
 )
 from PySide6.QtWidgets import (
 	QAbstractItemView,
+	QCheckBox,
 	QComboBox,
 	QListView,
 	QMessageBox,
@@ -490,6 +491,9 @@ class GenericItemDelegate( QStyledItemDelegate ):
 		
 		# TODO: Move this to field logic.
 		match value := model.data( index, Qt.ItemDataRole.EditRole ):
+			case bool():
+				return QCheckBox( parent )
+			
 			case Enum():
 				editor = QComboBox( parent )
 				
@@ -515,7 +519,11 @@ class GenericItemDelegate( QStyledItemDelegate ):
 		'''
 		
 		match editor:
-			case QComboBox() as editor:
+			case QCheckBox():
+				value = index.model().data( index, Qt.ItemDataRole.EditRole )
+				editor.setChecked( value )
+			
+			case QComboBox():
 				value = index.model().data( index, Qt.ItemDataRole.EditRole )
 				itemIndex = editor.findData( value, Qt.ItemDataRole.UserRole )
 				editor.setCurrentIndex( itemIndex )
@@ -533,6 +541,9 @@ class GenericItemDelegate( QStyledItemDelegate ):
 		'''
 		
 		match editor:
+			case QCheckBox():
+				value = editor.isChecked()
+			
 			case QComboBox() as editor:
 				value = editor.currentData()
 			
