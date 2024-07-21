@@ -5,7 +5,7 @@ Models and view for the conduits tab.
 from collections.abc import Generator
 from typing import override
 
-from PySide6.QtCore import QObject, Qt, Slot
+from PySide6.QtCore import QModelIndex, QObject, Qt, Slot
 
 from nbr_5410_calculator.circuitsTab import CircuitsModel
 from nbr_5410_calculator.generic_model_views.items import GenericItem
@@ -25,6 +25,14 @@ class ConduitRunsModel( GenericItemModel[ConduitRun | BaseCircuit] ):
 	
 	Allow external and internal drag-and-drop to assign circuits to conduit runs.
 	'''
+	
+	@override
+	def rowCount( self, parent: ModelIndex = QModelIndex() ) -> int:
+		if isinstance( self.itemFromIndex( parent ), BaseCircuit ):
+			return 0
+		
+		return super().rowCount( parent )
+	
 	
 	@override
 	def dragActionsForIndex( self, sourceIndex: ModelIndex ) -> Qt.DropAction:

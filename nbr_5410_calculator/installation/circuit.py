@@ -386,7 +386,7 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 		ItemField(
 			'Power',
 			description = 'Apparent power consumed by this circuit.',
-			format = '{0:,} VA',
+			format = '{0:,.0f} VA',
 		),
 	]:
 		'''
