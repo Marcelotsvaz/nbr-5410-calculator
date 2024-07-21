@@ -66,6 +66,10 @@ class LoadType( UniqueSerializable, GenericItem ):
 	name: Annotated[str, MinLen( 1 ), ItemField( 'Name' )]
 	minimumWireSection: float
 	demandFactor: float
+	
+	@override
+	def __str__( self ) -> str:
+		return self.name
 
 
 
@@ -328,7 +332,6 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 		ItemField(
 			'Load Type',
 			description = 'The type of load for this circuit.',
-			format = lambda value: value.name,
 			choices = lambda self: self.project.loadTypes
 		),
 	]
