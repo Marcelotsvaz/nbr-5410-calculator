@@ -79,6 +79,10 @@ class MainWindow( QMainWindow, UiMainWindow ):
 		project.defaultLoadType = self.loadTypesView.newLoadType()
 		project.defaultWireType = self.wireTypesView.newWireType()
 		
+		self.suppliesView.resizeColumnsToContents()
+		self.loadTypesView.resizeColumnsToContents()
+		self.wireTypesView.resizeColumnsToContents()
+		
 		self.circuitsView.newCircuit()
 		self.circuitsView.expandAll()
 		self.circuitsView.resizeColumnsToContents()

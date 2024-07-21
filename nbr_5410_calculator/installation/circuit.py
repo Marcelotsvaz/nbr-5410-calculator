@@ -9,7 +9,7 @@ from functools import cache
 from math import pi
 from typing import Annotated, Any, Self, override
 
-from annotated_types import Ge, MinLen
+from annotated_types import Ge, Gt, MinLen
 from pydantic import BaseModel, Field, SerializeAsAny
 from pyjson5 import decode_buffer
 
@@ -26,8 +26,8 @@ class Supply( UniqueSerializable, GenericItem ):
 	
 	voltage: Annotated[int, Ge( 0 ), ItemField( 'Voltage', format = '{0} V' )]
 	phases: Annotated[int, Ge( 1 ), ItemField( 'Phases' )] = 1
-	hasNeutral: bool = True
-	hasGround: bool = True
+	hasNeutral: Annotated[bool, ItemField( 'Neutral' )] = True
+	hasGround: Annotated[bool, ItemField( 'Ground' )] = True
 	
 	
 	@override
@@ -64,8 +64,8 @@ class LoadType( UniqueSerializable, GenericItem ):
 	'''
 	
 	name: Annotated[str, MinLen( 1 ), ItemField( 'Name' )]
-	minimumWireSection: float
-	demandFactor: float
+	minimumWireSection: Annotated[float, Gt( 0.0 ), ItemField( 'Minimum Section' )]
+	demandFactor: Annotated[float, Ge( 0.0 ), ItemField( 'Demand Factor' )]
 	
 	@override
 	def __str__( self ) -> str:
@@ -104,7 +104,7 @@ class WireType( UniqueSerializable, GenericItem ):
 	'''
 	
 	material: Annotated[WireMaterial, ItemField( 'Material' )]
-	insulation: WireInsulation
+	insulation: Annotated[WireInsulation, ItemField( 'Insulation' )]
 	
 	# TODO: Improve this.
 	_resistivity: float

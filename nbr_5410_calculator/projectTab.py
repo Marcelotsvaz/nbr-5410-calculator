@@ -25,6 +25,8 @@ class SupplyView( GenericTreeView[GenericItemModel[Supply], Supply] ):
 		Supply: [
 			'voltage',
 			'phases',
+			'hasNeutral',
+			'hasGround',
 		],
 	}
 	
@@ -53,6 +55,8 @@ class LoadTypeView( GenericTreeView[GenericItemModel[LoadType], LoadType] ):
 	fieldOrder = {
 		LoadType: [
 			'name',
+			'minimumWireSection',
+			'demandFactor',
 		],
 	}
 	
@@ -83,6 +87,7 @@ class WireTypeView( GenericTreeView[GenericItemModel[WireType], WireType] ):
 	fieldOrder = {
 		WireType: [
 			'material',
+			'insulation',
 		],
 	}
 	
