@@ -476,9 +476,15 @@ class GenericItemDelegate( QStyledItemDelegate ):
 		
 		if field.choices:
 			editor = QComboBox( parent )
-				
+			
 			for choice in field.choices( item ):
 				editor.addItem( str( choice ), choice )
+			
+			def commitAndClose( index: int ):
+				self.commitData.emit( editor )
+				self.closeEditor.emit( editor )
+			
+			editor.activated.connect( commitAndClose )
 			
 			return editor
 		
@@ -489,6 +495,12 @@ class GenericItemDelegate( QStyledItemDelegate ):
 				
 				for enumItem in type( value ):
 					editor.addItem( enumItem.name, enumItem )
+				
+				def commitAndClose2( index: int ):
+					self.commitData.emit( editor )
+					self.closeEditor.emit( editor )
+				
+				editor.activated.connect( commitAndClose2 )
 				
 				return editor
 			
@@ -507,6 +519,7 @@ class GenericItemDelegate( QStyledItemDelegate ):
 				value = index.model().data( index, Qt.ItemDataRole.EditRole )
 				itemIndex = editor.findData( value, Qt.ItemDataRole.UserRole )
 				editor.setCurrentIndex( itemIndex )
+				editor.showPopup()
 			
 			case _:
 				super().setEditorData( editor, index )
