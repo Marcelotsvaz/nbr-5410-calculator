@@ -373,12 +373,13 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 		self.setDropIndicatorShown( oldShowDropIndicator )
 		
 		# Draw drop indicator.
-		painter = QPainter( self.viewport() )
 		if (
 			self.dropIndicatorRect
 			and self.state() is QAbstractItemView.State.DraggingState
 			and self.showDropIndicator()
 		):
+			painter = QPainter( self.viewport() )
+			
 			styleOption = QStyleOption()
 			styleOption.initFrom( self )
 			styleOption.rect = self.dropIndicatorRect	# pyright: ignore [reportAttributeAccessIssue]
@@ -388,6 +389,8 @@ class GenericViewMixin[ModelT: GenericItemModel[Any], ItemT: GenericItem]( QAbst
 				painter,
 				self,
 			)
+			
+			painter.end()
 
 
 
