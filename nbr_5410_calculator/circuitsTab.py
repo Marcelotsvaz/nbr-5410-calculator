@@ -102,20 +102,19 @@ class CircuitsView( GenericTreeView[CircuitsModel, BaseCircuit] ):
 		Create new `UpstreamCircuit`.
 		'''
 		
-		defaultLoadType = self.model().project.defaultLoadType
-		defaultSupply = self.model().project.defaultSupply
-		defaultWireType = self.model().project.defaultWireType
+		project = self.model().project
 		
-		if not ( defaultLoadType and defaultSupply and defaultWireType ):
+		if not ( project.defaultLoadType and project.defaultSupply and project.defaultWireType ):
 			raise Exception( 'TODO' )
 		
 		circuit = UpstreamCircuit(
 			breakerCurve	= BreakerCurve.C,
 			length			= 10.0,
-			loadType		= defaultLoadType,
+			loadType		= project.defaultLoadType,
 			name			= self.tr('New Upstream Circuit'),
-			supply			= defaultSupply,
-			wireType		= defaultWireType,
+			project			= project,
+			supply			= project.defaultSupply,
+			wireType		= project.defaultWireType,
 		)
 		
 		self.appendItem( circuit )
