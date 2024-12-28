@@ -1,3 +1,5 @@
+Grouping in circuits view
+Should a circuit exist without a project?
 Support headers for nested items
 	Nested item drag-and-drop already is get from GenericItem
 	Model has base item, rest of schema is from GenericItem?
