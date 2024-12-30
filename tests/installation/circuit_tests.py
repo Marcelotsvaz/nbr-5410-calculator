@@ -10,6 +10,7 @@ from typing import override
 from unittest import TestCase
 
 from nbr_5410_calculator.installation.circuit import Circuit, UpstreamCircuit
+from nbr_5410_calculator.installation.util import UniqueSerializable
 from tests.installation.util import (
 	createCircuit,
 	createCircuitDict,
@@ -30,6 +31,8 @@ class BaseCircuitTests( TestCase ):
 		'''
 		Setup for all tests.
 		'''
+		
+		UniqueSerializable.clearInstanceRegistry()
 		
 		self.circuit = createCircuit( createConduitRun() )
 

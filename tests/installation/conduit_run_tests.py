@@ -14,7 +14,7 @@ from nbr_5410_calculator.installation.conduitRun import (
 	ConduitRun,
 	ConduitType,
 )
-from nbr_5410_calculator.installation.util import ProjectError
+from nbr_5410_calculator.installation.util import ProjectError, UniqueSerializable
 from tests.installation.util import (
 	createCircuit,
 	createCircuitDict,
@@ -55,6 +55,8 @@ class BaseConduitRunTests( TestCase ):
 		'''
 		Setup for all tests.
 		'''
+		
+		UniqueSerializable.clearInstanceRegistry()
 		
 		self.conduitRun = createConduitRun()
 		self.conduitRun.circuits = [ createCircuit( self.conduitRun ) ] * 3

@@ -30,9 +30,9 @@ class UniqueSerializable( BaseModel ):
 		# strict = True,	# TODO: Fix deserialization of StrEnum.
 		extra = 'forbid',
 	)
+	__uuids__: ClassVar[dict[UUID, Self]] = {}
 	
 	# Fields.
-	__uuids__: ClassVar[dict[str, Self]] = {}
 	uuid: Annotated[
 		UUID,
 		Field( default_factory = uuid4 ),
@@ -51,14 +51,21 @@ class UniqueSerializable( BaseModel ):
 		Reuse previously deserialized instances with the same UUID.
 		'''
 		
-		if isinstance( data, dict ) and 'uuid' in data and data['uuid'] in cls.__uuids__:
-			return cls.__uuids__[data['uuid']]
-		
 		instance: Self = handler( data )
 		
-		cls.__uuids__[str( instance.uuid )] = instance
+		if instance.uuid not in cls.__uuids__:
+			cls.__uuids__[instance.uuid] = instance
 		
-		return instance
+		return cls.__uuids__[instance.uuid]
+	
+	
+	@classmethod
+	def clearInstanceRegistry( cls ) -> None:
+		'''
+		Remove all instances from the registry..
+		'''
+		
+		cls.__uuids__.clear()
 
 
 

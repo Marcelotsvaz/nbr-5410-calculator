@@ -43,9 +43,11 @@ class BaseUniqueSerializableTests( TestCase ):
 		Setup for all tests.
 		'''
 		
+		UniqueSerializable.clearInstanceRegistry()
+		
 		self.testClass = TestClass(
 			name = 'Test Instance',
-			uuid = UUID( 'e3f9a216-774e-46ee-986a-190abdb37b32' ),
+			uuid = 'e3f9a216-774e-46ee-986a-190abdb37b32',
 		)
 		
 		self.testClassJsonDict = {
@@ -87,12 +89,26 @@ class UniqueSerializableTests( BaseUniqueSerializableTests ):
 		
 		self.assertIsNotNone( testClass.uuid )
 		self.assertEqual( testClass, self.testClass )
+		self.assertIsNot( testClass, self.testClass )
 	
 	
 	def testDeserializeDuplicated( self ) -> None:
 		'''
 		Test deserialization of two items with the same UUID.
 		'''
+		
+		testClass1 = TestClass.model_validate( self.testClassJsonDict )
+		testClass2 = TestClass.model_validate( self.testClassJsonDict )
+		
+		self.assertIs( testClass1, testClass2 )
+	
+	
+	def testDeserializeWithUuidInstance( self ) -> None:
+		'''
+		Test deserialization with `UUID` instances instead of strings.
+		'''
+		
+		self.testClassJsonDict['uuid'] = UUID( self.testClassJsonDict['uuid'] )
 		
 		testClass1 = TestClass.model_validate( self.testClassJsonDict )
 		testClass2 = TestClass.model_validate( self.testClassJsonDict )
@@ -116,7 +132,7 @@ class NestedUniqueSerializableTests( BaseUniqueSerializableTests ):
 		
 		self.testContainerClass = TestContainerClass(
 			items = [ self.testClass, self.testClass ],
-			uuid = UUID( 'd5c04a14-7e60-4b18-bf8b-97b34eaa33a2' ),
+			uuid = 'd5c04a14-7e60-4b18-bf8b-97b34eaa33a2',
 		)
 		
 		self.testContainerJsonDict = {

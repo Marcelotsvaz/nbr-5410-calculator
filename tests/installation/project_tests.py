@@ -10,6 +10,7 @@ from typing import override
 from unittest import TestCase
 
 from nbr_5410_calculator.installation.project import Project
+from nbr_5410_calculator.installation.util import UniqueSerializable
 from tests.installation.circuit_tests import createCircuitDict
 from tests.installation.util import createProject, createProjectDict
 
@@ -25,6 +26,8 @@ class BaseProjectTests( TestCase ):
 		'''
 		Setup for all tests.
 		'''
+		
+		UniqueSerializable.clearInstanceRegistry()
 		
 		self.project = createProject()
 		self.projectDict = createProjectDict( [ createCircuitDict() ] * 3 )
