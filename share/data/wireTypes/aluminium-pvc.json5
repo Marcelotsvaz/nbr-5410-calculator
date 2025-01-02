@@ -1,11 +1,3 @@
-// 
-// NBR 5410 Calculator
-// 
-// 
-// Author: Marcelo Tellier Sartori Vaz <marcelotsvaz@gmail.com>
-
-
-
 {
 	material: 'aluminium',
 	resistivity: 26.5E-9,
