@@ -43,12 +43,28 @@ class CircuitBasicTests( BaseCircuitTests ):
 	Basic tests for `Circuit` class.
 	'''
 	
-	def testCurrent( self ) -> None:
+	def testSinglePhaseCurrent( self ) -> None:
 		'''
-		Test `current` property.
+		Test single-phase `current`.
 		'''
 		
 		self.assertEqual( self.circuit.current, 50.0 )
+	
+	def testTwoPhaseCurrent( self ) -> None:
+		'''
+		Test two-phase `current`.
+		'''
+		
+		self.circuit.supply.phases = 2
+		self.assertEqual( self.circuit.current, 25.0 )
+	
+	def testThreePhaseCurrent( self ) -> None:
+		'''
+		Test three-phase `current`.
+		'''
+		
+		self.circuit.supply.phases = 3
+		self.assertAlmostEqual( self.circuit.current, 16.666667, 6 )
 
 
 

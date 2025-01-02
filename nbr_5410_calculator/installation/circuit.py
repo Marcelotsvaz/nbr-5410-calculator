@@ -43,7 +43,7 @@ class Supply( UniqueSerializable, GenericItem ):
 		Number of current carrying wires.
 		'''
 		
-		return self.phases if not self.hasNeutral else self.phases + 1
+		return min( self.phases + self.hasNeutral, 3 )	# TODO: Support more than 3 loaded wires.
 	
 	
 	@property
@@ -407,7 +407,7 @@ class BaseCircuit( UniqueSerializable, GenericItem ):
 		Project current.
 		'''
 		
-		return self.power / self.supply.voltage
+		return self.power / self.supply.voltage / self.supply.phases
 	
 	
 	@property
